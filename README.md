@@ -283,9 +283,45 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 * **Validação de Documentos:** A inclusão de novos clientes e contratos no sistema é estritamente condicionada à apresentação e validação de documentos comprobatórios.
  
 # # 1 0 . F l u x o g r a m a s
-[Fluxograma do Processo](./docs/fluxograma.pdf)
+[Fluxograma](./docs/fluxograma.pdf)
 
 # # 1 1 . E n t i d a d e s
+A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Relacionamento (DER):
+
+| Entidade Base | Entidade Relacionada |
+| :--- | :--- |
+| **Aditivo** | Aprovação |
+| **Alocação** | Apontamento de horas |
+| **Alocação** | Aprovação |
+| **Cliente** | Contato |
+| **Cliente** | Contrato |
+| **Cliente** | Oportunidade |
+| **Colaborador** | Alocação |
+| **Colaborador** | Apontamento de horas |
+| **Colaborador** | Certificação |
+| **Colaborador** | Contrato salarial |
+| **Colaborador** | Evidência |
+| **Colaborador** | Usuário |
+| **Contrato** | Aditivo |
+| **Contrato** | Alocação |
+| **Contrato** | Apontamento de horas |
+| **Contrato** | Aprovação |
+| **Contrato** | Certificação |
+| **Contrato** | Evidência |
+| **Contrato** | Fatura |
+| **Contrato** | Oportunidade |
+| **Contrato** | Provedor de nuvem |
+| **Contrato** | Tag |
+| **Fatura** | Pagamento |
+| **Oportunidade** | Certificação |
+| **Oportunidade** | Contrato |
+| **Oportunidade** | Serviço |
+| **Serviço** | Contrato |
+| **Usuário** | Aprovação |
+| **Usuário** | Perfil de acesso |
+| **Usuário** | Permissão |
+| **Usuário** | Tag |
+
 # # 1 2 . A t r i b u t o s
 # # 1 3 . R e l a c i o n a m e n t o s
 # # 1 4 . C a r d i n a l i d a d e s
