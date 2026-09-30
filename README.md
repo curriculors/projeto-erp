@@ -62,42 +62,6 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses, mas existem contratos *evergreen*, renovados continuamente, e o cliente pode cancelar com aviso prévio. Os contratos ficam no DocuSign e as notas fiscais e boletos são emitidos pelo ERP Nibo. A cada contrato, a empresa monta uma equipe de colaboradores, mas **não controla o custo em horas dessa equipe nem sabe prever quando ela ficará livre**.
 
 # # 5 . P r o c e s s o s d e n e g ó c i o
-# # 6 . R e q u i s i t o s f u n c i o n a i s
-# # 7 . R e q u i s i t o s n ã o f u n c i o n a i s
-# # 8 . R e g r a s d e n e g ó c i o
-# # 9 . R e s t r i ç õ e s e p o l í t i c a s o r g a n i z a c i o n a i s
-# # 1 0 . F l u x o g r a m a s
-# # 1 1 . E n t i d a d e s
-# # 1 2 . A t r i b u t o s
-# # 1 3 . R e l a c i o n a m e n t o s
-# # 1 4 . C a r d i n a l i d a d e s
-# # 1 5 . D i c i o n á r i o d e d a d o s c o n c e i t u a l
-# # 1 6 . D E R
-# # 1 7 . J u s t i f i c a t i v a s t é c n i c a s
-## 18. Conclusão
-
-# Projeto Integrador — Modelagem de Dados 🚀
-**ERP de Gestão de Contratos e Alocação — KXP Technology Consulting**
-
-**Fase 1 — Dupla 1:** Diego + Matheus  
-**Entregas:** Etapa 3 (Processos de negócio) · Etapa 5 (Requisitos funcionais) · Etapa 7 (Regras de negócio)
-
----
-
-## 📌 Contexto Resumido
-
-A **KXP** é uma consultoria de tecnologia especializada em nuvem, com 17 a 18 colaboradores, que oferece Nuvem Gerenciada, FinOps como serviço, SRE como serviço e Revisão de Arquitetura. A empresa trabalha 100% de forma remota; a equipe se reúne presencialmente só a cada três meses, aproximadamente. Os serviços são prestados nos três principais provedores de nuvem (AWS, Azure e GCP), por um time com certificações AWS, Azure, GCP, FinOps, Scrum e Datadog, trabalhando em modelo ágil, com ciclos curtos e entregas incrementais.
-
-Entre os clientes estão Caixa, Cielo, Havan, TIM, Porto, Stone, Banco BV, Rabobank, SEBRAE-PR e a Polícia Militar do Estado de São Paulo (PMESP). Além do endereço em São Paulo, a empresa informa um endereço em Orlando (EUA).
-
-> **Nota sobre o Kura Financials:** A KXP também possui um produto próprio, plataforma de controle de custos de nuvem vendida por assinatura (plano gratuito e plano Standard, cobrado a 2% do *billing* gerenciado por mês), usada também no serviço de FinOps. A KXP respondeu que isso está fora do escopo dessa etapa da entrevista. Neste documento, o Kura é tratado apenas como ferramenta de apoio, sem regras próprias.
-
-Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses, mas existem contratos *evergreen*, renovados continuamente, e o cliente pode cancelar com aviso prévio. Os contratos ficam no DocuSign e as notas fiscais e boletos são emitidos pelo ERP Nibo. A cada contrato, a empresa monta uma equipe de colaboradores, mas **não controla o custo em horas dessa equipe nem sabe prever quando ela ficará livre**.
-
----
-
-## ⚙️ ETAPA 3 — Processos de Negócio
-
 ### PN01 — Prospecção e negociação
 | Pergunta | Resposta |
 | :--- | :--- |
@@ -169,9 +133,7 @@ Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses,
 > **Ponto-chave:** O PN06 alimenta o PN07 e o PN01. Saber quando cada contrato termina permite planejar a realocação antes que a equipe fique ociosa — o principal problema relatado pela KXP.
 
 ---
-
-## 📋 ETAPA 5 — Requisitos Funcionais
-
+# # 6 . R e q u i s i t o s f u n c i o n a i s
 | Cód. | Requisito | Processo(s) |
 | :--- | :--- | :--- |
 | **RF01** | O sistema deverá cadastrar clientes e seus contatos. | PN01 |
@@ -206,9 +168,8 @@ Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses,
 | **RF30** | O sistema deverá alertar sobre certificações de colaboradores próximas do vencimento. | PN03 |
 
 ---
-
-## 📏 ETAPA 7 — Regras de Negócio
-
+# # 7 . R e q u i s i t o s n ã o f u n c i o n a i s
+# # 8 . R e g r a s d e n e g ó c i o
 > **Legenda de Fonte:**  
 > **"Entrevista"** = informado pelo proprietário | **"Proposta"** = definida pela dupla a partir dos processos.  
 > *A coluna "Impacto no modelo" é uma indicação para as Fases 2 e 3, não a modelagem final.*
@@ -281,3 +242,45 @@ Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses,
 | **RN42** | Um contrato é executado em um ou mais provedores de nuvem (AWS, Azure, GCP), e um provedor pode estar em vários contratos. | Site KXP | Contrato–Provedor (N:N) |
 | **RN43** | Todo contrato possui uma moeda, e suas faturas são emitidas na mesma moeda. | Site KXP | Atributo "moeda" |
 ```eof
+# # 9 . R e s t r i ç õ e s e p o l í t i c a s o r g a n i z a c i o n a i s
+# # 1 0 . F l u x o g r a m a s
+# # 1 1 . E n t i d a d e s
+# # 1 2 . A t r i b u t o s
+# # 1 3 . R e l a c i o n a m e n t o s
+# # 1 4 . C a r d i n a l i d a d e s
+# # 1 5 . D i c i o n á r i o d e d a d o s c o n c e i t u a l
+# # 1 6 . D E R
+# # 1 7 . J u s t i f i c a t i v a s t é c n i c a s
+## 18. Conclusão
+
+# Projeto Integrador — Modelagem de Dados 🚀
+**ERP de Gestão de Contratos e Alocação — KXP Technology Consulting**
+
+**Fase 1 — Dupla 1:** Diego + Matheus  
+**Entregas:** Etapa 3 (Processos de negócio) · Etapa 5 (Requisitos funcionais) · Etapa 7 (Regras de negócio)
+
+---
+
+## 📌 Contexto Resumido
+
+A **KXP** é uma consultoria de tecnologia especializada em nuvem, com 17 a 18 colaboradores, que oferece Nuvem Gerenciada, FinOps como serviço, SRE como serviço e Revisão de Arquitetura. A empresa trabalha 100% de forma remota; a equipe se reúne presencialmente só a cada três meses, aproximadamente. Os serviços são prestados nos três principais provedores de nuvem (AWS, Azure e GCP), por um time com certificações AWS, Azure, GCP, FinOps, Scrum e Datadog, trabalhando em modelo ágil, com ciclos curtos e entregas incrementais.
+
+Entre os clientes estão Caixa, Cielo, Havan, TIM, Porto, Stone, Banco BV, Rabobank, SEBRAE-PR e a Polícia Militar do Estado de São Paulo (PMESP). Além do endereço em São Paulo, a empresa informa um endereço em Orlando (EUA).
+
+> **Nota sobre o Kura Financials:** A KXP também possui um produto próprio, plataforma de controle de custos de nuvem vendida por assinatura (plano gratuito e plano Standard, cobrado a 2% do *billing* gerenciado por mês), usada também no serviço de FinOps. A KXP respondeu que isso está fora do escopo dessa etapa da entrevista. Neste documento, o Kura é tratado apenas como ferramenta de apoio, sem regras próprias.
+
+Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses, mas existem contratos *evergreen*, renovados continuamente, e o cliente pode cancelar com aviso prévio. Os contratos ficam no DocuSign e as notas fiscais e boletos são emitidos pelo ERP Nibo. A cada contrato, a empresa monta uma equipe de colaboradores, mas **não controla o custo em horas dessa equipe nem sabe prever quando ela ficará livre**.
+
+---
+
+## ⚙️ ETAPA 3 — Processos de Negócio
+
+
+
+## 📋 ETAPA 5 — Requisitos Funcionais
+
+
+
+## 📏 ETAPA 7 — Regras de Negócio
+
+
