@@ -625,6 +625,9 @@ Com base nos requisitos funcionais e nas regras de negócio levantadas, foi defi
 ### Modelagem e Relacionamentos
 A definição das relações e cardinalidades permitiu representar de forma clara como as entidades se conectam dentro do sistema. Dessa maneira, situações como um cliente possuir vários contratos, um contrato possuir diferentes alocações e faturas, e colaboradores estarem relacionados a certificações e contratos podem ser registradas e consultadas de maneira estruturada.
 
+### Cardinalidade
+As cardinalidades foram definidas de acordo com a forma como as entidades se relacionam dentro do modelo da KXP, considerando a quantidade de registros que cada entidade pode possuir ou estar relacionada. As relações 1:N representam situações em que um registro de uma entidade pode estar associado a vários registros de outra, enquanto as relações N:N são utilizadas quando várias ocorrências de ambas as entidades podem se relacionar entre si. Já as relações 1:1 ou 1:0:1 representam situações em que existe uma associação única, podendo ser obrigatória ou opcional. Dessa forma, as cardinalidades procuram representar as regras e necessidades do negócio, mantendo a estrutura dos dados coerente e evitando relacionamentos inadequados ou duplicados.
+
 ### Controle de Custos e Apontamento de Horas
 Outro ponto importante identificado no projeto foi a necessidade de acompanhar as **horas trabalhadas pelos colaboradores em cada contrato**. Essa medida permite um melhor controle dos custos reais dos projetos e reduz o risco de perdas financeiras causadas por horas excedentes não identificadas.
 
