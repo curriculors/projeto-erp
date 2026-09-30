@@ -444,7 +444,7 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 | **Usuário** `(1,N)` | possui | `(1,1)` **Perfil de acesso** | **N:1** | Vários usuários podem possuir o mesmo perfil de acesso. |
 | **Usuário** `(0,N)` | tem | `(0,N)` **Tag** | **N:N** | Um usuário pode possuir acesso a várias tags e uma tag pode conceder acesso a vários usuários. |
 
-# # 1 5 . Discionário de dados conceitual
+# # 1 5 . Dicionário de dados conceitual
 ### Entidade: Aditivo
 | Atributo | Descrição | Regra/Observação |
 | :--- | :--- | :--- |
