@@ -274,7 +274,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 | **RN41** | Um contrato ou oportunidade pode exigir nenhuma ou várias certificações. | Site KXP | Contrato–Certificação (N:N) |
 | **RN42** | Um contrato é executado em um ou mais provedores de nuvem (AWS, Azure, GCP), e um provedor pode estar em vários contratos. | Site KXP | Contrato–Provedor (N:N) |
 | **RN43** | Todo contrato possui uma moeda, e suas faturas são emitidas na mesma moeda. | Site KXP | Atributo "moeda" |
-```eof
+
 # # 9 . R e s t r i ç õ e s e p o l í t i c a s o r g a n i z a c i o n a i s
 *Baseado no levantamento, o sistema precisará respeitar as seguintes regras da empresa:*
 
