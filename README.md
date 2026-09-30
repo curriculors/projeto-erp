@@ -340,14 +340,97 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 | **Oportunidade** | Cliente, Serviço, Valor Estimado, Data Prevista de Início, Provedor de Nuvem, Certificações/Perfis Técnicos Necessários, Estágio da Negociação |
 | **Pagamento** | Fatura, Data, Valor |
 | **Perfil de Acesso** | Nome do Perfil, Usuários Vinculados |
-| **Permissão** | Nome da Permissão (`nome_permissao`), Descrição (`descricao`) |
+| **Permissão** | Nome da Permissão, Descrição |
 | **Provedor de Nuvem** | Nome do Provedor |
 | **Serviço** | Nome/Descrição do Serviço, Valor no Contrato |
-| **Tag** | Nome da Tag (`nome_tag`) |
+| **Tag** | Nome da Tag |
 | **Usuário** | Perfil de Acesso, Colaborador Vinculado |
 
 # # 1 3 . R e l a c i o n a m e n t o s
+### 📄 Aditivo
+* **Aditivo** → *recebe* → **Aprovação**
+
+### 📌 Alocação
+* **Alocação** → *tem* → **Apontamento de horas**
+* **Alocação** → *possui* → **Aprovação**
+
+### 🏢 Cliente
+* **Cliente** → *recebe* → **Contato**
+* **Cliente** → *tem* → **Contrato**
+* **Cliente** → *tem* → **Oportunidade**
+
+### 👤 Colaborador
+* **Colaborador** → *tem* → **Alocação**
+* **Colaborador** → *possui* → **Apontamento de horas**
+* **Colaborador** → *possui* → **Certificação**
+* **Colaborador** → *tem* → **Contrato salarial**
+* **Colaborador** → *registra* → **Evidência**
+* **Colaborador** → *tem* → **Usuário**
+
+### 📑 Contrato
+* **Contrato** → *possui* → **Aditivo**
+* **Contrato** → *tem* → **Alocação**
+* **Contrato** → *possui* → **Apontamento de horas**
+* **Contrato** → *possui* → **Aprovação**
+* **Contrato** → *exige* → **Certificação**
+* **Contrato** → *tem* → **Evidência**
+* **Contrato** → *produz* → **Fatura**
+* **Contrato** → *utiliza* → **Provedor de nuvem**
+* **Contrato** → *tem* → **Tag**
+
+### 🧾 Fatura
+* **Fatura** → *tem* → **Pagamento**
+
+### 🎯 Oportunidade
+* **Oportunidade** → *exige* → **Certificação**
+* **Oportunidade** → *gera* → **Contrato**
+* **Oportunidade** → *envolve* → **Serviço**
+
+### 🛠️ Serviço
+* **Serviço** → *envolve* → **Contrato**
+
+### 👥 Usuário
+* **Usuário** → *possui* → **Perfil de acesso**
+* **Usuário** → *precisa* → **Permissão**
+* **Usuário** → *realiza* → **Aprovação**
+* **Usuário** → *tem* → **Tag**
+
 # # 1 4 . C a r d i n a l i d a d e s
+A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade-Relacionamento (DER), separando a notação técnica (Mínima, Máxima) e a regra de negócio que justifica o modelo estrutural.
+
+| Entidade Origem (Mín, Máx) | Ação | Entidade Destino (Mín, Máx) | Tipo | Regra de Negócio |
+| :--- | :---: | :--- | :---: | :--- |
+| **Aditivo** `(1,1)` | recebe | `(1,N)` **Aprovação** | **1:N** | Um aditivo pode possuir uma ou mais aprovações. |
+| **Alocação** `(1,1)` | tem | `(1,N)` **Apontamento de horas** | **1:N** | Uma alocação pode possuir vários apontamentos de horas. |
+| **Alocação** `(1,1)` | possui | `(1,N)` **Aprovação** | **1:N** | Uma alocação pode possuir uma ou mais aprovações. |
+| **Cliente** `(1,1)` | recebe | `(1,N)` **Contato** | **1:N** | Um cliente pode ter vários contatos, mas cada contato pertence a um cliente. |
+| **Cliente** `(1,1)` | tem | `(1,N)` **Contrato** | **1:N** | Um cliente pode possuir vários contratos, mas cada contrato pertence a um cliente. |
+| **Cliente** `(1,1)` | tem | `(1,N)` **Oportunidade** | **1:N** | Um cliente pode ter várias oportunidades, mas cada oportunidade pertence a um cliente. |
+| **Colaborador** `(1,1)` | tem | `(1,N)` **Alocação** | **1:N** | Um colaborador pode ter várias alocações em contratos. |
+| **Colaborador** `(1,1)` | possui | `(1,N)` **Apontamento de horas** | **1:N** | Um colaborador pode registrar vários apontamentos. |
+| **Colaborador** `(0,N)` | possui | `(0,N)` **Certificação** | **N:N** | Um colaborador pode possuir várias certificações e uma certificação pode estar ligada a vários colaboradores. |
+| **Colaborador** `(1,1)` | tem | `(1,N)` **Contrato salarial** | **1:N** | Um colaborador pode possuir diferentes registros salariais ao longo do tempo, permitindo registrar reajustes e períodos de vigência. |
+| **Colaborador** `(1,1)` | registra | `(1,N)` **Evidência** | **1:N** | Um colaborador pode registrar várias evidências. |
+| **Colaborador** `(0,1)` | tem | `(1,1)` **Usuário** | **1:0..1** | Um colaborador pode ter um usuário no sistema, mas nem todo colaborador precisa ter usuário. |
+| **Contrato** `(1,1)` | possui | `(1,N)` **Aditivo** | **1:N** | Um contrato pode possuir vários aditivos. |
+| **Contrato** `(1,1)` | tem | `(1,N)` **Alocação** | **1:N** | Um contrato pode ter várias alocações de colaboradores. |
+| **Contrato** `(1,1)` | possui | `(1,N)` **Apontamento de horas** | **1:N** | Um contrato pode possuir vários apontamentos de horas. |
+| **Contrato** `(1,1)` | possui | `(1,N)` **Aprovação** | **1:N** | Um contrato pode possuir várias aprovações. |
+| **Contrato** `(0,N)` | exige | `(0,N)` **Certificação** | **N:N** | Um contrato pode exigir várias certificações e uma certificação pode ser exigida em vários contratos. |
+| **Contrato** `(1,1)` | tem | `(1,N)` **Evidência** | **1:N** | Um contrato pode ter várias evidências de entrega. |
+| **Contrato** `(1,1)` | produz | `(1,N)` **Fatura** | **1:N** | Um contrato pode gerar várias faturas. |
+| **Contrato** `(0,N)` | utiliza | `(0,N)` **Provedor de nuvem** | **N:N** | Um contrato pode utilizar vários provedores e um provedor pode ser utilizado em vários contratos. |
+| **Contrato** `(0,N)` | tem | `(0,N)` **Tag** | **N:N** | Um contrato pode possuir várias tags e uma tag pode estar associada a vários contratos. |
+| **Fatura** `(1,1)` | tem | `(1,N)` **Pagamento** | **1:N** | Uma fatura pode ter vários pagamentos. |
+| **Oportunidade** `(0,N)` | exige | `(0,N)` **Certificação** | **N:N** | Uma oportunidade pode exigir várias certificações. |
+| **Oportunidade** `(0,1)` | gera | `(1,1)` **Contrato** | **1:0..1** | Uma oportunidade pode gerar no máximo um contrato. |
+| **Oportunidade** `(0,N)` | envolve | `(0,N)` **Serviço** | **N:N** | Uma oportunidade pode envolver vários serviços. |
+| **Serviço** `(0,N)` | envolve | `(0,N)` **Contrato** | **N:N** | Um serviço pode estar em vários contratos. |
+| **Usuário** `(1,1)` | realiza | `(1,N)` **Aprovação** | **1:N** | Um usuário pode realizar várias aprovações. |
+| **Usuário** `(0,N)` | precisa | `(0,N)` **Permissão** | **N:N** | Um usuário pode possuir várias permissões e uma permissão pode ser atribuída a vários usuários. |
+| **Usuário** `(1,N)` | possui | `(1,1)` **Perfil de acesso** | **N:1** | Vários usuários podem possuir o mesmo perfil de acesso. |
+| **Usuário** `(0,N)` | tem | `(0,N)` **Tag** | **N:N** | Um usuário pode possuir acesso a várias tags e uma tag pode conceder acesso a vários usuários. |
+
 # # 1 5 . D i c i o n á r i o d e d a d o s c o n c e i t u a l
 # # 1 6 . D E R
 # # 1 7 . J u s t i f i c a t i v a s t é c n i c a s
