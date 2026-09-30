@@ -1,6 +1,6 @@
 # P r o j e t o E R P — K X P
 
-# # 1 . I d e n t i f i c a ç ã o  d a  e q u i p e
+# # 1 . Identificação da equipe
 * **Diego Marinho de Sousa Camara** — RGM: 1749267345
 * **Fabio de Oliveira Nogueira** — RGM: 49296442
 * **Giovanna Ayumi Sakata Matuo** — RGM: 049583735
