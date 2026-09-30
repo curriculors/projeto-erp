@@ -610,6 +610,11 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 [DER](./docs/der.jpg)
 
 # # 17 . Justificativas técnicas
+A empresa **KXP Technology Consulting** foi escolhida pela equipe devido à sua área de atuação, voltada para o ramo de tecnologia. Essa escolha proporcionaria à equipe a oportunidade de aprofundar os conhecimentos já adquiridos, desenvolver novos conhecimentos e compreender, de forma mais prática, o funcionamento e a dinâmica de uma empresa de tecnologia, ampliando também os horizontes em relação às possibilidades de atuação profissional.
+
+Além disso, durante a entrevista realizada com o proprietário da empresa, a equipe tomou conhecimento de algumas necessidades relacionadas à melhoria e ao ajuste de determinados processos internos, principalmente no que diz respeito à **gestão dos contratos** e à **análise dos custos reais** de cada projeto desenvolvido pela empresa.
+
+A partir dessas informações, a equipe chegou ao consenso de que a escolha da KXP Technology Consulting representaria uma ótima oportunidade para ambas as partes, permitindo que a equipe aplicasse seus conhecimentos na identificação e análise das necessidades da empresa, ao mesmo tempo em que poderia contribuir para o aprimoramento de seus processos.
 
 # # 18 . Conclusão 
 O desenvolvimento deste projeto possibilitou compreender e organizar os principais processos e necessidades da **KXP Technology Consulting**, abrangendo desde a prospecção de clientes e negociação de oportunidades até a formalização de contratos, alocação de colaboradores, acompanhamento de horas e entregas, faturamento e pagamentos. A partir dessa análise, foi possível identificar a importância de centralizar e organizar as informações para facilitar o controle das atividades e dos contratos.
