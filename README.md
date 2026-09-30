@@ -607,7 +607,7 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 | **Colaborador Vinculado** | Identificação do funcionário humano atrelado a esta credencial de acesso. | Relação 1:1 restrita (cada colaborador ativo deve ter apenas um usuário). |
 
 # # 16 . DER
-[DER](./docs/der.pdf)
+[DER](./docs/der.jpg)
 
 # # 17 . Justificativas técnicas
 # # 18 . Conclusão 
