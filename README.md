@@ -283,7 +283,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 * **Validação de Documentos:** A inclusão de novos clientes e contratos no sistema é estritamente condicionada à apresentação e validação de documentos comprobatórios.
  
 # # 1 0 . F l u x o g r a m a s
-![Fluxograma do Processo](./docs/fluxograma.pdf)
+[Fluxograma do Processo](./docs/fluxograma.pdf)
 
 # # 1 1 . E n t i d a d e s
 # # 1 2 . A t r i b u t o s
