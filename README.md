@@ -432,9 +432,172 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 | **Usuário** `(0,N)` | tem | `(0,N)` **Tag** | **N:N** | Um usuário pode possuir acesso a várias tags e uma tag pode conceder acesso a vários usuários. |
 
 # # 1 5 . D i c i o n á r i o d e d a d o s c o n c e i t u a l
+### Entidade: Aditivo
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Contrato** | Vínculo com o contrato original que está sendo alterado. | Relacionamento (Obrigatório). |
+| **Data** | Data de criação ou assinatura do aditivo. | Preenchimento obrigatório. |
+| **Condições Anteriores** | Descrição das cláusulas e termos antes da alteração. | Preservação de histórico. |
+| **Novas Condições** | Descrição das novas cláusulas e termos acordados. | Campo de texto detalhado. |
+| **Status/Aprovação** | Situação atual da alteração contratual. | Ex: Pendente, Aprovado, Rejeitado. |
+
+### Entidade: Alocação
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Colaborador** | Profissional designado para atuar no projeto. | Relacionamento (Obrigatório). |
+| **Contrato** | Vínculo com o contrato do cliente que será atendido. | Relacionamento (Obrigatório). |
+| **Função** | Papel que o colaborador desempenhará neste contrato específico. | Pode diferir da função base do colaborador. |
+| **Data de Início** | Data em que o colaborador inicia os trabalhos no contrato. | Preenchimento obrigatório. |
+| **Término Previsto** | Data estimada para o fim da atuação do colaborador no contrato. | Deve ser maior ou igual à Data de Início. |
+| **Término Real** | Data efetiva de saída do colaborador do projeto. | Preenchido apenas no encerramento da alocação. |
+| **Dedicação** | Carga horária mensal ou percentual de tempo dedicado ao contrato. | A soma das dedicações ativas não pode ultrapassar 100%. |
+| **Custo/Hora no Momento** | Valor do custo/hora do colaborador fixado na data de início da alocação. | Congela o valor financeiro para preservar o cálculo de margem. |
+
+### Entidade: Apontamento de Horas
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Colaborador** | Profissional que está registrando as horas trabalhadas. | Relacionamento (Obrigatório). |
+| **Contrato/Alocação** | Projeto/contrato no qual as horas foram gastas. | Relacionamento (Obrigatório). |
+| **Horas Trabalhadas** | Quantidade de horas dedicadas à atividade. | Valor numérico positivo. |
+| **Data/Período do Apontamento** | Data exata ou período em que o trabalho foi realizado. | Não pode ser data futura. |
+| **Custo/Hora Vigente** | Valor do custo/hora do profissional no instante do apontamento. | Base para o cálculo de custo real do contrato. |
+
+### Entidade: Aprovação
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Quem Aprovou** | Usuário/Administrador que realizou a análise da solicitação. | Relacionamento (Automático via sistema). |
+| **Data** | Data e hora em que a decisão foi tomada. | Gerado automaticamente pelo sistema. |
+| **Decisão** | Veredito sobre o item analisado. | Ex: Aprovado, Reprovado. |
+| **Observação** | Justificativa ou comentários adicionais sobre a decisão. | Opcional (Obrigatório em caso de reprovação). |
+
+### Entidade: Certificação
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Nome da Certificação** | Título oficial da qualificação técnica (ex: AWS Solutions Architect). | Identificação única da certificação. |
+| **Data de Obtenção** | Data em que o colaborador foi aprovado no exame/certificação. | Preenchimento obrigatório ao vincular ao colaborador. |
+| **Data de Validade** | Data de expiração da certificação técnica. | Utilizado para gerar alertas de renovação. |
+
+### Entidade: Cliente
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **CNPJ** | Cadastro Nacional da Pessoa Jurídica da empresa cliente. | Obrigatório e Único (Não pode se repetir). |
+| **Nome** | Razão social ou nome fantasia do cliente. | Preenchimento obrigatório. |
+| **Contatos** | Vínculo com as pessoas de referência no cliente. | Relacionamento (Pelo menos um contato necessário). |
+
+### Entidade: Colaborador
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Função** | Cargo principal do colaborador na empresa (ex: Engenheiro FinOps). | Preenchimento obrigatório. |
+| **Senioridade** | Nível de experiência do profissional (ex: Júnior, Pleno, Sênior). | Preenchimento obrigatório. |
+| **Custo/Hora** | Custo atualizado do colaborador por hora trabalhada. | Calculado com base em salário, encargos e estrutura. |
+| **Status** | Situação atual do colaborador na empresa. | Ex: Ativo, Inativo (Nunca excluído, para manter histórico). |
+| **Certificações** | Lista de qualificações técnicas validadas do colaborador. | Relacionamento. |
+
+### Entidade: Contato
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Nome** | Nome completo do ponto de contato no cliente. | Preenchimento obrigatório. |
+| **E-mail** | Endereço de correio eletrônico corporativo do contato. | Deve possuir formato válido de e-mail. |
+| **Telefone** | Número de telefone/celular corporativo do contato. | Apenas números e código de área. |
+
+### Entidade: Contrato
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Número** | Identificador único formal do contrato. | Obrigatório e Único. |
+| **Serviço(s)** | Tipo de soluções contratadas (Nuvem Gerenciada, SRE, etc.). | Relacionamento (Obrigatório). |
+| **Valor** | Valor financeiro mensal e/ou total do contrato. | Obrigatório. |
+| **Data de Início** | Data de efetivação e início das operações. | Preenchimento obrigatório. |
+| **Vigência** | Prazo total estipulado para a duração do contrato. | Valor padrão: 12 meses. |
+| **Tipo de Renovação** | Modelo de continuidade contratual. | Ex: Prazo determinado ou Evergreen (Renovação automática). |
+| **Prazo de Aviso Prévio** | Tempo mínimo exigido para comunicação de cancelamento. | Padrão: 30 dias (pode variar). |
+| **Provedor(es) de Nuvem** | Plataformas onde o serviço será executado (AWS, Azure, GCP). | Relacionamento (Obrigatório). |
+| **Moeda** | Moeda base para faturamento e controle do contrato. | Ex: Real (BRL), Dólar (USD). |
+| **Referência ao DocuSign** | Link ou ID de rastreamento do contrato assinado digitalmente. | Utilizado para auditoria e conferência. |
+| **Status** | Situação atual do ciclo de vida do contrato. | Ex: Em aprovação, Vigente, Aviso Prévio, Encerrado. |
+
+### Entidade: Contrato Salarial
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Salário** | Remuneração base mensal do colaborador. | Usado no cálculo geral de custo/hora. |
+| **Data de Início** | Data em que o salário entrou em vigor. | Preenchimento obrigatório. |
+| **Data de Fim** | Data de encerramento deste valor salarial (em caso de reajuste). | Se nulo/vazio, é o salário vigente atual. |
+
+### Entidade: Evidência de Entrega
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Contrato** | Vínculo com o contrato que recebeu a entrega. | Relacionamento (Obrigatório). |
+| **Colaborador** | Profissional responsável por submeter a evidência. | Relacionamento (Obrigatório). |
+| **Mês de Referência** | Período de competência ao qual a entrega pertence. | Formato MM/AAAA. |
+| **Entrega/Evidência** | Descrição ou anexo comprovando a realização do serviço (ex: relatórios). | Preenchimento obrigatório para comprovar execução. |
+
+### Entidade: Fatura
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Contrato** | Contrato ao qual a cobrança está associada. | Relacionamento (Obrigatório). |
+| **Competência** | Mês e ano de referência da prestação do serviço. | Formato MM/AAAA. |
+| **Valor** | Montante financeiro a ser cobrado do cliente. | Deve respeitar o valor e os serviços do contrato. |
+| **Moeda** | Moeda em que a fatura foi emitida. | Herdado do contrato (Ex: BRL, USD). |
+| **Vencimento** | Data limite para pagamento da fatura pelo cliente. | Preenchimento obrigatório. |
+| **Número da NF** | Número da Nota Fiscal emitida via integração com o Nibo. | Chave de rastreio fiscal. |
+| **Status da Fatura** | Situação atual de cobrança. | Ex: Paga, Em Aberto, Em Atraso, Cancelada. |
+
+### Entidade: Oportunidade
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Cliente** | Vínculo com a empresa prospectada ou base atual. | Relacionamento (Obrigatório). |
+| **Serviço** | Soluções tecnológicas que estão em negociação. | Relacionamento. |
+| **Valor Estimado** | Projeção financeira de receita da negociação. | Estimativa comercial. |
+| **Data Prevista de Início** | Projeção de quando a operação poderá iniciar. | Apoia o planejamento trimestral de capacidade. |
+| **Provedor de Nuvem** | Ambiente alvo do escopo da negociação. | Ex: AWS, Azure, GCP. |
+| **Certificações/Perfis Técnicos Necessários** | Exigências de conhecimento mapeadas para atender à demanda futura. | Ajuda a prever necessidade de alocações específicas. |
+| **Estágio da Negociação** | Fase atual no funil de vendas. | Ex: Prospecção, Negociação, Ganha, Perdida. |
+
+### Entidade: Pagamento
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Fatura** | Vínculo com o título de cobrança gerado. | Relacionamento (Obrigatório). |
+| **Data** | Data da efetivação do crédito na conta da empresa. | Preenchimento obrigatório. |
+| **Valor** | Montante financeiro liquidado pelo cliente. | A soma dos pagamentos não pode ultrapassar o valor da fatura. |
+
+### Entidade: Perfil de Acesso
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Nome do Perfil** | Título do grupo de acessos (ex: Administrador, Financeiro, Colaborador). | Identificador do conjunto de regras. |
+| **Usuários Vinculados** | Lista de contas que possuem este nível de acesso. | Relacionamento. |
+
+### Entidade: Permissão
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Nome da Permissão** | Identificador técnico da ação no sistema. | Ex: `aprovar_contratos`, `editar_alocacoes`. |
+| **Descrição** | Explicação detalhada sobre o que esta permissão libera no sistema. | Campo de texto informativo. |
+
+### Entidade: Provedor de Nuvem
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Nome do Provedor** | Nome oficial da plataforma de Cloud. | Ex: Amazon Web Services (AWS), Microsoft Azure, Google Cloud (GCP). |
+
+### Entidade: Serviço
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Nome/Descrição do Serviço** | Identificação e escopo base do produto (ex: Nuvem Gerenciada). | Obrigatório e Único. |
+| **Valor no Contrato** | Preço negociado por este serviço dentro de um acordo específico. | Varia de acordo com o escopo fechado com o cliente. |
+
+### Entidade: Tag
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Nome da Tag** | Rótulo utilizado para agrupamento, pesquisa ou categorização visual. | Utilizado para facilitar buscas transversais no sistema. |
+
+### Entidade: Usuário
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Perfil de Acesso** | Nível hierárquico de autorização concedido ao usuário. | Relacionamento (Obrigatório). |
+| **Colaborador Vinculado** | Identificação do funcionário humano atrelado a esta credencial de acesso. | Relação 1:1 restrita (cada colaborador ativo deve ter apenas um usuário). |
+
 # # 1 6 . D E R
+[DER](./docs/der.pdf)
+
 # # 1 7 . J u s t i f i c a t i v a s t é c n i c a s
-## 18. Conclusão
+# # 1 8 . C o n c l u s ã o 
 
 
 
