@@ -208,7 +208,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 > **"Entrevista"** = informado pelo proprietário | **"Proposta"** = definida pela dupla a partir dos processos.  
 > *A coluna "Impacto no modelo" é uma indicação para as Fases 2 e 3, não a modelagem final.*
 
-### 7.1 Clientes e Oportunidades
+### 8.1 Clientes e Oportunidades
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN01** | Um cliente pode ter nenhum ou vários contratos. | Entrevista | Cliente–Contrato (0,N) |
@@ -217,7 +217,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 | **RN04** | Um cliente pode ter várias oportunidades; cada oportunidade pertence a um único cliente. | Proposta | Cliente–Oportunidade |
 | **RN05** | Uma oportunidade ganha gera um contrato; uma oportunidade perdida não gera contrato. | Entrevista | Oportunidade–Contrato (0,1) |
 
-### 7.2 Contratos
+### 8.2 Contratos
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN06** | Todo contrato possui número único e referência ao documento assinado no DocuSign. | Entrevista | Atributos |
@@ -231,7 +231,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 | **RN14** | Um contrato só se torna vigente após aprovação interna e assinatura no DocuSign. | Proposta | Status + aprovação |
 | **RN15** | Contrato encerrado ou cancelado não pode receber novas alocações, apontamentos de horas ou faturas. | Proposta | Restrição de status |
 
-### 7.3 Colaboradores, Alocação e Horas
+### 8.3 Colaboradores, Alocação e Horas
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN16** | Todo contrato vigente deve ser atendido por uma equipe de pelo menos um colaborador. | Entrevista | Contrato–Colaborador (1,N) |
@@ -247,7 +247,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 | **RN26** | Colaborador desligado é inativado, nunca excluído, para preservar o histórico de alocações e horas. | Proposta | Status |
 | **RN44** | O custo/hora do colaborador considera: salário, encargos/benefícios, provisão de desligamento, equipamentos, licenças de software, diluição da camada de gestão e fator de ociosidade de 20%. | Entrevista | Atributos do cálculo de custo/hora |
 
-### 7.4 Evidências, Faturas e Pagamentos
+### 8.4 Evidências, Faturas e Pagamentos
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN27** | Um contrato pode ter nenhuma ou várias evidências de entrega; cada evidência pertence a um único contrato e a um mês de referência. | Proposta | Contrato–Evidência |
@@ -258,7 +258,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 | **RN32** | A soma dos pagamentos não pode ultrapassar o valor da fatura. | Proposta | Restrição |
 | **RN33** | A margem do contrato é a receita faturada menos o custo real no mesmo período. | Entrevista | Cálculo |
 
-### 7.5 Usuários e Aprovações
+### 8.5 Usuários e Aprovações
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN34** | Todo usuário possui exatamente um perfil de acesso; um perfil pode ser atribuído a vários usuários. | Proposta | Perfil–Usuário |
@@ -266,7 +266,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 | **RN36** | Toda aprovação registra quem aprovou, data, decisão e observação. | Proposta | Atributos da aprovação |
 | **RN37** | Quem cadastrou um contrato, aditivo ou alocação não pode aprová-lo. | Proposta | Restrição |
 
-### 7.6 Certificações, Provedores e Moeda
+### 8.6 Certificações, Provedores e Moeda
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN38** | Um colaborador pode ter nenhuma ou várias certificações, e uma certificação pode pertencer a vários colaboradores. | Site KXP | N:N Colaborador–Certificação |
