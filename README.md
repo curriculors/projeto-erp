@@ -611,17 +611,3 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 
 # # 17 . Justificativas técnicas
 # # 18 . Conclusão 
-
-
-
-
-
-## Contexto Resumido
-
-A **KXP** é uma consultoria de tecnologia especializada em nuvem, com 17 a 18 colaboradores, que oferece Nuvem Gerenciada, FinOps como serviço, SRE como serviço e Revisão de Arquitetura. A empresa trabalha 100% de forma remota; a equipe se reúne presencialmente só a cada três meses, aproximadamente. Os serviços são prestados nos três principais provedores de nuvem (AWS, Azure e GCP), por um time com certificações AWS, Azure, GCP, FinOps, Scrum e Datadog, trabalhando em modelo ágil, com ciclos curtos e entregas incrementais.
-
-Entre os clientes estão Caixa, Cielo, Havan, TIM, Porto, Stone, Banco BV, Rabobank, SEBRAE-PR e a Polícia Militar do Estado de São Paulo (PMESP). Além do endereço em São Paulo, a empresa informa um endereço em Orlando (EUA).
-
-> **Nota sobre o Kura Financials:** A KXP também possui um produto próprio, plataforma de controle de custos de nuvem vendida por assinatura (plano gratuito e plano Standard, cobrado a 2% do *billing* gerenciado por mês), usada também no serviço de FinOps. A KXP respondeu que isso está fora do escopo dessa etapa da entrevista. Neste documento, o Kura é tratado apenas como ferramenta de apoio, sem regras próprias.
-
-Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses, mas existem contratos *evergreen*, renovados continuamente, e o cliente pode cancelar com aviso prévio. Os contratos ficam no DocuSign e as notas fiscais e boletos são emitidos pelo ERP Nibo. A cada contrato, a empresa monta uma equipe de colaboradores, mas **não controla o custo em horas dessa equipe nem sabe prever quando ela ficará livre**.
