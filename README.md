@@ -281,7 +281,10 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 * **Privacidade e Compartilhamento:** Informações do setor financeiro e de gestão de contratos são críticas e devem ter acesso restrito apenas aos membros específicos do setor.
 * **Gestão de Acessos:** Apenas usuários com nível de **Administrador** possuem autorização e permissão para adicionar, alterar ou remover permissões de outros utilizadores no sistema.
 * **Validação de Documentos:** A inclusão de novos clientes e contratos no sistema é estritamente condicionada à apresentação e validação de documentos comprobatórios.
+ 
 # # 1 0 . F l u x o g r a m a s
+![Fluxograma do Processo](./docs/fluxograma.pdf)
+
 # # 1 1 . E n t i d a d e s
 # # 1 2 . A t r i b u t o s
 # # 1 3 . R e l a c i o n a m e n t o s
