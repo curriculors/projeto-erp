@@ -1,8 +1,63 @@
 # P r o j e t o E R P — K X P
 
 # # 1 . I d e n t i f i c a ç ã o d a e q u i p e
+* **Diego Marinho de Sousa Camara** — RGM: 1749267345
+* **Fabio de Oliveira Nogueira** — RGM: 49296442
+* **Giovanna Ayumi Sakata Matuo** — RGM: 049583735
+* **Guilherme Brito da Silva** (Gerente) — RGM: 48819123
+* **Marcell Axel Elidio de Castro** — RGM: 48945633
+* **Matheus da Silva Barreto** — RGM: 49944517
+* **Nicolly Agnoletto dos Santos** — RGM: 49375903
+* **Pedro Prates Pereira dos Santos** — RGM: 49594885
+* **Rodrigo Cesar Sanchis Silvestre** — RGM: 49884948
+* **Thayane Shiono Miguel Celestino** — RGM: 48872628
+
 # # 2 . C a r a c t e r i z a ç ã o d a e m p r e s a
+### Qual é o nome da empresa?
+* **Razão Social:** KXP Technology Consulting
+* **CNPJ:** 12.497.774/0001-59
+* **Endereço Completo:** Av. Nações Unidas, 12901, São Paulo - SP, 04578-910
+* **E-mail de Contato:** contato@kxpconsulting.com.br
+
+### Qual é o segmento?
+Uma empresa de tecnologia especializada em nuvem. A KXP combina conhecimento e experiência para ajudar negócios de todos os tamanhos e segmentos a tornarem-se mais eficientes, resilientes e competitivos num mercado em constante evolução.
+
+### O que ela vende ou oferece?
+A KXP foi criada com o objetivo de ajudar empreendimentos, de qualquer tamanho e segmento, a adotarem tecnologias e práticas eficientes em nuvem. A empresa dispõe de um grupo de colaboradores qualificados para promover soluções terceirizadas, que incluem:
+
+* **☁️ Nuvem Gerenciada:** Gerenciamento completo, estratégico e contínuo da infraestrutura de nuvem. É uma oferta *full-fledged*, que inclui todas as atividades de gestão, permitindo que o cliente se foque no seu *core business*.
+* **💰 FinOps como Serviço:** Governança financeira para *cloud* que une engenharia, operações e finanças. Entrega transparência e controle estratégico sobre os custos, fornecendo *insights* acionáveis sobre consumo e recomendações contínuas para eliminar desperdícios.
+* **⚙️ SRE como Serviço:** Abordagem moderna para manter os sistemas a funcionar de maneira fiável e eficiente através de práticas de automação e monitorização. Promove a integração entre as equipas de desenvolvimento e infraestrutura, com foco na entrega contínua.
+* **🔎 Revisão de Arquitetura:** Identificação de oportunidades de melhoria baseada no *Well Architected Framework* (WAF). Mapeia pontos de otimização, alinhando as soluções às necessidades do negócio.
+
+### Quem são os seus principais clientes?
+TIM, Caixa, Cielo, Havan, SEBRAE, Porto Seguro e Polícia Federal.
+
+### Quais são os seus principais setores?
+Existe uma grande diversidade de clientes, tais como: bancos, operadoras de telecomunicações, empresas de serviços públicos, seguradoras, retalho, distribuidoras, escritórios de advogados, instituições de ensino, serviços financeiros, farmacêuticas e lojas de departamento.
+
+### Como funciona atualmente?
+Com cerca de **18 colaboradores**, a KXP aloca diferentes equipas para cada projeto que assina. O serviço é oferecido em nuvem, onde os colaboradores trabalham diretamente com os clientes. Os contratos são armazenados através do DocuSign.
+
+### Quais informações são importantes para o negócio?
+*  É uma empresa que oferece serviços de TI.
+*  Os seus clientes costumam ser de setores muito diversos.
+*  Os colaboradores são separados em equipas exclusivas para cada projeto.
+*  Um novo contrato demora cerca de **3 a 6 meses** para ser fechado.
+*  Os projetos podem demorar de **6 a 12 meses** ou até serem renovados.
+*  Os projetos podem ter **renovação contínua**.
+
 # # 3 . J u s t i f i c a t i v a d a e s c o l h a
+A empresa KXP foi escolhida pela equipa devido à sua área de atuação (tecnologia), o que proporciona excelentes oportunidades para:
+* Aprofundar o conhecimento já existente.
+* Descobrir o real funcionamento de uma empresa de tecnologia.
+* Abrir novos horizontes de atuação.
+
+Além disso, durante a entrevista com o proprietário, verificou-se a necessidade de **ajustar alguns processos**, principalmente em duas áreas cruciais:
+1. Gestão dos contratos.
+2. Análise dos custos reais de cada projeto desenvolvido.
+
+Com base nestas informações, a equipa chegou ao consenso de que esta seria uma ótima oportunidade de melhoria e aprendizagem para ambas as partes.
 # # 4 . P r o b l e m a s i d e n t i f i c a d o s
 # # 5 . P r o c e s s o s d e n e g ó c i o
 # # 6 . R e q u i s i t o s f u n c i o n a i s
