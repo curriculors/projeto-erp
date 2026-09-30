@@ -283,10 +283,10 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 * **Gestão de Acessos:** Apenas usuários com nível de **Administrador** possuem autorização e permissão para adicionar, alterar ou remover permissões de outros utilizadores no sistema.
 * **Validação de Documentos:** A inclusão de novos clientes e contratos no sistema é estritamente condicionada à apresentação e validação de documentos comprobatórios.
  
-# # 1 0 . Fluxogramas
+# # 10 . Fluxogramas
 [Fluxograma](./docs/fluxograma.pdf)
 
-# # 1 1 . Entidades
+# # 11 . Entidades
 A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Relacionamento (DER):
 
 | Entidade Base | Entidade Relacionada |
@@ -323,7 +323,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 | **Usuário** | Permissão |
 | **Usuário** | Tag |
 
-# # 1 2 . Atributos
+# # 12 . Atributos
 | Entidade | Atributos Mapeados |
 | :--- | :--- |
 | **Aditivo** | Contrato, Data, Condições Anteriores, Novas Condições, Status/Aprovação |
@@ -347,7 +347,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 | **Tag** | Nome da Tag |
 | **Usuário** | Perfil de Acesso, Colaborador Vinculado |
 
-## 13. Relacionamentos
+# # 13. Relacionamentos
 
 ### Aditivo
 * **Aditivo** → *recebe* → **Aprovação**
@@ -444,7 +444,7 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 | **Usuário** `(1,N)` | possui | `(1,1)` **Perfil de acesso** | **N:1** | Vários usuários podem possuir o mesmo perfil de acesso. |
 | **Usuário** `(0,N)` | tem | `(0,N)` **Tag** | **N:N** | Um usuário pode possuir acesso a várias tags e uma tag pode conceder acesso a vários usuários. |
 
-# # 1 5 . Dicionário de dados conceitual
+# # 15 . Dicionário de dados conceitual
 ### Entidade: Aditivo
 | Atributo | Descrição | Regra/Observação |
 | :--- | :--- | :--- |
