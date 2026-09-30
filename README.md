@@ -12,7 +12,7 @@
 * **Rodrigo Cesar Sanchis Silvestre** — RGM: 49884948
 * **Thayane Shiono Miguel Celestino** — RGM: 48872628
 
-# # 2 . C a r a c t e r i z a ç ã o d a e m p r e s a
+# # 2 . Caracterização da empresa
 ### Qual é o nome da empresa?
 * **Razão Social:** KXP Technology Consulting
 * **CNPJ:** 12.497.774/0001-59
@@ -47,7 +47,7 @@ Com cerca de **18 colaboradores**, a KXP aloca diferentes equipas para cada proj
 *  Os projetos podem demorar de **6 a 12 meses** ou até serem renovados.
 *  Os projetos podem ter **renovação contínua**.
 
-# # 3 . J u s t i f i c a t i v a d a e s c o l h a
+# # 3 . Justificativa da escolha
 A empresa KXP foi escolhida pela equipa devido à sua área de atuação (tecnologia), o que proporciona excelentes oportunidades para:
 * Aprofundar o conhecimento já existente.
 * Descobrir o real funcionamento de uma empresa de tecnologia.
@@ -58,7 +58,8 @@ Além disso, durante a entrevista com o proprietário, verificou-se a necessidad
 2. Análise dos custos reais de cada projeto desenvolvido.
 
 Com base nestas informações, a equipa chegou ao consenso de que esta seria uma ótima oportunidade de melhoria e aprendizagem para ambas as partes.
-# # 4 . P r o b l e m a s i d e n t i f i c a d o s
+
+# # 4 . Problemas identificados
 ### Questionário de Diagnóstico
 * **Onde existe retrabalho?** Não existe retrabalho. As renovações são analisadas com o cliente para manutenção ou alteração do projeto.
 * **Existem informações duplicadas?** Não, pois o contrato de cada cliente é único e baseado nas suas necessidades.
@@ -80,7 +81,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 
 ---
 
-# # 5 . P r o c e s s o s d e n e g ó c i o
+# # 5 . Processos de negócio
 ### PN01 — Prospecção e negociação
 | Pergunta | Resposta |
 | :--- | :--- |
@@ -152,7 +153,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 > **Ponto-chave:** O PN06 alimenta o PN07 e o PN01. Saber quando cada contrato termina permite planejar a realocação antes que a equipe fique ociosa — o principal problema relatado pela KXP.
 
 ---
-# # 6 . R e q u i s i t o s f u n c i o n a i s
+# # 6 . Requisitos funcionais
 | Cód. | Requisito | Processo(s) |
 | :--- | :--- | :--- |
 | **RF01** | O sistema deverá cadastrar clientes e seus contatos. | PN01 |
@@ -187,7 +188,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 | **RF30** | O sistema deverá alertar sobre certificações de colaboradores próximas do vencimento. | PN03 |
 
 ---
-# # 7 . R e q u i s i t o s n ã o f u n c i o n a i s
+# # 7 . Requisitos não funcionais
 | Categoria | Requisito Não Funcional |
 | :--- | :--- |
 |  **Segurança** | O sistema deverá controlar o acesso com autenticação em dois fatores (2FA). Contas deverão ser bloqueadas temporariamente após 3 tentativas de login inválidas. |
@@ -202,7 +203,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 |  **Confiabilidade** | O sistema deverá garantir a integridade dos dados (inclusão, alteração, exclusão). Os relatórios gerados devem conter os custos por funcionário. |
 
 ---
-# # 8 . R e g r a s d e n e g ó c i o
+# # 8 . Regras de negócio
 > **Legenda de Fonte:**  
 > **"Entrevista"** = informado pelo proprietário | **"Proposta"** = definida pela dupla a partir dos processos.  
 > *A coluna "Impacto no modelo" é uma indicação para as Fases 2 e 3, não a modelagem final.*
@@ -275,17 +276,17 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 | **RN42** | Um contrato é executado em um ou mais provedores de nuvem (AWS, Azure, GCP), e um provedor pode estar em vários contratos. | Site KXP | Contrato–Provedor (N:N) |
 | **RN43** | Todo contrato possui uma moeda, e suas faturas são emitidas na mesma moeda. | Site KXP | Atributo "moeda" |
 
-# # 9 . R e s t r i ç õ e s e p o l í t i c a s o r g a n i z a c i o n a i s
+# # 9 . Restrições e políticas organizacionais
 *Baseado no levantamento, o sistema precisará respeitar as seguintes regras da empresa:*
 
 * **Privacidade e Compartilhamento:** Informações do setor financeiro e de gestão de contratos são críticas e devem ter acesso restrito apenas aos membros específicos do setor.
 * **Gestão de Acessos:** Apenas usuários com nível de **Administrador** possuem autorização e permissão para adicionar, alterar ou remover permissões de outros utilizadores no sistema.
 * **Validação de Documentos:** A inclusão de novos clientes e contratos no sistema é estritamente condicionada à apresentação e validação de documentos comprobatórios.
  
-# # 1 0 . F l u x o g r a m a s
+# # 1 0 . Fluxogramas
 [Fluxograma](./docs/fluxograma.pdf)
 
-# # 1 1 . E n t i d a d e s
+# # 1 1 . Entidades
 A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Relacionamento (DER):
 
 | Entidade Base | Entidade Relacionada |
@@ -322,7 +323,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 | **Usuário** | Permissão |
 | **Usuário** | Tag |
 
-# # 1 2 . A t r i b u t o s
+# # 1 2 . Atributos
 | Entidade | Atributos Mapeados |
 | :--- | :--- |
 | **Aditivo** | Contrato, Data, Condições Anteriores, Novas Condições, Status/Aprovação |
@@ -346,7 +347,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 | **Tag** | Nome da Tag |
 | **Usuário** | Perfil de Acesso, Colaborador Vinculado |
 
-# # 1 3 . R e l a c i o n a m e n t o s
+# # 1 3 . Relacionamentos
 ### 📄 Aditivo
 * **Aditivo** → *recebe* → **Aprovação**
 
@@ -395,7 +396,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 * **Usuário** → *realiza* → **Aprovação**
 * **Usuário** → *tem* → **Tag**
 
-# # 1 4 . C a r d i n a l i d a d e s
+# # 1 4 . Cardinalidades
 A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade-Relacionamento (DER), separando a notação técnica (Mínima, Máxima) e a regra de negócio que justifica o modelo estrutural.
 
 | Entidade Origem (Mín, Máx) | Ação | Entidade Destino (Mín, Máx) | Tipo | Regra de Negócio |
@@ -431,7 +432,7 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 | **Usuário** `(1,N)` | possui | `(1,1)` **Perfil de acesso** | **N:1** | Vários usuários podem possuir o mesmo perfil de acesso. |
 | **Usuário** `(0,N)` | tem | `(0,N)` **Tag** | **N:N** | Um usuário pode possuir acesso a várias tags e uma tag pode conceder acesso a vários usuários. |
 
-# # 1 5 . D i c i o n á r i o d e d a d o s c o n c e i t u a l
+# # 1 5 . Discionário de dados conceitual
 ### Entidade: Aditivo
 | Atributo | Descrição | Regra/Observação |
 | :--- | :--- | :--- |
@@ -593,11 +594,11 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 | **Perfil de Acesso** | Nível hierárquico de autorização concedido ao usuário. | Relacionamento (Obrigatório). |
 | **Colaborador Vinculado** | Identificação do funcionário humano atrelado a esta credencial de acesso. | Relação 1:1 restrita (cada colaborador ativo deve ter apenas um usuário). |
 
-# # 1 6 . D E R
+# # 1 6 . DER
 [DER](./docs/der.pdf)
 
-# # 1 7 . J u s t i f i c a t i v a s t é c n i c a s
-# # 1 8 . C o n c l u s ã o 
+# # 1 7 . Justificativas técnicas
+# # 1 8 . Conclusão 
 
 
 
