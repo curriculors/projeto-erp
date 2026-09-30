@@ -610,4 +610,27 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 [DER](./docs/der.jpg)
 
 # # 17 . Justificativas técnicas
+
 # # 18 . Conclusão 
+O desenvolvimento deste projeto possibilitou compreender e organizar os principais processos e necessidades da **KXP Technology Consulting**, abrangendo desde a prospecção de clientes e negociação de oportunidades até a formalização de contratos, alocação de colaboradores, acompanhamento de horas e entregas, faturamento e pagamentos. A partir dessa análise, foi possível identificar a importância de centralizar e organizar as informações para facilitar o controle das atividades e dos contratos.
+
+### Estruturação de Dados e Segurança
+Com base nos requisitos funcionais e nas regras de negócio levantadas, foi definida uma estrutura de dados capaz de representar as principais informações utilizadas pela empresa. Isso inclui **clientes, contatos, oportunidades, contratos, colaboradores, serviços, certificações, alocações, aprovações, evidências, faturas e pagamentos**. Também foram considerados aspectos relacionados ao controle de usuários, permissões e perfis de acesso, contribuindo para uma gestão mais segura e organizada.
+
+### Modelagem e Relacionamentos
+A definição das relações e cardinalidades permitiu representar de forma clara como as entidades se conectam dentro do sistema. Dessa maneira, situações como um cliente possuir vários contratos, um contrato possuir diferentes alocações e faturas, e colaboradores estarem relacionados a certificações e contratos podem ser registradas e consultadas de maneira estruturada.
+
+### Controle de Custos e Apontamento de Horas
+Outro ponto importante identificado no projeto foi a necessidade de acompanhar as **horas trabalhadas pelos colaboradores em cada contrato**. Essa medida permite um melhor controle dos custos reais dos projetos e reduz o risco de perdas financeiras causadas por horas excedentes não identificadas.
+
+### Visão Integrada e Proteção
+O modelo desenvolvido proporciona uma visão integrada das informações da KXP e estabelece uma base estruturada para o desenvolvimento de um sistema de gestão de contratos e alocação de colaboradores. A integração dos processos pode contribuir para melhorar:
+* O acompanhamento dos contratos;
+* A disponibilidade das equipes;
+* As entregas e as horas trabalhadas;
+* As informações financeiras.
+
+Além disso, os recursos de segurança, controle de acesso, auditoria e backup fortalecem a organização e a proteção dos dados.
+
+### Resultado Final
+Portanto, o projeto demonstra como a utilização de um **ERP** pode contribuir para tornar os processos da KXP mais integrados, organizados e eficientes, facilitando o acesso às informações e fornecendo uma base para apoiar o acompanhamento e a gestão das atividades da empresa.
