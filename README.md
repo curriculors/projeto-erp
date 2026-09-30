@@ -1,4 +1,4 @@
-# P r o j e t o E R P — K X P
+# Projeto ERP — KXP
 
 # # 1 . Identificação da equipe
 * **Diego Marinho de Sousa Camara** — RGM: 1749267345
