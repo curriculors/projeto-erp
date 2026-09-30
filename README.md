@@ -323,6 +323,29 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 | **Usuário** | Tag |
 
 # # 1 2 . A t r i b u t o s
+| Entidade | Atributos Mapeados |
+| :--- | :--- |
+| **Aditivo** | Contrato, Data, Condições Anteriores, Novas Condições, Status/Aprovação |
+| **Alocação** | Colaborador, Contrato, Função, Data de Início, Término Previsto, Término Real, Dedicação, Custo/Hora no Momento |
+| **Apontamento de Horas** | Colaborador, Contrato/Alocação, Horas Trabalhadas, Data/Período do Apontamento, Custo/Hora Vigente |
+| **Aprovação** | Quem Aprovou, Data, Decisão, Observação |
+| **Certificação** | Nome da Certificação, Data de Obtenção, Data de Validade |
+| **Cliente** | CNPJ, Nome, Contatos |
+| **Colaborador** | Função, Senioridade, Custo/Hora, Status, Certificações |
+| **Contato** | Nome, E-mail, Telefone |
+| **Contrato** | Número, Serviço(s), Valor, Data de Início, Vigência, Tipo de Renovação, Prazo de Aviso Prévio, Provedor(es) de Nuvem, Moeda, Referência ao DocuSign, Status |
+| **Contrato Salarial** | Salário, Data de Início, Data de Fim |
+| **Evidência de Entrega** | Contrato, Colaborador, Mês de Referência, Entrega/Evidência |
+| **Fatura** | Contrato, Competência, Valor, Moeda, Vencimento, Número da NF, Status da Fatura |
+| **Oportunidade** | Cliente, Serviço, Valor Estimado, Data Prevista de Início, Provedor de Nuvem, Certificações/Perfis Técnicos Necessários, Estágio da Negociação |
+| **Pagamento** | Fatura, Data, Valor |
+| **Perfil de Acesso** | Nome do Perfil, Usuários Vinculados |
+| **Permissão** | Nome da Permissão (`nome_permissao`), Descrição (`descricao`) |
+| **Provedor de Nuvem** | Nome do Provedor |
+| **Serviço** | Nome/Descrição do Serviço, Valor no Contrato |
+| **Tag** | Nome da Tag (`nome_tag`) |
+| **Usuário** | Perfil de Acesso, Colaborador Vinculado |
+
 # # 1 3 . R e l a c i o n a m e n t o s
 # # 1 4 . C a r d i n a l i d a d e s
 # # 1 5 . D i c i o n á r i o d e d a d o s c o n c e i t u a l
