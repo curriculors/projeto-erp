@@ -1,4 +1,8 @@
 ```mermaid
+---
+config:
+  layout: elk
+---
 erDiagram
     Aditivo ||--o{ Aprovacao : "recebe (1:N)"
     Alocacao ||--o{ Apontamento_de_horas : "tem (1:N)"
