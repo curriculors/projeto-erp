@@ -59,7 +59,26 @@ Além disso, durante a entrevista com o proprietário, verificou-se a necessidad
 
 Com base nestas informações, a equipa chegou ao consenso de que esta seria uma ótima oportunidade de melhoria e aprendizagem para ambas as partes.
 # # 4 . P r o b l e m a s i d e n t i f i c a d o s
-Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses, mas existem contratos *evergreen*, renovados continuamente, e o cliente pode cancelar com aviso prévio. Os contratos ficam no DocuSign e as notas fiscais e boletos são emitidos pelo ERP Nibo. A cada contrato, a empresa monta uma equipe de colaboradores, mas **não controla o custo em horas dessa equipe nem sabe prever quando ela ficará livre**.
+### Questionário de Diagnóstico
+* **Onde existe retrabalho?** Não existe retrabalho. As renovações são analisadas com o cliente para manutenção ou alteração do projeto.
+* **Existem informações duplicadas?** Não, pois o contrato de cada cliente é único e baseado nas suas necessidades.
+* **Existem informações perdidas?** Existe a possibilidade de informações se perderem devido ao grande volume de reuniões e acabarem de fora do contrato.
+* **A empresa utiliza planilhas?** Sim, utiliza planilhas e o sistema Nibo para auxiliar no controle.
+* **Existem controles manuais?** Sim, realizados pelos administradores (inserção de informações e atualização de andamento). O cliente também faz alguns acompanhamentos manuais.
+* **Os setores compartilham informações?** Sim, porém informações críticas (financeiro e gestão de contratos) ficam restritas aos membros do setor específico.
+* **É difícil encontrar informações?** Não, todas as informações estão centralizadas e organizadas por contrato no setor responsável.
+* **Existem erros de cadastro?** Não, pois no cadastro são solicitados documentos comprobatórios para evitar erros ou dados inexistentes.
+* **Acompanhamento (clientes, funcionários, vendas):** O desafio não é o controle de clientes ou vendas, mas sim o **controle do tempo** que cada funcionário passa efetivamente em cada contrato.
+* **Existem problemas para gerar relatórios?** O problema central é a ausência de controle do tempo dedicado por funcionário em cada contrato, o que pode causar prejuízo a longo prazo se o tempo dedicado ultrapassar o que foi contratado.
+
+### 🚩 Tabela de Problemas e Consequências
+| Problema | Consequência |
+| :--- | :--- |
+| Grande volume de reuniões sem registro completo | Informações importantes podem se perder e ficar de fora do contrato formal |
+| Uso de planilhas e controles manuais pelos administradores | Processo mais lento e suscetível a pequenas desatualizações na gestão diária |
+| **Falta de controle do tempo gasto por funcionário em cada projeto** | **Risco de prejuízo financeiro a longo prazo (trabalhar mais horas do que o faturado/contratado)** |
+
+---
 
 # # 5 . P r o c e s s o s d e n e g ó c i o
 ### PN01 — Prospecção e negociação
@@ -169,6 +188,20 @@ Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses,
 
 ---
 # # 7 . R e q u i s i t o s n ã o f u n c i o n a i s
+| Categoria | Requisito Não Funcional |
+| :--- | :--- |
+|  **Segurança** | O sistema deverá controlar o acesso com autenticação em dois fatores (2FA). Contas deverão ser bloqueadas temporariamente após 3 tentativas de login inválidas. |
+|  **Desempenho** | O sistema deverá suportar até 30 usuários simultâneos e contabilizar o tempo que cada funcionário passa em cada projeto para comparar com o contratado. |
+|  **Disponibilidade** | O sistema deverá apresentar disponibilidade mínima de 95%. |
+|  **Usabilidade** | Os campos obrigatórios deverão ser claramente identificados. Em caso de erro de preenchimento, o sistema não deve apagar as informações já inseridas corretamente. |
+|  **Controle de Acesso** | O acesso às funcionalidades será por perfil e permissões. Usuários sem permissão não poderão ver ou executar funções restritas. Apenas Administradores alteram permissões. |
+|  **Auditoria** | O sistema deverá registrar as operações realizadas sobre informações críticas (identificando usuário, data, horário e a operação executada). |
+|  **Tempo de Resposta** | O tempo de resposta deve ser de, no máximo, 5 segundos para os comandos executados. |
+|  **Compatibilidade** | O sistema deverá ser compatível com os principais navegadores de internet e com o sistema NIBO utilizado pela contratante. |
+|  **Backup** | Os dados deverão possuir rotina de backup periódico e automático para recuperação em caso de falhas. |
+|  **Confiabilidade** | O sistema deverá garantir a integridade dos dados (inclusão, alteração, exclusão). Os relatórios gerados devem conter os custos por funcionário. |
+
+---
 # # 8 . R e g r a s d e n e g ó c i o
 > **Legenda de Fonte:**  
 > **"Entrevista"** = informado pelo proprietário | **"Proposta"** = definida pela dupla a partir dos processos.  
@@ -243,6 +276,11 @@ Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses,
 | **RN43** | Todo contrato possui uma moeda, e suas faturas são emitidas na mesma moeda. | Site KXP | Atributo "moeda" |
 ```eof
 # # 9 . R e s t r i ç õ e s e p o l í t i c a s o r g a n i z a c i o n a i s
+*Baseado no levantamento, o sistema precisará respeitar as seguintes regras da empresa:*
+
+* **Privacidade e Compartilhamento:** Informações do setor financeiro e de gestão de contratos são críticas e devem ter acesso restrito apenas aos membros específicos do setor.
+* **Gestão de Acessos:** Apenas usuários com nível de **Administrador** possuem autorização e permissão para adicionar, alterar ou remover permissões de outros utilizadores no sistema.
+* **Validação de Documentos:** A inclusão de novos clientes e contratos no sistema é estritamente condicionada à apresentação e validação de documentos comprobatórios.
 # # 1 0 . F l u x o g r a m a s
 # # 1 1 . E n t i d a d e s
 # # 1 2 . A t r i b u t o s
@@ -253,13 +291,9 @@ Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses,
 # # 1 7 . J u s t i f i c a t i v a s t é c n i c a s
 ## 18. Conclusão
 
-# Projeto Integrador — Modelagem de Dados 🚀
-**ERP de Gestão de Contratos e Alocação — KXP Technology Consulting**
 
-**Fase 1 — Dupla 1:** Diego + Matheus  
-**Entregas:** Etapa 3 (Processos de negócio) · Etapa 5 (Requisitos funcionais) · Etapa 7 (Regras de negócio)
 
----
+
 
 ## 📌 Contexto Resumido
 
@@ -270,17 +304,3 @@ Entre os clientes estão Caixa, Cielo, Havan, TIM, Porto, Stone, Banco BV, Rabob
 > **Nota sobre o Kura Financials:** A KXP também possui um produto próprio, plataforma de controle de custos de nuvem vendida por assinatura (plano gratuito e plano Standard, cobrado a 2% do *billing* gerenciado por mês), usada também no serviço de FinOps. A KXP respondeu que isso está fora do escopo dessa etapa da entrevista. Neste documento, o Kura é tratado apenas como ferramenta de apoio, sem regras próprias.
 
 Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses, mas existem contratos *evergreen*, renovados continuamente, e o cliente pode cancelar com aviso prévio. Os contratos ficam no DocuSign e as notas fiscais e boletos são emitidos pelo ERP Nibo. A cada contrato, a empresa monta uma equipe de colaboradores, mas **não controla o custo em horas dessa equipe nem sabe prever quando ela ficará livre**.
-
----
-
-## ⚙️ ETAPA 3 — Processos de Negócio
-
-
-
-## 📋 ETAPA 5 — Requisitos Funcionais
-
-
-
-## 📏 ETAPA 7 — Regras de Negócio
-
-
