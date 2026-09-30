@@ -25,10 +25,10 @@ Uma empresa de tecnologia especializada em nuvem. A KXP combina conhecimento e e
 ### O que ela vende ou oferece?
 A KXP foi criada com o objetivo de ajudar empreendimentos, de qualquer tamanho e segmento, a adotarem tecnologias e práticas eficientes em nuvem. A empresa dispõe de um grupo de colaboradores qualificados para promover soluções terceirizadas, que incluem:
 
-* **☁️ Nuvem Gerenciada:** Gerenciamento completo, estratégico e contínuo da infraestrutura de nuvem. É uma oferta *full-fledged*, que inclui todas as atividades de gestão, permitindo que o cliente se foque no seu *core business*.
-* **💰 FinOps como Serviço:** Governança financeira para *cloud* que une engenharia, operações e finanças. Entrega transparência e controle estratégico sobre os custos, fornecendo *insights* acionáveis sobre consumo e recomendações contínuas para eliminar desperdícios.
-* **⚙️ SRE como Serviço:** Abordagem moderna para manter os sistemas a funcionar de maneira fiável e eficiente através de práticas de automação e monitorização. Promove a integração entre as equipas de desenvolvimento e infraestrutura, com foco na entrega contínua.
-* **🔎 Revisão de Arquitetura:** Identificação de oportunidades de melhoria baseada no *Well Architected Framework* (WAF). Mapeia pontos de otimização, alinhando as soluções às necessidades do negócio.
+* ** Nuvem Gerenciada:** Gerenciamento completo, estratégico e contínuo da infraestrutura de nuvem. É uma oferta *full-fledged*, que inclui todas as atividades de gestão, permitindo que o cliente se foque no seu *core business*.
+* ** FinOps como Serviço:** Governança financeira para *cloud* que une engenharia, operações e finanças. Entrega transparência e controle estratégico sobre os custos, fornecendo *insights* acionáveis sobre consumo e recomendações contínuas para eliminar desperdícios.
+* ** SRE como Serviço:** Abordagem moderna para manter os sistemas a funcionar de maneira fiável e eficiente através de práticas de automação e monitorização. Promove a integração entre as equipas de desenvolvimento e infraestrutura, com foco na entrega contínua.
+* ** Revisão de Arquitetura:** Identificação de oportunidades de melhoria baseada no *Well Architected Framework* (WAF). Mapeia pontos de otimização, alinhando as soluções às necessidades do negócio.
 
 ### Quem são os seus principais clientes?
 TIM, Caixa, Cielo, Havan, SEBRAE, Porto Seguro e Polícia Federal.
@@ -59,6 +59,8 @@ Além disso, durante a entrevista com o proprietário, verificou-se a necessidad
 
 Com base nestas informações, a equipa chegou ao consenso de que esta seria uma ótima oportunidade de melhoria e aprendizagem para ambas as partes.
 # # 4 . P r o b l e m a s i d e n t i f i c a d o s
+Um novo contrato leva de 3 a 6 meses para ser fechado. O padrão é de 12 meses, mas existem contratos *evergreen*, renovados continuamente, e o cliente pode cancelar com aviso prévio. Os contratos ficam no DocuSign e as notas fiscais e boletos são emitidos pelo ERP Nibo. A cada contrato, a empresa monta uma equipe de colaboradores, mas **não controla o custo em horas dessa equipe nem sabe prever quando ela ficará livre**.
+
 # # 5 . P r o c e s s o s d e n e g ó c i o
 # # 6 . R e q u i s i t o s f u n c i o n a i s
 # # 7 . R e q u i s i t o s n ã o f u n c i o n a i s
