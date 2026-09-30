@@ -347,56 +347,68 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 | **Tag** | Nome da Tag |
 | **Usuário** | Perfil de Acesso, Colaborador Vinculado |
 
-# # 1 3 . Relacionamentos
-### 📄 Aditivo
-* **Aditivo** → *recebe* → **Aprovação**
+## 13. Relacionamentos
 
-### 📌 Alocação
+### Aditivo
+* **Aditivo** → *recebe* → **Aprovação**
+  * *Atributos:* status_aprovacao, data_aprovacao
+
+### Alocação
 * **Alocação** → *tem* → **Apontamento de horas**
 * **Alocação** → *possui* → **Aprovação**
+  * *Atributos:* status_aprovacao, data_aprovacao
 
-### 🏢 Cliente
+### Cliente
 * **Cliente** → *recebe* → **Contato**
 * **Cliente** → *tem* → **Contrato**
 * **Cliente** → *tem* → **Oportunidade**
 
-### 👤 Colaborador
+### Colaborador
 * **Colaborador** → *tem* → **Alocação**
 * **Colaborador** → *possui* → **Apontamento de horas**
 * **Colaborador** → *possui* → **Certificação**
+  * *Atributos:* data_obtencao, data_validade
 * **Colaborador** → *tem* → **Contrato salarial**
 * **Colaborador** → *registra* → **Evidência**
 * **Colaborador** → *tem* → **Usuário**
 
-### 📑 Contrato
+### Contrato
 * **Contrato** → *possui* → **Aditivo**
 * **Contrato** → *tem* → **Alocação**
 * **Contrato** → *possui* → **Apontamento de horas**
 * **Contrato** → *possui* → **Aprovação**
 * **Contrato** → *exige* → **Certificação**
+  * *Atributos:* obrigatorio (booleano), data_limite
 * **Contrato** → *tem* → **Evidência**
 * **Contrato** → *produz* → **Fatura**
 * **Contrato** → *utiliza* → **Provedor de nuvem**
+  * *Atributos:* data_inicio, data_fim
 * **Contrato** → *tem* → **Tag**
+  * *Atributos:* data_associacao
 
-### 🧾 Fatura
+### Fatura
 * **Fatura** → *tem* → **Pagamento**
 
-### 🎯 Oportunidade
+### Oportunidade
 * **Oportunidade** → *exige* → **Certificação**
+  * *Atributos:* obrigatorio (booleano)
 * **Oportunidade** → *gera* → **Contrato**
 * **Oportunidade** → *envolve* → **Serviço**
+  * *Atributos:* valor_negociado, quantidade
 
-### 🛠️ Serviço
+### Serviço
 * **Serviço** → *envolve* → **Contrato**
+  * *Atributos:* valor_contratado, data_inicio, data_fim
 
-### 👥 Usuário
+### Usuário
 * **Usuário** → *possui* → **Perfil de acesso**
 * **Usuário** → *precisa* → **Permissão**
+  * *Atributos:* data_permissao
 * **Usuário** → *realiza* → **Aprovação**
 * **Usuário** → *tem* → **Tag**
+  * *Atributos:* data_permissao
 
-# # 1 4 . Cardinalidades
+# # 14 . Cardinalidades
 A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade-Relacionamento (DER), separando a notação técnica (Mínima, Máxima) e a regra de negócio que justifica o modelo estrutural.
 
 | Entidade Origem (Mín, Máx) | Ação | Entidade Destino (Mín, Máx) | Tipo | Regra de Negócio |
@@ -594,11 +606,11 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 | **Perfil de Acesso** | Nível hierárquico de autorização concedido ao usuário. | Relacionamento (Obrigatório). |
 | **Colaborador Vinculado** | Identificação do funcionário humano atrelado a esta credencial de acesso. | Relação 1:1 restrita (cada colaborador ativo deve ter apenas um usuário). |
 
-# # 1 6 . DER
+# # 16 . DER
 [DER](./docs/der.pdf)
 
-# # 1 7 . Justificativas técnicas
-# # 1 8 . Conclusão 
+# # 17 . Justificativas técnicas
+# # 18 . Conclusão 
 
 
 
