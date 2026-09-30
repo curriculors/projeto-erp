@@ -72,7 +72,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 * **Acompanhamento (clientes, funcionários, vendas):** O desafio não é o controle de clientes ou vendas, mas sim o **controle do tempo** que cada funcionário passa efetivamente em cada contrato.
 * **Existem problemas para gerar relatórios?** O problema central é a ausência de controle do tempo dedicado por funcionário em cada contrato, o que pode causar prejuízo a longo prazo se o tempo dedicado ultrapassar o que foi contratado.
 
-### 🚩 Tabela de Problemas e Consequências
+### Tabela de Problemas e Consequências
 | Problema | Consequência |
 | :--- | :--- |
 | Grande volume de reuniões sem registro completo | Informações importantes podem se perder e ficar de fora do contrato formal |
@@ -146,7 +146,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 | **Qual é o resultado?** | Plano de alocação para o próximo trimestre |
 > *Premissa da dupla: A KXP não confirmou se a reunião trimestral já trata desse assunto. Propusemos aproveitar esse encontro já existente para discutir capacidade e realocação com base nos dados do sistema.*
 
-### 🔄 Integração entre os processos
+### Integração entre os processos
 * **Fluxo Base:** PN01 Negociação (3–6 meses) → PN02 Contrato → PN03 Alocação → PN04 Horas e entregas → PN05 Faturamento (Nibo)
 * **Margem do Contrato:** PN04 fornece o *custo real* e PN05 fornece a *receita* → juntos calculam a margem.
 * **Ciclo de Capacidade:** PN06 Renovação / Cancelamento (define quando a equipe fica livre) → PN07 Planejamento trimestral → volta ao PN01 e ao PN03 (nova oportunidade e realocação).
@@ -616,7 +616,7 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 
 
 
-## 📌 Contexto Resumido
+## Contexto Resumido
 
 A **KXP** é uma consultoria de tecnologia especializada em nuvem, com 17 a 18 colaboradores, que oferece Nuvem Gerenciada, FinOps como serviço, SRE como serviço e Revisão de Arquitetura. A empresa trabalha 100% de forma remota; a equipe se reúne presencialmente só a cada três meses, aproximadamente. Os serviços são prestados nos três principais provedores de nuvem (AWS, Azure e GCP), por um time com certificações AWS, Azure, GCP, FinOps, Scrum e Datadog, trabalhando em modelo ágil, com ciclos curtos e entregas incrementais.
 
