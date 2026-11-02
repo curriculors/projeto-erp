@@ -635,16 +635,21 @@ Este Modelo Lógico foi criado a partir do DER entregue na última parte do trab
 Essas são as tabela principais que foram criadas:
 <img width="2273" height="1387" alt="Tabela principais e lógicas" src="https://github.com/user-attachments/assets/ed05238b-09cd-4aa2-99a6-36c11d6dbf55" />
 
+# # 18 . Normalização
+### Chaves primárias
+Utilizamos IDs com auto incremento como chaves primárias das tabelas. Dessa forma, cada registro possui um identificador próprio, facilitando sua identificação e utilização como chave estrangeira em outras tabelas. Nas tabelas associativas, utilizamos uma chave composta, formada pelas chaves estrangeiras  que ligam as duas tabelas principais. Dessa forma, conseguimos identificar cada associação sem precisar criar um ID separado. 
+
+### Relacionamentos convertidos
 
 
-# # 17 . Justificativas técnicas
+# # 19 . Justificativas técnicas
 A empresa **KXP Technology Consulting** foi escolhida pela equipe devido à sua área de atuação, voltada para o ramo de tecnologia. Essa escolha proporcionaria à equipe a oportunidade de aprofundar os conhecimentos já adquiridos, desenvolver novos conhecimentos e compreender, de forma mais prática, o funcionamento e a dinâmica de uma empresa de tecnologia, ampliando também os horizontes em relação às possibilidades de atuação profissional.
 
 Além disso, durante a entrevista realizada com o proprietário da empresa, a equipe tomou conhecimento de algumas necessidades relacionadas à melhoria e ao ajuste de determinados processos internos, principalmente no que diz respeito à **gestão dos contratos** e à **análise dos custos reais** de cada projeto desenvolvido pela empresa.
 
 A partir dessas informações, a equipe chegou ao consenso de que a escolha da KXP Technology Consulting representaria uma ótima oportunidade para ambas as partes, permitindo que a equipe aplicasse seus conhecimentos na identificação e análise das necessidades da empresa, ao mesmo tempo em que poderia contribuir para o aprimoramento de seus processos.
 
-# # 18 . Conclusão 
+# # 20 . Conclusão 
 O desenvolvimento deste projeto permitiu organizar os principais processos e necessidades da KXP Technology Consulting, desde a prospecção e negociação até a formalização de contratos, alocação de colaboradores, apontamento de horas, evidências, faturamento e pagamentos. A revisão desta entrega priorizou a rastreabilidade entre processos, requisitos, regras de negócio, relacionamentos, cardinalidades e dicionário de dados, buscando que todos representem o mesmo funcionamento do negócio. 
 
 ### Estruturação de Dados e Segurança
