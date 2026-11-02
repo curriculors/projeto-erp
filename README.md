@@ -72,7 +72,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 * **Acompanhamento (clientes, funcionários, vendas):** O desafio não é o controle de clientes ou vendas, mas sim o **controle do tempo** que cada funcionário passa efetivamente em cada contrato.
 * **Existem problemas para gerar relatórios?** O problema central é a ausência de controle do tempo dedicado por funcionário em cada contrato, o que pode causar prejuízo a longo prazo se o tempo dedicado ultrapassar o que foi contratado.
 
-**Integração dos Processos: **
+### Integração dos Processos
 As informações obtidas durante as reuniões de prospecção e negociação deverão ser formalizadas no contrato ou em um registro vinculado à oportunidade correspondente. A solução proposta deverá permitir o relacionamento entre oportunidades, requisitos técnicos, contratos, alocações de colaboradores, apontamentos de horas e faturamento, possibilitando a rastreabilidade das decisões e a comparação entre o tempo efetivamente dedicado aos contratos e o previsto contratualmente. 
  
 Essa integração visa reduzir a perda de informações, minimizar inconsistências nos registros e apoiar o acompanhamento da execução dos contratos. Ressalta-se que o fluxo descrito representa uma proposta de melhoria para os processos da KXP, não constituindo uma afirmação de que essas práticas já estejam integralmente implementadas na organização. 
