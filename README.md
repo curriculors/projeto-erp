@@ -377,6 +377,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 * **Colaborador** → *tem* → **Alocação**
 * **Colaborador** → *possui* → **Apontamento de horas**
 * **Colaborador** → *possui* → **Certificação**
+* **Colaborador** → *possui/atua em* → **Perfil Técnico (perfis/competências cadastrados para apoiar a seleção; validar nomenclatura com a KXP).**
   * *Atributos:* data_obtencao, data_validade
 * **Colaborador** → *tem* → **Contrato salarial**
 * **Colaborador** → *registra* → **Evidência**
@@ -404,6 +405,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
   * *Atributos:* obrigatorio (booleano)
 * **Oportunidade** → *gera* → **Contrato**
 * **Oportunidade** → *envolve* → **Serviço**
+* **Oportunidade** → *exige* → **Perfil Técnico (perfil profissional necessário à demanda; distinto de certificação).**
   * *Atributos:* valor_negociado, quantidade
 
 ### Serviço
