@@ -631,6 +631,7 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 
 # # 16 . DER
 [DER](./docs/der.jpg)
+<img width="3508" height="2479" alt="der (1)" src="https://github.com/user-attachments/assets/2ed28c14-fff9-4526-86d2-b176c5a11dba" />
 
 # # 17 . Modelo Lógico
 Este Modelo Lógico foi criado a partir do DER entregue na última parte do trabalho. Ou seja, todas as entidades e atributos foram colocados aqui. Uma adição feita: As restrições.
