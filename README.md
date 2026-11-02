@@ -1,6 +1,8 @@
 # Projeto ERP — KXP
 
-# # 1 . Identificação da equipe
+# # 1 . Identificação do projeto
+
+# # 2 . Integrantes
 * **Diego Marinho de Sousa Camara** — RGM: 1749267345
 * **Fabio de Oliveira Nogueira** — RGM: 49296442
 * **Giovanna Ayumi Sakata Matuo** — RGM: 049583735
@@ -12,7 +14,7 @@
 * **Rodrigo Cesar Sanchis Silvestre** — RGM: 49884948
 * **Thayane Shiono Miguel Celestino** — RGM: 48872628
 
-# # 2 . Caracterização da empresa
+# # 3 . Empresa e problema
 ### Qual é o nome da empresa?
 * **Razão Social:** KXP Technology Consulting
 * **CNPJ:** 12.497.774/0001-59
@@ -47,7 +49,7 @@ Com cerca de **18 colaboradores**, a KXP aloca diferentes equipas para cada proj
 *  Os projetos podem demorar de **6 a 12 meses** ou até serem renovados.
 *  Os projetos podem ter **renovação contínua**.
 
-# # 3 . Justificativa da escolha
+### Justificativa da escolha
 A empresa KXP foi escolhida pela equipa devido à sua área de atuação (tecnologia), o que proporciona excelentes oportunidades para:
 * Aprofundar o conhecimento já existente.
 * Descobrir o real funcionamento de uma empresa de tecnologia.
@@ -59,7 +61,7 @@ Além disso, durante a entrevista com o proprietário, verificou-se a necessidad
 
 Com base nestas informações, a equipa chegou ao consenso de que esta seria uma ótima oportunidade de melhoria e aprendizagem para ambas as partes.
 
-# # 4 . Problemas identificados
+### Problemas identificados
 ### Questionário de Diagnóstico
 * **Onde existe retrabalho?** Não existe retrabalho. As renovações são analisadas com o cliente para manutenção ou alteração do projeto.
 * **Existem informações duplicadas?** Não, pois o contrato de cada cliente é único e baseado nas suas necessidades.
@@ -72,12 +74,6 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 * **Acompanhamento (clientes, funcionários, vendas):** O desafio não é o controle de clientes ou vendas, mas sim o **controle do tempo** que cada funcionário passa efetivamente em cada contrato.
 * **Existem problemas para gerar relatórios?** O problema central é a ausência de controle do tempo dedicado por funcionário em cada contrato, o que pode causar prejuízo a longo prazo se o tempo dedicado ultrapassar o que foi contratado.
 
-### Integração dos Processos
-As informações obtidas durante as reuniões de prospecção e negociação deverão ser formalizadas no contrato ou em um registro vinculado à oportunidade correspondente. A solução proposta deverá permitir o relacionamento entre oportunidades, requisitos técnicos, contratos, alocações de colaboradores, apontamentos de horas e faturamento, possibilitando a rastreabilidade das decisões e a comparação entre o tempo efetivamente dedicado aos contratos e o previsto contratualmente. 
- 
-Essa integração visa reduzir a perda de informações, minimizar inconsistências nos registros e apoiar o acompanhamento da execução dos contratos. Ressalta-se que o fluxo descrito representa uma proposta de melhoria para os processos da KXP, não constituindo uma afirmação de que essas práticas já estejam integralmente implementadas na organização. 
-
-
 ### Tabela de Problemas e Consequências
 | Problema | Consequência |
 | :--- | :--- |
@@ -86,6 +82,15 @@ Essa integração visa reduzir a perda de informações, minimizar inconsistênc
 | **Falta de controle do tempo gasto por funcionário em cada projeto** | **Risco de prejuízo financeiro a longo prazo (trabalhar mais horas do que o faturado/contratado)** |
 
 ---
+
+# # 4 . Solução proposta
+### Integração dos Processos
+As informações obtidas durante as reuniões de prospecção e negociação deverão ser formalizadas no contrato ou em um registro vinculado à oportunidade correspondente. A solução proposta deverá permitir o relacionamento entre oportunidades, requisitos técnicos, contratos, alocações de colaboradores, apontamentos de horas e faturamento, possibilitando a rastreabilidade das decisões e a comparação entre o tempo efetivamente dedicado aos contratos e o previsto contratualmente. 
+ 
+Essa integração visa reduzir a perda de informações, minimizar inconsistências nos registros e apoiar o acompanhamento da execução dos contratos. Ressalta-se que o fluxo descrito representa uma proposta de melhoria para os processos da KXP, não constituindo uma afirmação de que essas práticas já estejam integralmente implementadas na organização. 
+
+
+
 
 # # 5 . Processos de negócio
 ### PN01 — Prospecção e negociação
