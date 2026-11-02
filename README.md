@@ -1,8 +1,6 @@
 # Projeto ERP — KXP
 
-# # 1 . Identificação do projeto
-
-# # 2 . Integrantes
+# # 1 . Identificação da equipe
 * **Diego Marinho de Sousa Camara** — RGM: 1749267345
 * **Fabio de Oliveira Nogueira** — RGM: 49296442
 * **Giovanna Ayumi Sakata Matuo** — RGM: 049583735
@@ -14,7 +12,7 @@
 * **Rodrigo Cesar Sanchis Silvestre** — RGM: 49884948
 * **Thayane Shiono Miguel Celestino** — RGM: 48872628
 
-# # 3 . Empresa e problema
+# # 2 . Caracterização da empresa
 ### Qual é o nome da empresa?
 * **Razão Social:** KXP Technology Consulting
 * **CNPJ:** 12.497.774/0001-59
@@ -49,7 +47,7 @@ Com cerca de **18 colaboradores**, a KXP aloca diferentes equipas para cada proj
 *  Os projetos podem demorar de **6 a 12 meses** ou até serem renovados.
 *  Os projetos podem ter **renovação contínua**.
 
-### Justificativa da escolha
+# # 3 . Justificativa da escolha
 A empresa KXP foi escolhida pela equipa devido à sua área de atuação (tecnologia), o que proporciona excelentes oportunidades para:
 * Aprofundar o conhecimento já existente.
 * Descobrir o real funcionamento de uma empresa de tecnologia.
@@ -61,7 +59,7 @@ Além disso, durante a entrevista com o proprietário, verificou-se a necessidad
 
 Com base nestas informações, a equipa chegou ao consenso de que esta seria uma ótima oportunidade de melhoria e aprendizagem para ambas as partes.
 
-### Problemas identificados
+# # 4 . Problemas identificados
 ### Questionário de Diagnóstico
 * **Onde existe retrabalho?** Não existe retrabalho. As renovações são analisadas com o cliente para manutenção ou alteração do projeto.
 * **Existem informações duplicadas?** Não, pois o contrato de cada cliente é único e baseado nas suas necessidades.
@@ -74,6 +72,12 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 * **Acompanhamento (clientes, funcionários, vendas):** O desafio não é o controle de clientes ou vendas, mas sim o **controle do tempo** que cada funcionário passa efetivamente em cada contrato.
 * **Existem problemas para gerar relatórios?** O problema central é a ausência de controle do tempo dedicado por funcionário em cada contrato, o que pode causar prejuízo a longo prazo se o tempo dedicado ultrapassar o que foi contratado.
 
+### Integração dos Processos
+As informações obtidas durante as reuniões de prospecção e negociação deverão ser formalizadas no contrato ou em um registro vinculado à oportunidade correspondente. A solução proposta deverá permitir o relacionamento entre oportunidades, requisitos técnicos, contratos, alocações de colaboradores, apontamentos de horas e faturamento, possibilitando a rastreabilidade das decisões e a comparação entre o tempo efetivamente dedicado aos contratos e o previsto contratualmente. 
+ 
+Essa integração visa reduzir a perda de informações, minimizar inconsistências nos registros e apoiar o acompanhamento da execução dos contratos. Ressalta-se que o fluxo descrito representa uma proposta de melhoria para os processos da KXP, não constituindo uma afirmação de que essas práticas já estejam integralmente implementadas na organização. 
+
+
 ### Tabela de Problemas e Consequências
 | Problema | Consequência |
 | :--- | :--- |
@@ -83,13 +87,7 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 
 ---
 
-# # 4 . Solução proposta
-### Integração dos Processos
-As informações obtidas durante as reuniões de prospecção e negociação deverão ser formalizadas no contrato ou em um registro vinculado à oportunidade correspondente. A solução proposta deverá permitir o relacionamento entre oportunidades, requisitos técnicos, contratos, alocações de colaboradores, apontamentos de horas e faturamento, possibilitando a rastreabilidade das decisões e a comparação entre o tempo efetivamente dedicado aos contratos e o previsto contratualmente. 
- 
-Essa integração visa reduzir a perda de informações, minimizar inconsistências nos registros e apoiar o acompanhamento da execução dos contratos. Ressalta-se que o fluxo descrito representa uma proposta de melhoria para os processos da KXP, não constituindo uma afirmação de que essas práticas já estejam integralmente implementadas na organização. 
-
-### Processos de Negócios
+# # 5 . Processos de negócio
 ### PN01 — Prospecção e negociação
 | Pergunta | Resposta |
 | :--- | :--- |
@@ -161,8 +159,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 > **Ponto-chave:** O PN06 alimenta o PN07 e o PN01. Saber quando cada contrato termina permite planejar a realocação antes que a equipe fique ociosa — o principal problema relatado pela KXP. 
 
 ---
-# # 5 . Requisitos e regras de negócio
-### Requisitos funcionais
+# # 6 . Requisitos funcionais
 | Cód. | Requisito | Processo(s) |
 | :--- | :--- | :--- |
 | **RF01** | O sistema deverá cadastrar clientes e seus contatos. | PN01 |
@@ -198,7 +195,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RF31** | O sistema deverá relacionar a demanda de perfil técnico de cada oportunidade aos perfis/competências cadastrados para os colaboradores, sem confundir perfil profissional com certificação. | PN01, PN03, PN07 |
 
 ---
-### Requisitos não funcionais
+# # 7 . Requisitos não funcionais
 | Categoria | Requisito Não Funcional |
 | :--- | :--- |
 |  **Segurança** | O sistema deverá controlar o acesso com autenticação em dois fatores (2FA). Contas deverão ser bloqueadas temporariamente após 3 tentativas de login inválidas. |
@@ -213,12 +210,12 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 |  **Confiabilidade** | O sistema deverá garantir a integridade dos dados (inclusão, alteração, exclusão). Os relatórios gerados devem conter os custos por funcionário. |
 
 ---
-### Regras de Negócios
+# # 8 . Regras de negócio
 > **Legenda de Fonte:**  
 > **"Entrevista"** = informado pelo proprietário | **"Proposta"** = definida pela dupla a partir dos processos.  
 > *A coluna "Impacto no modelo" é uma indicação para as Fases 2 e 3, não a modelagem final.*
 
-### Clientes e Oportunidades
+### 8.1 Clientes e Oportunidades
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN01** | Um cliente pode ter nenhum ou vários contratos. | Entrevista | Cliente–Contrato (0,N) |
@@ -227,7 +224,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN04** | Um cliente pode ter várias oportunidades; cada oportunidade pertence a um único cliente. | Proposta | Cliente–Oportunidade |
 | **RN05** | Uma oportunidade ganha gera um contrato; uma oportunidade perdida não gera contrato. | Entrevista | Oportunidade–Contrato (0,1) |
 
-### Contratos
+### 8.2 Contratos
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN06** | Todo contrato possui número único e referência ao documento assinado no DocuSign. | Entrevista | Atributos |
@@ -241,7 +238,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN14** | Um contrato só se torna vigente após aprovação interna e assinatura no DocuSign. | Proposta | Status + aprovação |
 | **RN15** | Contrato encerrado ou cancelado não pode receber novas alocações, apontamentos de horas ou faturas. | Proposta | Restrição de status |
 
-### Colaboradores, Alocação e Horas
+### 8.3 Colaboradores, Alocação e Horas
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN16** | Todo contrato vigente deve ser atendido por uma equipe de pelo menos um colaborador. | Entrevista | Contrato–Colaborador (1,N) |
@@ -257,7 +254,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN26** | Colaborador desligado é inativado, nunca excluído, para preservar o histórico de alocações e horas. | Proposta | Status |
 | **RN44** | O custo/hora do colaborador considera: salário, encargos/benefícios, provisão de desligamento, equipamentos, licenças de software, diluição da camada de gestão e fator de ociosidade de 20%. | Entrevista | Atributos do cálculo de custo/hora |
 
-### Evidências, Faturas e Pagamentos
+### 8.4 Evidências, Faturas e Pagamentos
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN27** | Um contrato pode ter nenhuma ou várias evidências de entrega; cada evidência pertence a um único contrato, a um colaborador responsável e a um mês de referência. A ausência inicial de evidência não impede o cadastro do contrato.  | Proposta | Contrato–Evidência |
@@ -268,7 +265,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN32** | A soma dos pagamentos não pode ultrapassar o valor da fatura. | Proposta | Restrição |
 | **RN33** | A margem do contrato é a receita faturada menos o custo real no mesmo período. | Entrevista | Cálculo |
 
-### Usuários e Aprovações
+### 8.5 Usuários e Aprovações
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN34** | Todo usuário possui exatamente um perfil de acesso; um perfil pode ser atribuído a vários usuários. | Proposta | Perfil–Usuário |
@@ -276,7 +273,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN36** | Toda aprovação registra quem aprovou, data, decisão e observação. | Proposta | Atributos da aprovação |
 | **RN37** | Quem cadastrou um contrato, aditivo ou alocação não pode aprová-lo. | Proposta | Restrição |
 
-### Certificações, Provedores e Moeda
+### 8.6 Certificações, Provedores e Moeda
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN38** | Um colaborador pode ter nenhuma ou várias certificações, e uma certificação pode pertencer a vários colaboradores. | Site KXP | N:N Colaborador–Certificação |
