@@ -436,6 +436,7 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 | **Colaborador** `(0,N)` | possui | `(0,N)` **Certificação** | **N:N** | Um colaborador pode possuir várias certificações e uma certificação pode estar ligada a vários colaboradores. |
 | **Colaborador** `(1,1)` | tem | `(1,N)` **Contrato salarial** | **1:N** | Um colaborador pode possuir diferentes registros salariais ao longo do tempo, permitindo registrar reajustes e períodos de vigência. |
 | **Colaborador** `(1,1)` | registra | `(1,N)` **Evidência** | **1:N** | Um colaborador pode registrar várias evidências. |
+| **Colaborador** `(0,N)` | possui | `(0,N)` **Perfil técnico** | **N:N** | Um colaborador pode estar associado a vários perfis/competências; um perfil pode ser associado a vários colaboradores. Validar com a KXP. |
 | **Colaborador** `(0,1)` | tem | `(1,1)` **Usuário** | **1:0..1** | Um colaborador pode ter um usuário no sistema, mas nem todo colaborador precisa ter usuário. |
 | **Contrato** `(1,1)` | possui | `(1,N)` **Aditivo** | **1:N** | Um contrato pode possuir vários aditivos. |
 | **Contrato** `(1,1)` | tem | `(1,N)` **Alocação** | **1:N** | Um contrato pode ter várias alocações de colaboradores. |
@@ -449,6 +450,7 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 | **Fatura** `(1,1)` | tem | `(1,N)` **Pagamento** | **1:N** | Uma fatura pode ter vários pagamentos. |
 | **Oportunidade** `(0,N)` | exige | `(0,N)` **Certificação** | **N:N** | Uma oportunidade pode exigir várias certificações. |
 | **Oportunidade** `(0,1)` | gera | `(1,1)` **Contrato** | **1:0..1** | Uma oportunidade pode gerar no máximo um contrato. |
+| **Oportunidade** `(0,N)` | exige | `(0,N)` **Perfil técnico** | **N:N** | Uma oportunidade pode ainda não ter perfis definidos ou exigir vários; um perfil pode ser exigido por várias oportunidades. |
 | **Oportunidade** `(0,N)` | envolve | `(0,N)` **Serviço** | **N:N** | Uma oportunidade pode envolver vários serviços. |
 | **Serviço** `(0,N)` | envolve | `(0,N)` **Contrato** | **N:N** | Um serviço pode estar em vários contratos. |
 | **Usuário** `(1,1)` | realiza | `(1,N)` **Aprovação** | **1:N** | Um usuário pode realizar várias aprovações. |
@@ -590,6 +592,12 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 | **Nome do Perfil** | Título do grupo de acessos (ex: Administrador, Financeiro, Colaborador). | Identificador do conjunto de regras. |
 | **Usuários Vinculados** | Lista de contas que possuem este nível de acesso. | Relacionamento. |
 
+### Entidade: Perfil técnico
+| Atributo | Descrição | Regra/Observação |
+| :--- | :--- | :--- |
+| **Nome do Perfil** | Título do grupo de acessos (ex: Administrador, Financeiro, Colaborador). | Identificador do conjunto de regras. |
+| **Descrição/Competências Associadas** | representa a função ou competência profissional necessária às oportunidades e disponível entre os colaboradores. | Relacionamento. |
+
 ### Entidade: Permissão
 | Atributo | Descrição | Regra/Observação |
 | :--- | :--- | :--- |
@@ -629,16 +637,16 @@ Além disso, durante a entrevista realizada com o proprietário da empresa, a eq
 A partir dessas informações, a equipe chegou ao consenso de que a escolha da KXP Technology Consulting representaria uma ótima oportunidade para ambas as partes, permitindo que a equipe aplicasse seus conhecimentos na identificação e análise das necessidades da empresa, ao mesmo tempo em que poderia contribuir para o aprimoramento de seus processos.
 
 # # 18 . Conclusão 
-O desenvolvimento deste projeto possibilitou compreender e organizar os principais processos e necessidades da **KXP Technology Consulting**, abrangendo desde a prospecção de clientes e negociação de oportunidades até a formalização de contratos, alocação de colaboradores, acompanhamento de horas e entregas, faturamento e pagamentos. A partir dessa análise, foi possível identificar a importância de centralizar e organizar as informações para facilitar o controle das atividades e dos contratos.
+O desenvolvimento deste projeto permitiu organizar os principais processos e necessidades da KXP Technology Consulting, desde a prospecção e negociação até a formalização de contratos, alocação de colaboradores, apontamento de horas, evidências, faturamento e pagamentos. A revisão desta entrega priorizou a rastreabilidade entre processos, requisitos, regras de negócio, relacionamentos, cardinalidades e dicionário de dados, buscando que todos representem o mesmo funcionamento do negócio. 
 
 ### Estruturação de Dados e Segurança
 Com base nos requisitos funcionais e nas regras de negócio levantadas, foi definida uma estrutura de dados capaz de representar as principais informações utilizadas pela empresa. Isso inclui **clientes, contatos, oportunidades, contratos, colaboradores, serviços, certificações, alocações, aprovações, evidências, faturas e pagamentos**. Também foram considerados aspectos relacionados ao controle de usuários, permissões e perfis de acesso, contribuindo para uma gestão mais segura e organizada.
 
 ### Modelagem e Relacionamentos
-A definição das relações e cardinalidades permitiu representar de forma clara como as entidades se conectam dentro do sistema. Dessa maneira, situações como um cliente possuir vários contratos, um contrato possuir diferentes alocações e faturas, e colaboradores estarem relacionados a certificações e contratos podem ser registradas e consultadas de maneira estruturada.
+As cardinalidades foram revistas considerando o ciclo de vida das entidades: uma fatura pode existir sem pagamento; um contrato pode ainda não possuir aditivos, evidências ou faturas; e uma alocação pode ser criada antes do primeiro apontamento de horas. Também foi diferenciada a consequência de renovação, alteração e encerramento/cancelamento sobre as alocações, evitando liberar equipes automaticamente sem confirmação da regra aplicável. 
 
 ### Cardinalidade
-As cardinalidades foram definidas de acordo com a forma como as entidades se relacionam dentro do modelo da KXP, considerando a quantidade de registros que cada entidade pode possuir ou estar relacionada. As relações 1:N representam situações em que um registro de uma entidade pode estar associado a vários registros de outra, enquanto as relações N:N são utilizadas quando várias ocorrências de ambas as entidades podem se relacionar entre si. Já as relações 1:1 ou 1:0:1 representam situações em que existe uma associação única, podendo ser obrigatória ou opcional. Dessa forma, as cardinalidades procuram representar as regras e necessidades do negócio, mantendo a estrutura dos dados coerente e evitando relacionamentos inadequados ou duplicados.
+As cardinalidades foram definidas de acordo com a forma como as entidades se relacionam dentro do modelo da KXP, considerando a quantidade de registros que cada entidade pode possuir ou estar relacionada. As relações 1:N representam situações em que um registro de uma entidade pode estar associado a vários registros de outra, enquanto as relações N:N são utilizadas quando várias ocorrências de ambas as entidades podem se relacionar entre si. Já as relações 1:1 ou 1:0:1 representam situações em que existe uma associação única, podendo ser obrigatória ou opcional. Dessa forma, as cardinalidades procuram representar as regras e necessidades do negócio, mantendo a estrutura dos dados coerente e evitando relacionamentos inadequados ou duplicados. 
 
 ### Controle de Custos e Apontamento de Horas
 Outro ponto importante identificado no projeto foi a necessidade de acompanhar as **horas trabalhadas pelos colaboradores em cada contrato**. Essa medida permite um melhor controle dos custos reais dos projetos e reduz o risco de perdas financeiras causadas por horas excedentes não identificadas.
