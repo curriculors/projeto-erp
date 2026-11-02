@@ -89,10 +89,7 @@ As informações obtidas durante as reuniões de prospecção e negociação dev
  
 Essa integração visa reduzir a perda de informações, minimizar inconsistências nos registros e apoiar o acompanhamento da execução dos contratos. Ressalta-se que o fluxo descrito representa uma proposta de melhoria para os processos da KXP, não constituindo uma afirmação de que essas práticas já estejam integralmente implementadas na organização. 
 
-
-
-
-# # 5 . Processos de negócio
+### Processos de Negócios
 ### PN01 — Prospecção e negociação
 | Pergunta | Resposta |
 | :--- | :--- |
@@ -164,7 +161,8 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 > **Ponto-chave:** O PN06 alimenta o PN07 e o PN01. Saber quando cada contrato termina permite planejar a realocação antes que a equipe fique ociosa — o principal problema relatado pela KXP. 
 
 ---
-# # 6 . Requisitos funcionais
+# # 5 . Requisitos e regras de negócio
+### Requisitos funcionais
 | Cód. | Requisito | Processo(s) |
 | :--- | :--- | :--- |
 | **RF01** | O sistema deverá cadastrar clientes e seus contatos. | PN01 |
@@ -200,7 +198,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RF31** | O sistema deverá relacionar a demanda de perfil técnico de cada oportunidade aos perfis/competências cadastrados para os colaboradores, sem confundir perfil profissional com certificação. | PN01, PN03, PN07 |
 
 ---
-# # 7 . Requisitos não funcionais
+### Requisitos não funcionais
 | Categoria | Requisito Não Funcional |
 | :--- | :--- |
 |  **Segurança** | O sistema deverá controlar o acesso com autenticação em dois fatores (2FA). Contas deverão ser bloqueadas temporariamente após 3 tentativas de login inválidas. |
@@ -215,12 +213,12 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 |  **Confiabilidade** | O sistema deverá garantir a integridade dos dados (inclusão, alteração, exclusão). Os relatórios gerados devem conter os custos por funcionário. |
 
 ---
-# # 8 . Regras de negócio
+### Regras de Negócios
 > **Legenda de Fonte:**  
 > **"Entrevista"** = informado pelo proprietário | **"Proposta"** = definida pela dupla a partir dos processos.  
 > *A coluna "Impacto no modelo" é uma indicação para as Fases 2 e 3, não a modelagem final.*
 
-### 8.1 Clientes e Oportunidades
+### Clientes e Oportunidades
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN01** | Um cliente pode ter nenhum ou vários contratos. | Entrevista | Cliente–Contrato (0,N) |
@@ -229,7 +227,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN04** | Um cliente pode ter várias oportunidades; cada oportunidade pertence a um único cliente. | Proposta | Cliente–Oportunidade |
 | **RN05** | Uma oportunidade ganha gera um contrato; uma oportunidade perdida não gera contrato. | Entrevista | Oportunidade–Contrato (0,1) |
 
-### 8.2 Contratos
+### Contratos
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN06** | Todo contrato possui número único e referência ao documento assinado no DocuSign. | Entrevista | Atributos |
@@ -243,7 +241,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN14** | Um contrato só se torna vigente após aprovação interna e assinatura no DocuSign. | Proposta | Status + aprovação |
 | **RN15** | Contrato encerrado ou cancelado não pode receber novas alocações, apontamentos de horas ou faturas. | Proposta | Restrição de status |
 
-### 8.3 Colaboradores, Alocação e Horas
+### Colaboradores, Alocação e Horas
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN16** | Todo contrato vigente deve ser atendido por uma equipe de pelo menos um colaborador. | Entrevista | Contrato–Colaborador (1,N) |
@@ -259,7 +257,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN26** | Colaborador desligado é inativado, nunca excluído, para preservar o histórico de alocações e horas. | Proposta | Status |
 | **RN44** | O custo/hora do colaborador considera: salário, encargos/benefícios, provisão de desligamento, equipamentos, licenças de software, diluição da camada de gestão e fator de ociosidade de 20%. | Entrevista | Atributos do cálculo de custo/hora |
 
-### 8.4 Evidências, Faturas e Pagamentos
+### Evidências, Faturas e Pagamentos
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN27** | Um contrato pode ter nenhuma ou várias evidências de entrega; cada evidência pertence a um único contrato, a um colaborador responsável e a um mês de referência. A ausência inicial de evidência não impede o cadastro do contrato.  | Proposta | Contrato–Evidência |
@@ -270,7 +268,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN32** | A soma dos pagamentos não pode ultrapassar o valor da fatura. | Proposta | Restrição |
 | **RN33** | A margem do contrato é a receita faturada menos o custo real no mesmo período. | Entrevista | Cálculo |
 
-### 8.5 Usuários e Aprovações
+### Usuários e Aprovações
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN34** | Todo usuário possui exatamente um perfil de acesso; um perfil pode ser atribuído a vários usuários. | Proposta | Perfil–Usuário |
@@ -278,7 +276,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN36** | Toda aprovação registra quem aprovou, data, decisão e observação. | Proposta | Atributos da aprovação |
 | **RN37** | Quem cadastrou um contrato, aditivo ou alocação não pode aprová-lo. | Proposta | Restrição |
 
-### 8.6 Certificações, Provedores e Moeda
+### Certificações, Provedores e Moeda
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN38** | Um colaborador pode ter nenhuma ou várias certificações, e uma certificação pode pertencer a vários colaboradores. | Site KXP | N:N Colaborador–Certificação |
