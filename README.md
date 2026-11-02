@@ -94,7 +94,7 @@ Essa integração visa reduzir a perda de informações, minimizar inconsistênc
 | **Quem participa?** | Comercial/Diretoria e cliente |
 | **O que inicia?** | Interesse do cliente ou prospecção ativa da KXP |
 | **O que acontece?** | Negociação remota de escopo, serviço e valor, que dura de 3 a 6 meses |
-| **Qual informação é gerada?** | Oportunidade: cliente, serviço, valor estimado, data prevista de início, provedor de nuvem, certificações/perfis técnicos necessários e estágio da negociação |
+| **Qual informação é gerada?** | Oportunidade: cliente, serviço(s), valor estimado, data prevista de início, provedor(es) de nuvem, perfis técnicos necessários, certificações exigidas quando conhecidas e estágio da negociação. Quando o perfil ou a certificação ainda não estiver definido, registrar como pendência de levantamento |
 | **Qual é o resultado?** | Oportunidade ganha (segue para PN02) ou perdida |
 
 ### PN02 — Formalização do contrato
@@ -104,15 +104,15 @@ Essa integração visa reduzir a perda de informações, minimizar inconsistênc
 | **O que inicia?** | Oportunidade ganha |
 | **O que acontece?** | Elaboração do contrato → aprovação interna → assinatura digital pelo DocuSign → registro das condições no sistema |
 | **Qual informação é gerada?** | Contrato: número, serviço(s), valor, data de início, vigência, tipo (12 meses ou *evergreen*), prazo de aviso prévio, provedor(es) de nuvem, moeda e referência ao DocuSign |
-| **Qual é o resultado?** | Contrato vigente |
+| **Qual é o resultado?** | Contrato vigente somente após aprovação interna e assinatura digital no DocuSign |
 
 ### PN03 — Alocação da equipe
 | Pergunta | Resposta |
 | :--- | :--- |
 | **Quem participa?** | Diretoria/gestor de operações e colaboradores |
 | **O que inicia?** | Contrato vigente (ou oportunidade perto de fechar) |
-| **O que acontece?** | Verificar quem está livre ou ficará livre e possui as certificações exigidas pelo contrato → selecionar os colaboradores → definir função, período e dedicação de cada um |
-| **Qual informação é gerada?** | Alocação: colaborador, contrato, função, data de início, término previsto, dedicação e custo/hora no momento |
+| **O que acontece?** | Verificar quem está livre ou ficará livre e comparar disponibilidade, dedicação já comprometida, função/perfil técnico, competências e certificações válidas exigidas pelo contrato → Selecionar os colaboradores → definir função, período e dedicação de cada um |
+| **Qual informação é gerada?** | Alocação: colaborador, contrato, função/perfil aplicado, data de início, término previsto, término real quando houver, dedicação e custo/hora aplicável. O custo histórico deve ser preservado para calcular os custos dos períodos já executados |
 | **Qual é o resultado?** | Equipe formada para o contrato, com as competências necessárias |
 
 ### PN04 — Execução remota e apontamento de horas
@@ -121,15 +121,15 @@ Essa integração visa reduzir a perda de informações, minimizar inconsistênc
 | **Quem participa?** | Colaboradores e gestor de operações |
 | **O que inicia?** | Início da alocação |
 | **O que acontece?** | Cada colaborador, de onde estiver, trabalha no ambiente de nuvem do cliente, em ciclos curtos, registra as horas dedicadas a cada contrato e registra as entregas incrementais de cada ciclo (relatórios mensais, relatórios de FinOps, estudos de maturidade, diagnósticos e relatório de revisão de arquitetura) |
-| **Qual informação é gerada?** | Apontamentos de horas e evidências de entrega |
+| **Qual informação é gerada?** | Apontamentos de horas e evidências de entrega vinculados à alocação e ao mês de referência |
 | **Qual é o resultado?** | Custo real do contrato conhecido e execução comprovada |
 
 ### PN05 — Faturamento e recebimento
 | Pergunta | Resposta |
 | :--- | :--- |
 | **Quem participa?** | Administrativo-Financeiro, ERP Nibo e cliente |
-| **O que inicia?** | Competência do contrato. *(Premissa: a KXP confirmou valor fixo; a periodicidade mensal mantivemos como padrão de mercado).* |
-| **O que acontece?** | Gerar a fatura → enviar os dados ao Nibo → o Nibo emite a nota fiscal e o boleto → registrar o pagamento |
+| **O que inicia?** | Competência do contrato. Premissa a validar com a KXP: faturamento mensal com valor fixo; o trabalho original informa que essa periodicidade foi adotada como padrão, não confirmada pela empresa |
+| **O que acontece?** | Gerar a fatura → enviar os dados ao Nibo para emissão da nota fiscal e do boleto → registrar zero, um ou vários pagamentos recebidos até a quitação. A fatura pode existir antes de qualquer pagamento |
 | **Qual informação é gerada?** | Fatura (competência, valor, moeda, vencimento, nº da NF, status) e pagamento (data, valor) |
 | **Qual é o resultado?** | Fatura paga ou em atraso; margem do contrato (receita − custo real) |
 
@@ -138,25 +138,25 @@ Essa integração visa reduzir a perda de informações, minimizar inconsistênc
 | :--- | :--- |
 | **Quem participa?** | Diretoria, Comercial e cliente |
 | **O que inicia?** | Fim da vigência, pedido de alteração ou pedido de cancelamento |
-| **O que acontece?** | **Contrato 12 meses:** renovar por aditivo ou encerrar. **Evergreen:** renova automaticamente. **Alteração:** registrar aditivo. **Cancelamento:** registrar o aviso prévio e calcular a data efetiva de término |
-| **Qual informação é gerada?** | Aditivo, data do aviso, data efetiva de término e motivo |
-| **Qual é o resultado?** | Contrato renovado, alterado, encerrado ou cancelado — e data de liberação da equipe atualizada |
+| **O que acontece?** | Contrato 12 meses: Renovar registrar o novo ciclo e manter a equipe quando a continuidade do escopo for confirmada. Alteração: registrar aditivo aprovado e atualizar somente as condições e alocações afetadas. Cancelamento/encerramento: registrar aviso e data efetiva de término; ajustar as alocações afetadas conforme essa data. Não presumir que os três eventos liberam automaticamente a equipe |
+| **Qual informação é gerada?** | Tipo de evento, aditivo e aprovação quando aplicáveis, condições anteriores e novas, data do aviso, data efetiva de término e alterações de alocação decorrentes |
+| **Qual é o resultado?** | Contrato renovado, alterado, encerrado ou cancelado, com histórico preservado e alocações atualizadas somente conforme os efeitos do evento confirmado |
 
 ### PN07 — Planejamento trimestral de capacidade
 | Pergunta | Resposta |
 | :--- | :--- |
 | **Quem participa?** | Diretoria e equipe, na reunião presencial trimestral |
 | **O que inicia?** | Reunião que acontece a cada 3 meses |
-| **O que acontece?** | Revisar contratos a vencer, equipes que ficarão livres e oportunidades em negociação |
+| **O que acontece?** | Revisar contratos e alocações com término previsto, dedicação já comprometida, colaboradores potencialmente disponíveis, oportunidades em andamento e os perfis/competências/certificações necessários para a demanda futura. Disponibilidade, isoladamente, não comprova aderência técnica |
 | **Qual informação é gerada?** | Relatório de capacidade e decisões de realocação |
 | **Qual é o resultado?** | Plano de alocação para o próximo trimestre |
-> *Premissa da dupla: A KXP não confirmou se a reunião trimestral já trata desse assunto. Propusemos aproveitar esse encontro já existente para discutir capacidade e realocação com base nos dados do sistema.*
 
 ### Integração entre os processos
-* **Fluxo Base:** PN01 Negociação (3–6 meses) → PN02 Contrato → PN03 Alocação → PN04 Horas e entregas → PN05 Faturamento (Nibo)
-* **Margem do Contrato:** PN04 fornece o *custo real* e PN05 fornece a *receita* → juntos calculam a margem.
-* **Ciclo de Capacidade:** PN06 Renovação / Cancelamento (define quando a equipe fica livre) → PN07 Planejamento trimestral → volta ao PN01 e ao PN03 (nova oportunidade e realocação).
-> **Ponto-chave:** O PN06 alimenta o PN07 e o PN01. Saber quando cada contrato termina permite planejar a realocação antes que a equipe fique ociosa — o principal problema relatado pela KXP.
+* **Fluxo Base:** PN01 Negociação (3–6 meses) → PN02 Contrato → PN03 Alocação compatível com perfil, competências, certificações e disponibilidade → PN04 Horas e entregas vinculadas à alocação → PN05 Faturamento (Nibo) e pagamentos. 
+* **Margem do Contrato:** PN04 fornece o custo real calculado pelas horas válidas e pelo custo/hora aplicável a cada apontamento; PN05 fornece a receita faturada do mesmo período. A comparação deve usar períodos compatíveis.
+* **Ciclo de Capacidade:** PN06 registra renovação, alteração ou encerramento/cancelamento e seus efeitos reais sobre cada alocação → PN07 compara capacidade disponível e demanda técnica das oportunidades → subsidia PN01 e PN03. PN07 Planejamento trimestral → volta ao PN01 e ao PN03 (nova oportunidade e realocação). 
+o sistema deve permitir antecipar a disponibilidade sem presumir que todo colaborador livre atende a uma oportunidade. O planejamento precisa cruzar datas, dedicação, perfis técnicos, competências e certificações válidas. O planejamento trimestral deve ser utilizado para avaliar capacidade, demanda e possibilidades de realocação. 
+> **Ponto-chave:** O PN06 alimenta o PN07 e o PN01. Saber quando cada contrato termina permite planejar a realocação antes que a equipe fique ociosa — o principal problema relatado pela KXP. 
 
 ---
 # # 6 . Requisitos funcionais
@@ -164,17 +164,17 @@ Essa integração visa reduzir a perda de informações, minimizar inconsistênc
 | :--- | :--- | :--- |
 | **RF01** | O sistema deverá cadastrar clientes e seus contatos. | PN01 |
 | **RF02** | O sistema deverá cadastrar os serviços oferecidos (Nuvem Gerenciada, FinOps, SRE e Revisão de Arquitetura). | PN01, PN02 |
-| **RF03** | O sistema deverá registrar oportunidades em negociação, com estágio, valor estimado, data prevista de início e perfis técnicos necessários. | PN01 |
+| **RF03** | O sistema deverá registrar oportunidades em negociação com cliente, serviço(s), estágio, valor estimado, data prevista de início, provedor(es), perfis técnicos necessários e certificações exigidas quando conhecidas, permitindo indicar pendências de levantamento. | PN01 |
 | **RF04** | O sistema deverá cadastrar contratos com número, serviço(s), valor, data de início, vigência, tipo de renovação, prazo de aviso prévio e referência ao DocuSign. | PN02 |
 | **RF05** | O sistema deverá controlar o status do contrato (em aprovação, vigente, em aviso prévio, encerrado, cancelado). | PN02, PN06 |
 | **RF06** | O sistema deverá registrar a aprovação de contratos, aditivos e alocações (quem aprovou, quando e a decisão). | PN02, PN03, PN06 |
 | **RF07** | O sistema deverá cadastrar colaboradores com função, senioridade e custo/hora, mantendo o histórico do custo. | PN03 |
 | **RF08** | O sistema deverá alocar colaboradores em contratos, informando função, data de início, término previsto e dedicação. | PN03 |
-| **RF09** | O sistema deverá exibir a alocação atual e a disponibilidade futura de cada colaborador. | PN03, PN07 |
-| **RF10** | O sistema deverá sinalizar colaboradores que ficarão livres nos próximos 30, 60 e 90 dias. *(Prazos não confirmados pela KXP, mas coerentes com a reunião trimestral).* | PN03, PN07 |
+| **RF09** | O sistema deverá exibir as alocações atuais e futuras, a dedicação já comprometida e a disponibilidade estimada de cada colaborador, considerando os términos previstos e reais das alocações. | PN03, PN07 |
+| **RF10** | O sistema deverá sinalizar colaboradores que ficarão livres nos próximos 30, 60 e 90 dias. | PN03, PN07 |
 | **RF11** | O sistema deverá permitir que cada colaborador registre, remotamente, as horas trabalhadas em cada contrato. | PN04 |
 | **RF12** | O sistema deverá registrar evidências de entrega vinculadas ao contrato e ao mês de referência. | PN04 |
-| **RF13** | O sistema deverá calcular o custo real de cada contrato (horas apontadas × custo/hora). | PN04 |
+| **RF13** | O sistema deverá calcular o custo real de cada contrato pela soma de horas válidas apontadas multiplicadas pelo custo/hora aplicável à data de cada apontamento, preservando o histórico dos valores. | PN04 |
 | **RF14** | O sistema deverá gerar as faturas de cada contrato. | PN05 |
 | **RF15** | O sistema deverá enviar os dados das faturas ao Nibo para emissão de nota fiscal e boleto. | PN05 |
 | **RF16** | O sistema deverá registrar o número da nota fiscal e a situação do pagamento de cada fatura. | PN05 |
@@ -183,15 +183,16 @@ Essa integração visa reduzir a perda de informações, minimizar inconsistênc
 | **RF19** | O sistema deverá renovar automaticamente os contratos *evergreen* ao fim de cada ciclo. | PN06 |
 | **RF20** | O sistema deverá alertar sobre contratos de 12 meses próximos do vencimento. | PN06 |
 | **RF21** | O sistema deverá registrar cancelamentos, com data do aviso e cálculo da data efetiva de término. | PN06 |
-| **RF22** | O sistema deverá atualizar o término previsto das alocações quando o contrato for cancelado ou encerrado. | PN06, PN03 |
-| **RF23** | O sistema deverá gerar o relatório trimestral de capacidade (contratos a vencer, equipes que ficarão livres e oportunidades em andamento). | PN07 |
+| **RF22** | O sistema deverá ajustar o término das alocações afetadas quando houver encerramento/cancelamento, usando a data efetiva confirmada, sem encerrar automaticamente alocações em caso de renovação ou alteração que não exija liberação. | PN06, PN03 |
+| **RF23** | O sistema deverá gerar relatório de capacidade com contratos e alocações a vencer, dedicação comprometida, colaboradores potencialmente disponíveis e oportunidades em andamento, cruzando a demanda futura com perfis técnicos, competências e certificações válidas. A periodicidade trimestral depende de validação com a KXP. | PN07 |
 | **RF24** | O sistema deverá gerar relatórios de margem por contrato e de ociosidade dos colaboradores. | PN05, PN07 |
 | **RF25** | O sistema deverá cadastrar usuários e vinculá-los a um colaborador e a um perfil de acesso. | Todos |
 | **RF26** | O sistema deverá cadastrar as certificações de cada colaborador (AWS, Azure, GCP, FinOps, Scrum, Datadog etc.), com data de obtenção e de validade. | PN03 |
-| **RF27** | O sistema deverá buscar colaboradores disponíveis que possuam as certificações exigidas por um contrato ou oportunidade. | PN01, PN03 |
+| **RF27** | O sistema deverá apoiar a busca de colaboradores que estejam disponíveis no período necessário e que atendam aos perfis/competências exigidos e possuam as certificações válidas requeridas pelo contrato ou oportunidade. | PN01, PN03 |
 | **RF28** | O sistema deverá registrar em qual(is) provedor(es) de nuvem (AWS, Azure, GCP) cada contrato é executado. | PN02 |
 | **RF29** | O sistema deverá registrar a moeda de cada contrato e de cada fatura. *(Premissa baseada no endereço nos EUA e venda do Kura em dólar).* | PN02, PN05 |
 | **RF30** | O sistema deverá alertar sobre certificações de colaboradores próximas do vencimento. | PN03 |
+| **RF31** | O sistema deverá relacionar a demanda de perfil técnico de cada oportunidade aos perfis/competências cadastrados para os colaboradores, sem confundir perfil profissional com certificação. | PN01, PN03, PN07 |
 
 ---
 # # 7 . Requisitos não funcionais
