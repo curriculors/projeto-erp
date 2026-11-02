@@ -233,7 +233,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN09** | Contrato *evergreen* é renovado automaticamente ao fim de cada ciclo, até ser cancelado. | Entrevista | Regra de status |
 | **RN10** | O cliente pode cancelar o contrato mediante aviso prévio; a data efetiva de término é a data do aviso somada ao prazo de aviso prévio. *(Padrão de 30 dias confirmado).* | Entrevista | Atributos de cancelamento |
 | **RN11** | Um contrato pode incluir um ou mais serviços, e um serviço pode estar em vários contratos, com valor próprio em cada um. *(Confirmada divisão de operações).* | Proposta | Contrato–Serviço (N:N com atributo) |
-| **RN12** | Um contrato pode ter nenhum ou vários aditivos; todo aditivo pertence a um único contrato. | Proposta | Contrato–Aditivo |
+| **RN12** | Um contrato pode ter nenhum ou vários aditivos; todo aditivo pertence a um único contrato. A cardinalidade mínima do lado do contrato é zero, pois um contrato pode existir sem alterações.  | Proposta | Contrato–Aditivo |
 | **RN13** | Um aditivo só altera as condições do contrato depois de aprovado. | Proposta | Status do aditivo |
 | **RN14** | Um contrato só se torna vigente após aprovação interna e assinatura no DocuSign. | Proposta | Status + aprovação |
 | **RN15** | Contrato encerrado ou cancelado não pode receber novas alocações, apontamentos de horas ou faturas. | Proposta | Restrição de status |
@@ -246,22 +246,22 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN18** | Cada alocação deve registrar função, data de início, término previsto e dedicação (horas/mês ou %); o término real é registrado quando a alocação acaba. | Proposta | Atributos do relacionamento |
 | **RN19** | A dedicação total de um colaborador em alocações simultâneas não pode ultrapassar 100%, respeitando o limite de até 2 contratos. | Entrevista | Restrição |
 | **RN20** | Todo colaborador deve ter um custo/hora; quando o valor muda, o anterior é mantido no histórico. | Entrevista | Histórico de custo |
-| **RN21** | O colaborador só pode apontar horas em contratos nos quais está alocado e dentro do período da alocação. | Proposta | Apontamento ligado à alocação |
+| **RN21** | O colaborador só pode apontar horas por uma alocação válida, vinculada ao contrato, dentro do período efetivo da alocação; cada apontamento deve preservar a data/período e o custo/hora aplicável. | Proposta | Apontamento ligado à alocação |
 | **RN22** | O apontamento de horas é feito pelo próprio colaborador, remotamente. | Adendo | Apontamento–Colaborador |
-| **RN23** | O custo real de um contrato é a soma das horas apontadas multiplicadas pelo custo/hora vigente na data de cada apontamento. | Entrevista | Cálculo |
+| **RN23** | O custo real de um contrato é a soma das horas válidas apontadas multiplicadas pelo custo/hora aplicável à data de cada apontamento. Mudanças futuras no custo/hora não alteram retroativamente os custos já apurados. | Entrevista | Cálculo |
 | **RN24** | Um colaborador é considerado disponível a partir do término previsto da sua última alocação. | Entrevista | Cálculo |
-| **RN25** | Quando um contrato é cancelado ou encerrado, o término previsto das suas alocações passa a ser a data efetiva de término do contrato. | Entrevista | Integra PN03 e PN06 |
+| **RN25** | Quando houver cancelamento/encerramento, o término das alocações afetadas deve ser ajustado para a data efetiva confirmada do contrato. Renovação ou alteração não encerra automaticamente a alocação; registrar término previsto e término real separadamente. | Entrevista | Integra PN03 e PN06 |
 | **RN26** | Colaborador desligado é inativado, nunca excluído, para preservar o histórico de alocações e horas. | Proposta | Status |
 | **RN44** | O custo/hora do colaborador considera: salário, encargos/benefícios, provisão de desligamento, equipamentos, licenças de software, diluição da camada de gestão e fator de ociosidade de 20%. | Entrevista | Atributos do cálculo de custo/hora |
 
 ### 8.4 Evidências, Faturas e Pagamentos
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
-| **RN27** | Um contrato pode ter nenhuma ou várias evidências de entrega; cada evidência pertence a um único contrato e a um mês de referência. | Proposta | Contrato–Evidência |
+| **RN27** | Um contrato pode ter nenhuma ou várias evidências de entrega; cada evidência pertence a um único contrato, a um colaborador responsável e a um mês de referência. A ausência inicial de evidência não impede o cadastro do contrato.  | Proposta | Contrato–Evidência |
 | **RN28** | Toda evidência deve ser registrada por um colaborador alocado no contrato. | Proposta | Colaborador–Evidência |
-| **RN29** | Um contrato vigente gera uma fatura mensal; cada fatura pertence a um único contrato. | Proposta | Contrato–Fatura |
+| **RN29** | Um contrato vigente pode gerar nenhuma ou várias faturas ao longo do seu ciclo; cada fatura pertence a um único contrato. A primeira fatura pode ainda não existir no momento da formalização do contrato. | Proposta | Contrato–Fatura |
 | **RN30** | A nota fiscal e o boleto de cada fatura são emitidos pelo Nibo; o sistema guarda o número da NF e o status. | Entrevista | Atributos da fatura |
-| **RN31** | Uma fatura pode receber um ou mais pagamentos; cada pagamento pertence a uma única fatura. | Proposta | Fatura–Pagamento |
+| **RN31** | Uma fatura pode receber nenhum, um ou vários pagamentos; cada pagamento pertence a uma única fatura. O mínimo zero representa a fatura recém-criada ou ainda em aberto. | Proposta | Fatura–Pagamento |
 | **RN32** | A soma dos pagamentos não pode ultrapassar o valor da fatura. | Proposta | Restrição |
 | **RN33** | A margem do contrato é a receita faturada menos o custo real no mesmo período. | Entrevista | Cálculo |
 
@@ -282,6 +282,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN41** | Um contrato ou oportunidade pode exigir nenhuma ou várias certificações. | Site KXP | Contrato–Certificação (N:N) |
 | **RN42** | Um contrato é executado em um ou mais provedores de nuvem (AWS, Azure, GCP), e um provedor pode estar em vários contratos. | Site KXP | Contrato–Provedor (N:N) |
 | **RN43** | Todo contrato possui uma moeda, e suas faturas são emitidas na mesma moeda. | Site KXP | Atributo "moeda" |
+| **RN44** | Perfil técnico é distinto de certificação: o perfil descreve a atuação/competência necessária (por exemplo, SRE ou FinOps), enquanto a certificação registra uma qualificação formal. A oportunidade pode indicar um ou vários perfis; o colaborador pode possuir um ou vários perfis/competências. Confirmar com a KXP a terminologia e o cadastro usados. | Proposta a validar | Oportunidade–Perfil Técnico; Colaborador–Perfil Técnico |
 
 # # 9 . Restrições e políticas organizacionais
 *Baseado no levantamento, o sistema precisará respeitar as seguintes regras da empresa:*
@@ -309,6 +310,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 | **Colaborador** | Certificação |
 | **Colaborador** | Contrato salarial |
 | **Colaborador** | Evidência |
+| **Colaborador** | Perfil Técnico |
 | **Colaborador** | Usuário |
 | **Contrato** | Aditivo |
 | **Contrato** | Alocação |
@@ -323,6 +325,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 | **Fatura** | Pagamento |
 | **Oportunidade** | Certificação |
 | **Oportunidade** | Contrato |
+| **Oportunidade** | Perfil Técnico |
 | **Oportunidade** | Serviço |
 | **Serviço** | Contrato |
 | **Usuário** | Aprovação |
