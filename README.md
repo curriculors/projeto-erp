@@ -629,6 +629,14 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 # # 16 . DER
 [DER](./docs/der.jpg)
 
+# # 17 . Modelo Lógico
+Este Modelo Lógico foi criado a partir do DER entregue na última parte do trabalho. Ou seja, todas as entidades e atributos foram colocados aqui. Uma adição feita: As restrições
+
+Essas são as tabela principais que foram criadas:
+<img width="2273" height="1387" alt="Tabela principais e lógicas" src="https://github.com/user-attachments/assets/ed05238b-09cd-4aa2-99a6-36c11d6dbf55" />
+
+
+
 # # 17 . Justificativas técnicas
 A empresa **KXP Technology Consulting** foi escolhida pela equipe devido à sua área de atuação, voltada para o ramo de tecnologia. Essa escolha proporcionaria à equipe a oportunidade de aprofundar os conhecimentos já adquiridos, desenvolver novos conhecimentos e compreender, de forma mais prática, o funcionamento e a dinâmica de uma empresa de tecnologia, ampliando também os horizontes em relação às possibilidades de atuação profissional.
 
