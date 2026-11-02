@@ -630,7 +630,7 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 [DER](./docs/der.jpg)
 
 # # 17 . Modelo Lógico
-Este Modelo Lógico foi criado a partir do DER entregue na última parte do trabalho. Ou seja, todas as entidades e atributos foram colocados aqui. Uma adição feita: As restrições
+Este Modelo Lógico foi criado a partir do DER entregue na última parte do trabalho. Ou seja, todas as entidades e atributos foram colocados aqui. Uma adição feita: As restrições.
 
 Essas são as tabela principais que foram criadas:
 <img width="2273" height="1387" alt="Tabela principais e lógicas" src="https://github.com/user-attachments/assets/ed05238b-09cd-4aa2-99a6-36c11d6dbf55" />
@@ -682,6 +682,21 @@ Cada colaborador pode ter, no máximo, um usuário no sistema. Para garantir iss
 ### Colaborador e contrato
 
 Esse relacionamento é muitos para muitos (RN17) e foi representado pela tabela ALOCAÇÃO, que também armazena informações como função, datas e dedicação. Utilizamos uma chave primária própria porque um colaborador pode retornar ao mesmo contrato em outro período.
+
+### Relacionamentos N
+Os relacionamentos muitos para muitos (N:N) foram representados por tabelas associativas, que conectam as duas tabelas principais por meio de chaves estrangeiras (FKs). Essas tabelas utilizam, geralmente, uma chave primária composta pelas duas FKs, evitando associações duplicadas e mantendo os dados organizados.
+
+Tabelas associativas criadas:
+<img width="712" height="1033" alt="Tabelas Associativas" src="https://github.com/user-attachments/assets/aea1fe78-5b46-4db9-95a5-4e73e666d512" />
+
+### Entidades fracas
+Foi realizada a revisão do modelo para identificar as entidades que dependem de outra para existir. Como todas as tabelas possuem chave primária própria, a dependência encontrada é de existência: o registro não faz sentido sem a entidade à qual está vinculado. Foram identificadas as seguintes entidades fracas: 
+ 
+1. Contato depende de Cliente (FK id_cliente). 
+2. Contrato_Salarial depende de Colaborador (FK id_colaborador). 
+3. Aditivo depende de Contrato (FK id_contrato). 
+4. Apontamento_de_Horas depende de Alocação (FK id_alocacao). 
+5. Fatura depende de Contrato (FK id_contrato). 
 
 # # 18 . Normalização
 
