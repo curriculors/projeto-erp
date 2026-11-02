@@ -699,18 +699,34 @@ Foi realizada a revisão do modelo para identificar as entidades que dependem de
 5. Fatura depende de Contrato (FK id_contrato). 
 
 # # 18 . Normalização
+Etapas 8 a 12
 
+# # 19 . Dicionário de dados
+Etapa 13
 
+# # 20 . Implementação SQL
+Etapas 14 e 15
 
+# # 21 . Massa de dados
+Etapas 16, 17
 
-# # 19 . Justificativas técnicas
+# # 22 . Consultas gerenciais
+Etapa 18
+
+# # 23 . Consultas de auditoria
+Etapa 19
+
+# # 24 . Potencial para BI e IA
+Etapas 20 e 21
+
+# # 25 . Justificativas técnicas
 A empresa **KXP Technology Consulting** foi escolhida pela equipe devido à sua área de atuação, voltada para o ramo de tecnologia. Essa escolha proporcionaria à equipe a oportunidade de aprofundar os conhecimentos já adquiridos, desenvolver novos conhecimentos e compreender, de forma mais prática, o funcionamento e a dinâmica de uma empresa de tecnologia, ampliando também os horizontes em relação às possibilidades de atuação profissional.
 
 Além disso, durante a entrevista realizada com o proprietário da empresa, a equipe tomou conhecimento de algumas necessidades relacionadas à melhoria e ao ajuste de determinados processos internos, principalmente no que diz respeito à **gestão dos contratos** e à **análise dos custos reais** de cada projeto desenvolvido pela empresa.
 
 A partir dessas informações, a equipe chegou ao consenso de que a escolha da KXP Technology Consulting representaria uma ótima oportunidade para ambas as partes, permitindo que a equipe aplicasse seus conhecimentos na identificação e análise das necessidades da empresa, ao mesmo tempo em que poderia contribuir para o aprimoramento de seus processos.
 
-# # 20 . Conclusão 
+# # 26 . Conclusão 
 O desenvolvimento deste projeto permitiu organizar os principais processos e necessidades da KXP Technology Consulting, desde a prospecção e negociação até a formalização de contratos, alocação de colaboradores, apontamento de horas, evidências, faturamento e pagamentos. A revisão desta entrega priorizou a rastreabilidade entre processos, requisitos, regras de negócio, relacionamentos, cardinalidades e dicionário de dados, buscando que todos representem o mesmo funcionamento do negócio. 
 
 ### Estruturação de Dados e Segurança
