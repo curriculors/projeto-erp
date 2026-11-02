@@ -635,11 +635,57 @@ Este Modelo Lógico foi criado a partir do DER entregue na última parte do trab
 Essas são as tabela principais que foram criadas:
 <img width="2273" height="1387" alt="Tabela principais e lógicas" src="https://github.com/user-attachments/assets/ed05238b-09cd-4aa2-99a6-36c11d6dbf55" />
 
-# # 18 . Normalização
 ### Chaves primárias
 Utilizamos IDs com auto incremento como chaves primárias das tabelas. Dessa forma, cada registro possui um identificador próprio, facilitando sua identificação e utilização como chave estrangeira em outras tabelas. Nas tabelas associativas, utilizamos uma chave composta, formada pelas chaves estrangeiras  que ligam as duas tabelas principais. Dessa forma, conseguimos identificar cada associação sem precisar criar um ID separado. 
 
 ### Relacionamentos convertidos
+| Relacionamento | Onde fica a FK | Obrigatória? |
+| :--- | :--- | :--- |
+| Cliente -> Contato | id_cliente em CONTATO | SIM |
+| Cliente -> Oportunidade | id_cliente em OPORTUNIDADE | SIM |
+| Cliente -> Contrato | id_cliente em CONTRATO | SIM |
+| Oportunidade -> Contrato (1:0..1) | id_oportunidade em CONTRATO, com UNIQUE | NÃO |
+| Colaborador -> Alocação | id_colaborador em ALOCAÇÃO | SIM |
+| Contrato -> Alocação | id_contrato em ALOCAÇÃO | SIM |
+| Alocação -> Apontamento de horas | id_alocacao em APONTAMENTO DE HORAS | SIM |
+| Colaborador -> Contrato salarial | id_colaborador em CONTRATO_SALARIAL | SIM |
+| Colaborador -> Evidência | id_colaborador em EVIDÊNCIA DE ENTREGA | SIM |
+| Contrato -> Evidência | id_contrato em EVIDÊNCIA DE ENTREGA | SIM |
+| Contrato -> Aditivo | id_contrato em ADITIVO | SIM |
+| Contrato -> Fatura | id_contrato em FATURA | SIM |
+| Fatura -> Pagamento | id_fatura em PAGAMENTO | SIM |
+| Usuário -> Aprovação | id_usuario em APROVAÇÃO | SIM |
+| Contrato -> Aprovação | id_contrato em APROVAÇÃO | NÃO |
+| Aditivo -> Aprovação | id_aditivo em APROVAÇÃO | NÃO |
+| Alocação -> Aprovação | id_alocacao em APROVAÇÃO | NÃO |
+| Perfil de Acesso -> Usuário | id_perfil_de_acesso em USUÁRIO | SIM |
+| Colaborador -> Usuário (1:0..1) | id_colaborador em USUÁRIO, com UNIQUE | NÃO |
+
+A maioria dos relacionamentos foi representada diretamente por chaves estrangeiras (FKs), mas alguns casos exigiram decisões específicas para evitar informações duplicadas e manter o modelo organizado.
+ 
+### Apontamento de horas
+
+Como cada apontamento pertence a uma alocação, que já identifica o colaborador e o contrato, decidimos guardar apenas o “id_alocacao”. Assim, evitamos repetir informações e possíveis divergências nos registros. 
+
+### Aprovação
+
+Uma aprovação pode estar relacionada a um contrato, aditivo ou alocação. Por isso, utilizamos três FKs opcionais, mas apenas uma pode ser preenchida por registro. A regra que impede alguém de aprovar algo que ele mesmo cadastrou (RN37) fica sob responsabilidade do sistema.
+
+### Oportunidade e contrato
+
+Uma oportunidade pode gerar no máximo um contrato, mas nem todo contrato vem de uma oportunidade. Por isso, a FK “id_oportunidade” pode ser nula e possui a restrição UNIQUE, impedindo que uma oportunidade seja vinculada a mais de um contrato. 
+
+### Colaborador e usuário 
+
+Cada colaborador pode ter, no máximo, um usuário no sistema. Para garantir isso, colocamos a FK ”id_colaborador” na tabela USUÁRIO com a restrição UNIQUE. 
+
+### Colaborador e contrato
+
+Esse relacionamento é muitos para muitos (RN17) e foi representado pela tabela ALOCAÇÃO, que também armazena informações como função, datas e dedicação. Utilizamos uma chave primária própria porque um colaborador pode retornar ao mesmo contrato em outro período.
+
+# # 18 . Normalização
+
+
 
 
 # # 19 . Justificativas técnicas
