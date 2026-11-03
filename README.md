@@ -292,7 +292,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 * **Validação de Documentos:** A inclusão de novos clientes e contratos no sistema é estritamente condicionada à apresentação e validação de documentos comprobatórios.
  
 # # 10 . Fluxogramas
-[Fluxograma](./docs/fluxograma.pdf)
+[Fluxograma](./docs/diagramas/fluxograma.pdf)
 <img width="1241" height="1755" alt="fluxograma (2)_page-0001" src="https://github.com/user-attachments/assets/792e5003-87c7-4c91-a134-c93df30838da" />
 <img width="1241" height="1755" alt="fluxograma (2)_page-0002" src="https://github.com/user-attachments/assets/b9143e9f-b95a-49e9-8db6-5d3f0d771587" />
 
@@ -630,7 +630,7 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 | **Colaborador Vinculado** | Identificação do funcionário humano atrelado a esta credencial de acesso. | Relação 1:1 restrita (cada colaborador ativo deve ter apenas um usuário). |
 
 # # 16 . DER
-[DER](./docs/der.jpg)
+[DER](./docs/diagramas/der.jpg)
 <img width="3508" height="2479" alt="der (1)" src="https://github.com/user-attachments/assets/2ed28c14-fff9-4526-86d2-b176c5a11dba" />
 
 # # 17 . Modelo Lógico
