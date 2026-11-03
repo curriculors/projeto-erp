@@ -667,23 +667,23 @@ Utilizamos IDs com auto incremento como chaves primárias das tabelas. Dessa for
 
 A maioria dos relacionamentos foi representada diretamente por chaves estrangeiras (FKs), mas alguns casos exigiram decisões específicas para evitar informações duplicadas e manter o modelo organizado.
  
-### Apontamento de horas
+**Apontamento de horas**
 
 Como cada apontamento pertence a uma alocação, que já identifica o colaborador e o contrato, decidimos guardar apenas o “id_alocacao”. Assim, evitamos repetir informações e possíveis divergências nos registros. 
 
-### Aprovação
+**Aprovação**
 
 Uma aprovação pode estar relacionada a um contrato, aditivo ou alocação. Por isso, utilizamos três FKs opcionais, mas apenas uma pode ser preenchida por registro. A regra que impede alguém de aprovar algo que ele mesmo cadastrou (RN37) fica sob responsabilidade do sistema.
 
-### Oportunidade e contrato
+**Oportunidade e contrato**
 
 Uma oportunidade pode gerar no máximo um contrato, mas nem todo contrato vem de uma oportunidade. Por isso, a FK “id_oportunidade” pode ser nula e possui a restrição UNIQUE, impedindo que uma oportunidade seja vinculada a mais de um contrato. 
 
-### Colaborador e usuário 
+**Colaborador e usuário**
 
 Cada colaborador pode ter, no máximo, um usuário no sistema. Para garantir isso, colocamos a FK ”id_colaborador” na tabela USUÁRIO com a restrição UNIQUE. 
 
-### Colaborador e contrato
+**Colaborador e contrato**
 
 Esse relacionamento é muitos para muitos (RN17) e foi representado pela tabela ALOCAÇÃO, que também armazena informações como função, datas e dedicação. Utilizamos uma chave primária própria porque um colaborador pode retornar ao mesmo contrato em outro período.
 
@@ -693,7 +693,7 @@ Os relacionamentos muitos para muitos (N:N) foram representados por tabelas asso
 Tabelas associativas criadas:
 <img width="712" height="1033" alt="Tabelas Associativas" src="https://github.com/user-attachments/assets/aea1fe78-5b46-4db9-95a5-4e73e666d512" />
 
-### Entidades fracas
+**Entidades fracas**
 Foi realizada a revisão do modelo para identificar as entidades que dependem de outra para existir. Como todas as tabelas possuem chave primária própria, a dependência encontrada é de existência: o registro não faz sentido sem a entidade à qual está vinculado. Foram identificadas as seguintes entidades fracas: 
  
 1. Contato depende de Cliente (FK id_cliente). 
@@ -866,7 +866,23 @@ Chaves e relacionamentos:
 •	id_servico: FK em OPORTUNIDADE_SERVICO (referenciando SERVICO).
 •	PK composta em OPORTUNIDADE_SERVICO: (id_oportunidade, id_servico).
 
-# Resumo da documentação
+**Resumo da documentação**
+| ETAPA | PERGUNTA-CHAVE | DIAGNÓSTICO NO ERP | AÇÃO TOMADA |
+| :--- | :--- | :--- | :--- |
+| 1FN | "Cada campo armazena um único valor?" | Atributos multivalorados em Cliente e grupos repetitivos em N:N. | Criação da tabela Contato e 11 tabelas associativas. |
+| 2FN | "Cada atributo não chave depende da CHAVE TODA?" | Verificação de chaves compostas nas tabelas associativas. | Garantido que atributos como valor_contratado dependem do par (id_contrato, id_servico). |
+| 3FN | "O atributo depende diretamente da chave ou depende de outro atributo?" | Dependências transitivas de cliente e servico na tabela Oportunidade. | Remoção de cliente e servico da tabela Oportunidade, utilizando apenas a FK id_cliente e a associativa OPORTUNIDADE_SERVICO. |
+
+### Restrições
+Para esta etapa, foram avaliadas e aplicadas seis categorias de restrições:
+•	PRIMARY KEY (PK): Identificação única e obrigatória de cada registro.
+•	FOREIGN KEY (FK): Garantia de integridade referencial entre entidades relacionadas.
+•	NOT NULL: Obrigatoriedade de preenchimento de atributos fundamentais.
+•	UNIQUE: Impedimento de duplicidade de registros que exigem exclusividade (ex.: CNPJ, e-mail).
+•	CHECK: Validação de condições de negócio. O “Valores: ...” indica uma restrição CHECK de lista: só os valores listados são aceitos, e qualquer outro é recusado. Por exemplo, a senioridade do colaborador só pode ser Júnior, Pleno ou Sênior, e a decisão de uma aprovação só pode ser Aprovado ou Reprovado. “Maior que 0” e “Maior ou igual a 0” indicam uma restrição CHECK numérica: impedem valores negativos ou zerados onde isso não faz sentido para o negócio. Por exemplo, o valor mensal do contrato não pode ser negativo, e o custo por hora do colaborador deve ser maior que zero.
+•	DEFAULT: Atribuição automática de valores padrão caso não informados. O “Padrão ...” indica uma restrição DEFAULT, sendo o valor que o banco preenche sozinho quando nenhum valor é informado. Por exemplo, “Padrão 12 (meses)” na vigência do contrato, “Padrão 30 (dias)” no prazo de aviso prévio e “Padrão ’Em aprovação’” no status de um novo contrato.
+
+Abaixo estão detalhadas as restrições reais aplicadas às entidades do ERP KXP, contendo suas respectivas justificativas funcionais.
 
 
 # # 19 . Dicionário de dados
