@@ -703,8 +703,36 @@ Foi realizada a revisão do modelo para identificar as entidades que dependem de
 5. Fatura depende de Contrato (FK id_contrato). 
 
 # # 18 . Normalização
-Etapas 8 a 12
-
+### 1FN
+| TABELA | CAMPO / ATRIBUTO | TIPO DE CHAVE | REGRA DA 1FN APLICADA |
+| :--- | :--- | :--- | :--- |
+| CLIENTE | id_cliente | PK | Chave primária atômica |
+| CLIENTE | cnpj | Atributo | Valor atômico único |
+| CLIENTE | nome | Atributo | Nome/Razão Social |
+| CONTATO | id_contato | PK | Chave primária atômica |
+| CONTATO | id_cliente | FK | Chave estrangeira de ligação |
+| CONTATO | nome | Atributo | Nome do contato |
+| CONTATO | email | Atributo | Endereço individual de e-mail |
+| CONTATO | telefone | Atributo | **Atômico**: Um único telefone por linha |
+| OPORTUNIDADE | id_oportunidade | PK | Chave primária atômica |
+| OPORTUNIDADE | id_cliente | FK | Ligação com a tabela Cliente |
+| OPORTUNIDADE | valor_estimado | Atributo | Valor monetário único |
+| OPORTUNIDADE | data_prevista_inicio | Atributo | Data formatada |
+| OPORTUNIDADE | estagio_negociacao | Atributo | Status do processo |
+| CONTRATO | id_contrato | PK | Chave primária atômica |
+| CONTRATO | id_cliente | FK | Cliente associado |
+| CONTRATO | id_oportunidade | FK | Oportunidade associada |
+| CONTRATO | numero | Atributo | Número único do documento |
+| CONTRATO | valor_mensal | Atributo | Valor financeiro mensal atômico |
+| CONTRATO | data_inicio | Atributo | Data de início |
+| CONTRATO | vigencia | Atributo | Período de vigência |
+| CONTRATO | tipo_renovacao | Atributo | Regra de renovação |
+| CONTRATO | prazo_aviso_previo | Atributo | Prazo em dias/meses |
+| CONTRATO | moeda | Atributo | Indicador monetário |
+| CONTRATO | referencia_docusign | Atributo | Código identificador DocuSign |
+| CONTRATO | status | Atributo | Estado do contrato |
+| CONTRATO | data_aviso_cancelamento | Atributo | Data do aviso de cancelamento |
+| CONTRATO | data_efetiva_termino | Atributo | Data efetiva de término |
 # # 19 . Dicionário de dados
 Etapa 13
 
