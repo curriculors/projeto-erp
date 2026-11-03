@@ -876,14 +876,28 @@ Chaves e relacionamentos:
 
 ### Restrições
 Para esta etapa, foram avaliadas e aplicadas seis categorias de restrições:
+
 •	PRIMARY KEY (PK): Identificação única e obrigatória de cada registro.
+
 •	FOREIGN KEY (FK): Garantia de integridade referencial entre entidades relacionadas.
+
 •	NOT NULL: Obrigatoriedade de preenchimento de atributos fundamentais.
+
 •	UNIQUE: Impedimento de duplicidade de registros que exigem exclusividade (ex.: CNPJ, e-mail).
+
 •	CHECK: Validação de condições de negócio. O “Valores: ...” indica uma restrição CHECK de lista: só os valores listados são aceitos, e qualquer outro é recusado. Por exemplo, a senioridade do colaborador só pode ser Júnior, Pleno ou Sênior, e a decisão de uma aprovação só pode ser Aprovado ou Reprovado. “Maior que 0” e “Maior ou igual a 0” indicam uma restrição CHECK numérica: impedem valores negativos ou zerados onde isso não faz sentido para o negócio. Por exemplo, o valor mensal do contrato não pode ser negativo, e o custo por hora do colaborador deve ser maior que zero.
+
 •	DEFAULT: Atribuição automática de valores padrão caso não informados. O “Padrão ...” indica uma restrição DEFAULT, sendo o valor que o banco preenche sozinho quando nenhum valor é informado. Por exemplo, “Padrão 12 (meses)” na vigência do contrato, “Padrão 30 (dias)” no prazo de aviso prévio e “Padrão ’Em aprovação’” no status de um novo contrato.
 
 Abaixo estão detalhadas as restrições reais aplicadas às entidades do ERP KXP, contendo suas respectivas justificativas funcionais.
+
+| CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
+| :--- | :--- | :--- |
+| id_cliente | PRIMARY KEY | Identificador único e inequívoco de cada empresa cliente no sistema. |
+| cnpj | NOT NULL, UNIQUE | O CNPJ é obrigatório para emissão de faturas e contratos e não pode ser cadastrado em duplicidade. |
+| nome | NOT NULL | A razão social ou o nome fantasia é obrigatório para a identificação comercial do cliente. |
+
+
 
 # # 19 . Dicionário de dados
 Etapa 13
