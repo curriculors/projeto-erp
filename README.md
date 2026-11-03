@@ -764,7 +764,7 @@ Foi realizada a revisão do modelo para identificar as entidades que dependem de
 ### Documentação
 **Situação 1: Aplicação da 1FN (Atributos multivalorados e grupos repetitivos)**
 
-ANTES 
+**ANTES**
 
 Estrutura Analisada: CLIENTE (id_cliente, cnpj, nome, contato) 
 
@@ -780,7 +780,7 @@ Problema Identificado:
 
  
 
-DEPOIS 
+**DEPOIS**
 
 Correção Realizada: Criação da tabela dependente CONTATO, isolando cada informação em registros atômicos com chave estrangeira vinculada ao cliente. 
 
@@ -794,7 +794,7 @@ Correção Realizada: Criação da tabela dependente CONTATO, isolando cada info
 
 **Situação 2: Aplicação da 1FN e 2FN (Relacionamento N:N e chave composta)**
 
-ANTES
+**ANTES**
 
 Estrutura Analisada: Na primeira entrega, o mapa de atributos apresentava “Serviço(s)” como atributo do CONTRATO e “Valor no Contrato” como atributo do SERVIÇO:
 
@@ -813,7 +813,7 @@ Problemas Identificados:
 •	Violação da 1FN: o atributo servicos armazenava vários valores no mesmo campo, como “Nuvem Gerenciada, SRE”, contrariando a regra de que cada campo deve armazenar apenas um valor.
 •	Problema de organização dos atributos: o valor_no_contrato estava na tabela SERVICO, embora seu valor dependesse do serviço e do contrato ao qual ele estava associado, e não somente do serviço.
 
-DEPOIS
+**DEPOIS**
 
 Correção Realizada: Foi removido o atributo servicos da tabela CONTRATO e o atributo valor_no_contrato da tabela SERVICO. Para representar corretamente o relacionamento N:N, foi criada a tabela associativa CONTRATO_SERVICO, responsável por relacionar contratos e serviços e armazenar o valor contratado de cada serviço.
 
@@ -833,7 +833,7 @@ Dependência funcional:(id_contrato, id_servico) → valor_contratado, data_inic
 
 **Situação 3: Aplicação da 3fn (Dependência transitiva)**
 
-ANTES 
+**ANTES**
 
 OPORTUNIDADE (id_oportunidade, id_cliente, cliente, servico, valor_estimado, data_prevista_inicio, estagio_negociacao)
 
@@ -848,7 +848,7 @@ Problema Identificado:
 •	 Dependência Transitiva (Violação da 3FN): O atributo cliente não depende diretamente da chave primária id_oportunidade, mas sim do atributo id_cliente.
 •	Além disso, manter a informação de serviço diretamente em OPORTUNIDADE gera redundância, considerando que uma oportunidade pode estar vinculada a vários serviços.
 
-DEPOIS
+**DEPOIS**
 
 Correção Realizada:
 
@@ -883,7 +883,6 @@ Para esta etapa, foram avaliadas e aplicadas seis categorias de restrições:
 •	DEFAULT: Atribuição automática de valores padrão caso não informados. O “Padrão ...” indica uma restrição DEFAULT, sendo o valor que o banco preenche sozinho quando nenhum valor é informado. Por exemplo, “Padrão 12 (meses)” na vigência do contrato, “Padrão 30 (dias)” no prazo de aviso prévio e “Padrão ’Em aprovação’” no status de um novo contrato.
 
 Abaixo estão detalhadas as restrições reais aplicadas às entidades do ERP KXP, contendo suas respectivas justificativas funcionais.
-
 
 # # 19 . Dicionário de dados
 Etapa 13
