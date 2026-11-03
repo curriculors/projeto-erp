@@ -694,6 +694,7 @@ Tabelas associativas criadas:
 <img width="712" height="1033" alt="Tabelas Associativas" src="https://github.com/user-attachments/assets/aea1fe78-5b46-4db9-95a5-4e73e666d512" />
 
 **Entidades fracas**
+
 Foi realizada a revisão do modelo para identificar as entidades que dependem de outra para existir. Como todas as tabelas possuem chave primária própria, a dependência encontrada é de existência: o registro não faz sentido sem a entidade à qual está vinculado. Foram identificadas as seguintes entidades fracas: 
  
 1. Contato depende de Cliente (FK id_cliente). 
