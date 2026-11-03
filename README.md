@@ -891,14 +891,14 @@ Para esta etapa, foram avaliadas e aplicadas seis categorias de restrições:
 
 Abaixo estão detalhadas as restrições reais aplicadas às entidades do ERP KXP, contendo suas respectivas justificativas funcionais.
 
-Tabela - Cliente
+**Tabela - Cliente**
 | CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
 | :--- | :--- | :--- |
 | id_cliente | PRIMARY KEY | Identificador único e inequívoco de cada empresa cliente no sistema. |
 | cnpj | NOT NULL, UNIQUE | O CNPJ é obrigatório para emissão de faturas e contratos e não pode ser cadastrado em duplicidade. |
 | nome | NOT NULL | A razão social ou o nome fantasia é obrigatório para a identificação comercial do cliente. |
 
-Tabela - Contato
+**Tabela - Contato**
 | CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
 | :--- | :--- | :--- |
 | id_contato | PRIMARY KEY | Chave primária atômica de identificação do contato. |
@@ -907,7 +907,7 @@ Tabela - Contato
 | email | CHECK (formato válido de e-mail) | O e-mail, quando informado, deve ter formato válido para notificações e comunicação. |
 | telefone | CHECK (apenas números, com código de área) | O telefone é guardado apenas com números e código de área, para padronizar o registro. |
 
-Tabela - Contrato
+**Tabela - Contrato**
 | CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
 | :--- | :--- | :--- |
 | id_contrato | PRIMARY KEY | Identificador único do contrato no sistema. |
@@ -925,7 +925,7 @@ Tabela - Contrato
 | data_aviso_cancelamento | Pode ser nulo | Só é preenchida quando há um aviso de cancelamento. |
 | data_efetiva_termino | CHECK (data_efetiva_termino >= data_aviso_cancelamento); pode ser nulo | Só é preenchida quando há cancelamento, e nunca pode ser anterior à data do aviso. |
 
-Tabela - Contrato_Servico
+**Tabela - Contrato_Servico**
 | CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
 | :--- | :--- | :--- |
 | id_contrato, id_servico | PRIMARY KEY (composta) | Chave primária composta: evita que o mesmo serviço seja incluído mais de uma vez no mesmo contrato. |
@@ -935,8 +935,49 @@ Tabela - Contrato_Servico
 | data_inicio | NOT NULL | A data em que o serviço começa a ser prestado no contrato é obrigatória. |
 | data_fim | Pode ser nulo | Pode ficar vazia enquanto o serviço continua sendo prestado no contrato. |
 
+### Resumo da cobertura de restrições
+| CATEGORIA DE RESTRIÇÃO | QUANTIDADE APLICADA | PRINCIPAIS ALVOS DE PROTEÇÃO NO BANCO |
+| :--- | :--- | :--- |
+| PRIMARY KEY | 100% das tabelas (33): chave simples nas 21 principais e chave composta nas 12 associativas | Garantia de identificação única atômica ou composta. |
+| FOREIGN KEY | Todas as relações, com ON DELETE RESTRICT nas principais | Integridade referencial entre entidades principais e associativas, sem apagar registros que têm histórico. |
+| NOT NULL | Atributos obrigatórios | Impede registros incompletos que afetem a lógica de negócio. |
+| UNIQUE | CNPJ, número do contrato, número da NF, nomes (serviço, certificação, permissão, provedor, tag, perfil) e oportunidade do contrato | Impede duplicação acidental de entidades e documentos no sistema. |
+| CHECK | Valores positivos, datas coerentes, percentual de dedicação e listas de valores (status, moeda, senioridade) | Impede valores financeiros negativos, inconsistências de datas e status inválidos. |
+| DEFAULT | Vigência (12 meses), aviso prévio (30 dias) e status iniciais | Garante padronização e automação no preenchimento de campos operacionais. |
+
 # # 19 . Dicionário de dados
-Etapa 13
+| TABELA | ATRIBUTO | DESCRIÇÃO | TIPO | TAMANHO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| CLIENTE | id_cliente | Identificador único do cliente | Int | - | Sim | Não | Não permitido | Sim | Auto-Increment | Chave Primária de Cliente |
+| CLIENTE | cnpj | CNPJ da empresa cliente | Varchar | 18 | Não | Não | Não permitido | Sim | - | Formato válido (XX.XXX.XXX/XXXX-XX) e único |
+| CLIENTE | nome | Razão Social/Nome Fantasia | Varchar | 100 | Não | Não | Não permitido | Não | - | Preenchimento obrigatório |
+| CONTATO | id_contato | Identificador único do contacto | Int | - | Sim | Não | Não permitido | Sim | Auto-Increment | Chave Primária (Isolado na 1FN) |
+| CONTATO | id_cliente | Cliente associado ao contacto | Int | - | Não | Sim | Não permitido | Não | - | Foreign Key para Cliente(id_cliente) |
+| CONTATO | nome | Nome da pessoa de contacto | Varchar | 100 | Não | Não | Não permitido | Não | - | Preenchimento obrigatório |
+| CONTATO | email | E-mail de contacto | Varchar | 100 | Não | Não | Permitido | Não | - | Formato de e-mail válido |
+| CONTATO | telefone | Telefone Atómico | Varchar | 20 | Não | Não | Permitido | Não | - | Armazena 1 número por linha (1FN) |
+| OPORTUNIDADE | id_oportunidade | Identificador da oportunidade | Int | - | Sim | Não | Não permitido | Sim | Auto-Increment | Chave Primária |
+| OPORTUNIDADE | id_cliente | Cliente associado | Int | - | Não | Sim | Não permitido | Não | - | Foreign Key (Removido nome de cliente em 3FN) |
+| OPORTUNIDADE | valor_estimado | Valor previsto do negócio | Decimal | 12.2 | Não | Não | Permitido | Não | 0.00 | CHECK (valor_estimado >= 0) |
+| OPORTUNIDADE | data_prevista_inicio | Data estimada de início | Date | - | Não | Não | Permitido | Não | - | Formato de data (YYYY-MM-DD) |
+| OPORTUNIDADE | estagio_negociacao | Fase atual da negociação | Varchar | 50 | Não | Não | Permitido | Não | 'Em aberto' | CHECK com lista restrita de estágios |
+| SERVIÇO | id_servico | Identificador do serviço | Int | - | Sim | Não | Não permitido | Sim | Auto-Increment | Chave Primária |
+| SERVIÇO | nome_servico | Nome do serviço prestado | Varchar | 100 | Não | Não | Não permitido | Sim | - | Nome único no catálogo |
+| SERVIÇO | descricao | Detalhamento técnico | Text | - | Não | Não | Permitido | Não | - | Descrição detalhada do serviço |
+| SERVIÇO | preco_base | Preço de tabela | Decimal | 12.2 | Não | Não | Não permitido | Não | 0.00 | CHECK (preco_base >= 0) |
+| CONTRATO | id_contrato | Identificador do contrato | Int | - | Sim | Não | Não permitido | Sim | Auto-Increment | Chave Primária |
+| CONTRATO | id_cliente | Cliente Contratante | Int | - | Não | Sim | Não permitido | Não | - | Foreign Key para Cliente(id_cliente) |
+| CONTRATO | id_oportunidade | Oportunidade de origem | Int | - | Não | Sim | Permitido | Não | - | Foreign Key para Oportunidade(id_oportunidade) |
+| CONTRATO | numero | Número do contrato | Varchar | 50 | Não | Não | Não permitido | Sim | - | Número de documento único |
+| CONTRATO | valor | Valor total do contrato | Decimal | 12.2 | Não | Não | Não permitido | Não | - | CHECK (valor > 0) |
+| CONTRATO | data_inicio | Início da vigência | Date | - | Não | Não | Não permitido | Não | - | Data válida de início |
+| CONTRATO | vigencia | Período de vigência | Varchar | 50 | Não | Não | Não permitido | Não | - | Exemplo: '12 meses' |
+| CONTRATO | status | Situação do contrato | Varchar | 30 | Não | Não | Não permitido | Não | 'Ativo' | CHECK (status IN ('Ativo', 'Encerrado', ...)) |
+| CONTRATO_SERVICO | id_contrato | Contrato associado | Int | - | Sim | Sim | Não permitido | Não | - | PK / FK (Chave Composta em 2FN) |
+| CONTRATO_SERVICO | id_servico | Serviço prestado | Int | - | Sim | Sim | Não permitido | Não | - | PK / FK (Chave Composta em 2FN) |
+| CONTRATO_SERVICO | valor_contratado | Valor ajustado do serviço | Decimal | 12.2 | Não | Não | Não permitido | Não | - | Depende da chave toda (id_contrato + id_servico) |
+| CONTRATO_SERVICO | data_inicio | Início do serviço no contrato | Date | - | Não | Não | Não permitido | Não | - | Data válida |
+| CONTRATO_SERVICO | data_fim | Término do serviço | Date | - | Não | Não | Permitido | Não | - | CHECK (data_fim >= data_inicio) |
 
 # # 20 . Implementação SQL
 Etapas 14 e 15
