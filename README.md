@@ -762,7 +762,7 @@ Foi realizada a revisão do modelo para identificar as entidades que dependem de
 | servico | Removido | id_oportunidade -> vários serviços (N:N) | **Removido**: vira a tabela OPORTUNIDADE_SERVICO |
 
 ### Documentação
-# SITUAÇÃO 1: APLICAÇÃO DA 1FN (ATRIBUTOS MULTIVALORADOS E GRUPOS REPETITIVOS) 
+**Situação 1: Aplicação da 1FN (Atributos multivalorados e grupos repetitivos)**
 
 ANTES 
 
@@ -792,7 +792,7 @@ Correção Realizada: Criação da tabela dependente CONTATO, isolando cada info
 
 •	id_cliente: FK (referenciando CLIENTE)
 
-# SITUAÇÃO 2: APLICAÇÃO DA 1FN E 2FN (RELACIONAMENTO N:N E CHAVE COMPOSTA)
+**Situação 2: Aplicação da 1FN e 2FN (Relacionamento N:N e chave composta)**
 
 ANTES
 
@@ -831,7 +831,7 @@ Chave primária composta: (id_contrato, id_servico).
 
 Dependência funcional:(id_contrato, id_servico) → valor_contratado, data_inicio, data_fim.
 
-# SITUAÇÃO 3: APLICAÇÃO DA 3FN (DEPENDÊNCIA TRANSITIVA)
+**Situação 3: Aplicação da 3fn (Dependência transitiva)**
 
 ANTES 
 
