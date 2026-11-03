@@ -733,6 +733,142 @@ Foi realizada a revisão do modelo para identificar as entidades que dependem de
 | CONTRATO | status | Atributo | Estado do contrato |
 | CONTRATO | data_aviso_cancelamento | Atributo | Data do aviso de cancelamento |
 | CONTRATO | data_efetiva_termino | Atributo | Data efetiva de término |
+
+### 2FN
+| TABELA | CAMPO / ATRIBUTO | TIPO DE CHAVE | DEPENDÊNCIA FUNCIONAL | STATUS 2FN |
+| :--- | :--- | :--- | :--- | :--- |
+| CLIENTE | id_cliente | PK | Identificador | OK |
+| CLIENTE | cnpj, nome | Nenhum | Depende totalmente de "id_cliente" | OK (Total) |
+| CONTATO | id_contato | PK | Identificador | OK |
+| CONTATO | nome, email, telefone | Nenhum | Depende totalmente de "id_contato" | OK (Total) |
+| CONTRATO | id_contrato | PK | Identificador | OK |
+| CONTRATO | numero, valor_mensal, data_inicio | Nenhum | Depende totalmente de "id_contrato" | OK (Total) |
+| COLABORADOR_CERTIFICACAO | id_colaborador, id_certificacao, data_obtencao | PK composta | Chave composta | OK |
+| COLABORADOR_CERTIFICACAO | data_validade | Nenhum | Depende de "id_colaborador" + "id_certificacao" + "data_obtencao" | OK (Total) |
+| CONTRATO_SERVICO | id_contrato, id_servico | PK/FK | Chave composta | OK |
+| CONTRATO_SERVICO | valor_contratado, data_inicio, data_fim | Nenhum | Depende de "id_contrato" + "id_servico" | OK (Total) |
+| OPORTUNIDADE_SERVICO | id_oportunidade, id_servico | PK/FK | Chave composta | OK |
+| OPORTUNIDADE_SERVICO | valor_negociado, quantidade | Nenhum | Depende de "id_oportunidade" + "id_servico" | OK (Total) |
+
+### 3FN
+| CAMPO / ATRIBUTO | TIPO DE CHAVE | DEPENDÊNCIA FUNCIONAL | ANÁLISE 3FN |
+| :--- | :--- | :--- | :--- |
+| id_oportunidade | PK | Identificador único | Chave Primária |
+| id_cliente | FK | id_oportunidade -> id_cliente | Chave Estrangeira (Direta) |
+| valor_estimado | Nenhum | id_oportunidade -> valor_estimado | Depende diretamente da chave |
+| data_prevista_inicio | Nenhum | id_oportunidade -> data_prevista_inicio | Depende diretamente da chave |
+| estagio_negociacao | Nenhum | id_oportunidade -> estagio_negociacao | Depende diretamente da chave |
+| cliente | Removido | id_cliente -> cliente | **Removido**: Dependência transitiva |
+| servico | Removido | id_oportunidade -> vários serviços (N:N) | **Removido**: vira a tabela OPORTUNIDADE_SERVICO |
+
+### Documentação
+# SITUAÇÃO 1: APLICAÇÃO DA 1FN (ATRIBUTOS MULTIVALORADOS E GRUPOS REPETITIVOS) 
+
+ANTES 
+
+Estrutura Analisada: CLIENTE (id_cliente, cnpj, nome, contato) 
+
+Dependências: 
+
+•	Um cliente pode possuir múltiplos contatos (diferentes nomes, e-mails e telefones). 
+
+•	Manter o campo contato na tabela CLIENTE obriga a armazenar listas separadas por vírgula (ex.: "9999-1111, 9888-2222") ou a criar campos repetitivos (telefone1, telefone2). 
+
+Problema Identificado: 
+
+1.	Violação da 1FN: Atributo multivalorado (não atômico) e presença de grupos repetitivos. A 1FN exige a regra “um campo -> um valor”. 
+
+ 
+
+DEPOIS 
+
+Correção Realizada: Criação da tabela dependente CONTATO, isolando cada informação em registros atômicos com chave estrangeira vinculada ao cliente. 
+
+•	CLIENTE (id_cliente, cnpj, nome) 
+
+•	CONTATO (id_contato, id_cliente, nome, email, telefone) 
+
+•	id_contato: PK 
+
+•	id_cliente: FK (referenciando CLIENTE)
+
+# SITUAÇÃO 2: APLICAÇÃO DA 1FN E 2FN (RELACIONAMENTO N:N E CHAVE COMPOSTA)
+
+ANTES
+
+Estrutura Analisada: Na primeira entrega, o mapa de atributos apresentava “Serviço(s)” como atributo do CONTRATO e “Valor no Contrato” como atributo do SERVIÇO:
+
+CONTRATO (id_contrato, numero, valor_mensal, servicos)
+
+SERVICO (id_servico, nome_servico, valor_no_contrato)
+
+Dependências / Análise:
+
+•	id_contrato → numero, valor_mensal (cada contrato possui um número e um valor mensal).
+•	Um contrato pode possuir vários serviços, e um mesmo serviço pode estar presente em vários contratos, caracterizando um relacionamento N:N.
+•	O valor de um serviço pode variar de acordo com o contrato. Portanto, depende da combinação entre id_contrato e id_servico.
+
+Problemas Identificados:
+
+•	Violação da 1FN: o atributo servicos armazenava vários valores no mesmo campo, como “Nuvem Gerenciada, SRE”, contrariando a regra de que cada campo deve armazenar apenas um valor.
+•	Problema de organização dos atributos: o valor_no_contrato estava na tabela SERVICO, embora seu valor dependesse do serviço e do contrato ao qual ele estava associado, e não somente do serviço.
+
+DEPOIS
+
+Correção Realizada: Foi removido o atributo servicos da tabela CONTRATO e o atributo valor_no_contrato da tabela SERVICO. Para representar corretamente o relacionamento N:N, foi criada a tabela associativa CONTRATO_SERVICO, responsável por relacionar contratos e serviços e armazenar o valor contratado de cada serviço.
+
+Estrutura corrigida, conforme o DER:
+
+CONTRATO (id_contrato, id_cliente, id_oportunidade, numero, valor_mensal, data_inicio, vigencia, tipo_renovacao, prazo_aviso_previo, moeda, referencia_docusign, status, data_aviso_cancelamento, data_efetiva_termino)
+
+SERVICO (id_servico, nome_servico)
+
+CONTRATO_SERVICO (id_contrato, id_servico, valor_contratado, data_inicio, data_fim)
+
+Validação da 2FN em CONTRATO_SERVICO
+
+Chave primária composta: (id_contrato, id_servico).
+
+Dependência funcional:(id_contrato, id_servico) → valor_contratado, data_inicio, data_fim.
+
+# SITUAÇÃO 3: APLICAÇÃO DA 3FN (DEPENDÊNCIA TRANSITIVA)
+
+ANTES 
+
+OPORTUNIDADE (id_oportunidade, id_cliente, cliente, servico, valor_estimado, data_prevista_inicio, estagio_negociacao)
+
+Dependências:
+
+id_oportunidade → id_cliente.
+id_cliente → cliente (o nome do cliente depende do id_cliente).
+id_servico → nome_servico (a identificação do serviço determina seu nome e descrição na entidade SERVICO).
+
+Problema Identificado:
+
+•	 Dependência Transitiva (Violação da 3FN): O atributo cliente não depende diretamente da chave primária id_oportunidade, mas sim do atributo id_cliente.
+•	Além disso, manter a informação de serviço diretamente em OPORTUNIDADE gera redundância, considerando que uma oportunidade pode estar vinculada a vários serviços.
+
+DEPOIS
+
+Correção Realizada:
+
+Remoção dos atributos redundantes cliente e servico da entidade OPORTUNIDADE. O nome do cliente é obtido por meio de junção relacional com a tabela CLIENTE, enquanto os serviços vinculados são gerenciados pela tabela associativa OPORTUNIDADE_SERVICO.
+
+OPORTUNIDADE (id_oportunidade, id_cliente, valor_estimado, data_prevista_inicio, estagio_negociacao)
+
+OPORTUNIDADE_SERVICO (id_oportunidade, id_servico, valor_negociado, quantidade)
+
+Chaves e relacionamentos:
+
+•	id_oportunidade: PK em OPORTUNIDADE.
+•	id_cliente: FK em OPORTUNIDADE (referenciando CLIENTE).
+•	id_oportunidade: FK em OPORTUNIDADE_SERVICO (referenciando OPORTUNIDADE).
+•	id_servico: FK em OPORTUNIDADE_SERVICO (referenciando SERVICO).
+•	PK composta em OPORTUNIDADE_SERVICO: (id_oportunidade, id_servico).
+
+# Resumo da documentação
+
+
 # # 19 . Dicionário de dados
 Etapa 13
 
