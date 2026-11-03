@@ -891,13 +891,49 @@ Para esta etapa, foram avaliadas e aplicadas seis categorias de restrições:
 
 Abaixo estão detalhadas as restrições reais aplicadas às entidades do ERP KXP, contendo suas respectivas justificativas funcionais.
 
+Tabela - Cliente
 | CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
 | :--- | :--- | :--- |
 | id_cliente | PRIMARY KEY | Identificador único e inequívoco de cada empresa cliente no sistema. |
 | cnpj | NOT NULL, UNIQUE | O CNPJ é obrigatório para emissão de faturas e contratos e não pode ser cadastrado em duplicidade. |
 | nome | NOT NULL | A razão social ou o nome fantasia é obrigatório para a identificação comercial do cliente. |
 
+Tabela - Contato
+| CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
+| :--- | :--- | :--- |
+| id_contato | PRIMARY KEY | Chave primária atômica de identificação do contato. |
+| id_cliente | FOREIGN KEY, NOT NULL, ON DELETE RESTRICT | Garante a integridade referencial com a tabela Cliente. Um contato não pode existir sem um cliente associado, e um cliente com contatos cadastrados não pode ser apagado. |
+| nome | NOT NULL | O nome da pessoa de contato é indispensável para atendimento. |
+| email | CHECK (formato válido de e-mail) | O e-mail, quando informado, deve ter formato válido para notificações e comunicação. |
+| telefone | CHECK (apenas números, com código de área) | O telefone é guardado apenas com números e código de área, para padronizar o registro. |
 
+Tabela - Contrato
+| CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
+| :--- | :--- | :--- |
+| id_contrato | PRIMARY KEY | Identificador único do contrato no sistema. |
+| id_cliente | FOREIGN KEY, NOT NULL, ON DELETE RESTRICT | Todo contrato pertence a um cliente existente, e um cliente com contratos não pode ser apagado. |
+| id_oportunidade | FOREIGN KEY, UNIQUE, ON DELETE RESTRICT (pode ser nulo) | Liga o contrato à oportunidade de origem. Pode ser nulo quando o contrato não nasce de uma oportunidade, e é único porque uma oportunidade gera no máximo um contrato. |
+| numero | NOT NULL, UNIQUE | O número formal do contrato é obrigatório e não pode ser duplicado. |
+| valor_mensal | NOT NULL, CHECK (valor_mensal >= 0) | O valor financeiro mensal do contrato é obrigatório e não pode ser negativo. |
+| data_inicio | NOT NULL | A data de início da vigência do contrato é obrigatória. |
+| vigencia | DEFAULT 12 (meses), CHECK (vigencia > 0) | Quando não informada, a vigência é de 12 meses. Deve ser maior que zero. |
+| tipo_renovacao | NOT NULL, CHECK (Prazo determinado ou Evergreen) | Define se o contrato termina no prazo ou se renova automaticamente, e só aceita esses dois tipos. |
+| prazo_aviso_previo | DEFAULT 30 (dias) | Quando não informado, o prazo de aviso prévio é de 30 dias. |
+| moeda | NOT NULL, CHECK (BRL ou USD) | A moeda do contrato é obrigatória e só aceita as moedas adotadas (real e dólar). |
+| referencia_docusign | NOT NULL | Todo contrato deve ter a referência ao documento assinado no DocuSign. |
+| status | NOT NULL, DEFAULT 'Em aprovação', CHECK (Em aprovação, Vigente, Aviso prévio, Encerrado ou Cancelado) | Define o ciclo de vida do contrato. Todo contrato novo começa em aprovação, e valores fora da lista são recusados. |
+| data_aviso_cancelamento | Pode ser nulo | Só é preenchida quando há um aviso de cancelamento. |
+| data_efetiva_termino | CHECK (data_efetiva_termino >= data_aviso_cancelamento); pode ser nulo | Só é preenchida quando há cancelamento, e nunca pode ser anterior à data do aviso. |
+
+Tabela - Contrato_Servico
+| CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
+| :--- | :--- | :--- |
+| id_contrato, id_servico | PRIMARY KEY (composta) | Chave primária composta: evita que o mesmo serviço seja incluído mais de uma vez no mesmo contrato. |
+| id_contrato | FOREIGN KEY, NOT NULL | Integridade referencial com a tabela Contrato. Todo serviço contratado pertence a um contrato. |
+| id_servico | FOREIGN KEY, NOT NULL | Integridade referencial com a tabela Serviço. O serviço contratado precisa existir no cadastro. |
+| valor_contratado | NOT NULL | O valor acordado para o serviço dentro do contrato é obrigatório, porque o mesmo serviço pode ter valores diferentes em contratos diferentes. |
+| data_inicio | NOT NULL | A data em que o serviço começa a ser prestado no contrato é obrigatória. |
+| data_fim | Pode ser nulo | Pode ficar vazia enquanto o serviço continua sendo prestado no contrato. |
 
 # # 19 . Dicionário de dados
 Etapa 13
