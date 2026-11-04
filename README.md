@@ -432,40 +432,39 @@ As 21 entidades principais são mantidas. O modelo lógico revisado prevê 12 ta
 # # 14 . Cardinalidades
 As quantidades são lidas nos dois sentidos indicados pelos cabeçalhos: quantos registros de B podem relacionar-se a um A e quantos de A a um B. Mínimos de cadastro são separados das condições exigidas para vigência e operação. As aprovações têm exatamente um alvo entre contrato, aditivo e alocação; cada FK de alvo é opcional isoladamente, mas a combinação exige um único preenchimento. 
 
-| Entidade Origem (Mín, Máx) | Ação | Entidade Destino (Mín, Máx) | Tipo | Regra de Negócio |
-| :--- | :---: | :--- | :---: | :--- |
-| **Aditivo** `(1,1)` | recebe | `(1,N)` **Aprovação** | **1:N** | Um aditivo pode possuir uma ou mais aprovações. |
-| **Alocação** `(1,1)` | tem | `(1,N)` **Apontamento de horas** | **1:N** | Uma alocação pode possuir vários apontamentos de horas. |
-| **Alocação** `(1,1)` | possui | `(1,N)` **Aprovação** | **1:N** | Uma alocação pode possuir uma ou mais aprovações. |
-| **Cliente** `(1,1)` | recebe | `(1,N)` **Contato** | **1:N** | Um cliente pode ter vários contatos, mas cada contato pertence a um cliente. |
-| **Cliente** `(1,1)` | tem | `(1,N)` **Contrato** | **1:N** | Um cliente pode possuir vários contratos, mas cada contrato pertence a um cliente. |
-| **Cliente** `(1,1)` | tem | `(1,N)` **Oportunidade** | **1:N** | Um cliente pode ter várias oportunidades, mas cada oportunidade pertence a um cliente. |
-| **Colaborador** `(1,1)` | tem | `(1,N)` **Alocação** | **1:N** | Um colaborador pode ter várias alocações em contratos. |
-| **Colaborador** `(1,1)` | possui | `(1,N)` **Apontamento de horas** | **1:N** | Um colaborador pode registrar vários apontamentos. |
-| **Colaborador** `(0,N)` | possui | `(0,N)` **Certificação** | **N:N** | Um colaborador pode possuir várias certificações e uma certificação pode estar ligada a vários colaboradores. |
-| **Colaborador** `(1,1)` | tem | `(1,N)` **Contrato salarial** | **1:N** | Um colaborador pode possuir diferentes registros salariais ao longo do tempo, permitindo registrar reajustes e períodos de vigência. |
-| **Colaborador** `(1,1)` | registra | `(1,N)` **Evidência** | **1:N** | Um colaborador pode registrar várias evidências. |
-| **Colaborador** `(0,N)` | possui | `(0,N)` **Perfil técnico** | **N:N** | Um colaborador pode estar associado a vários perfis/competências; um perfil pode ser associado a vários colaboradores. Validar com a KXP. |
-| **Colaborador** `(0,1)` | tem | `(1,1)` **Usuário** | **1:0..1** | Um colaborador pode ter um usuário no sistema, mas nem todo colaborador precisa ter usuário. |
-| **Contrato** `(1,1)` | possui | `(1,N)` **Aditivo** | **1:N** | Um contrato pode possuir vários aditivos. |
-| **Contrato** `(1,1)` | tem | `(1,N)` **Alocação** | **1:N** | Um contrato pode ter várias alocações de colaboradores. |
-| **Contrato** `(1,1)` | possui | `(1,N)` **Apontamento de horas** | **1:N** | Um contrato pode possuir vários apontamentos de horas. |
-| **Contrato** `(1,1)` | possui | `(1,N)` **Aprovação** | **1:N** | Um contrato pode possuir várias aprovações. |
-| **Contrato** `(0,N)` | exige | `(0,N)` **Certificação** | **N:N** | Um contrato pode exigir várias certificações e uma certificação pode ser exigida em vários contratos. |
-| **Contrato** `(1,1)` | tem | `(1,N)` **Evidência** | **1:N** | Um contrato pode ter várias evidências de entrega. |
-| **Contrato** `(1,1)` | produz | `(1,N)` **Fatura** | **1:N** | Um contrato pode gerar várias faturas. |
-| **Contrato** `(0,N)` | utiliza | `(0,N)` **Provedor de nuvem** | **N:N** | Um contrato pode utilizar vários provedores e um provedor pode ser utilizado em vários contratos. |
-| **Contrato** `(0,N)` | tem | `(0,N)` **Tag** | **N:N** | Um contrato pode possuir várias tags e uma tag pode estar associada a vários contratos. |
-| **Fatura** `(1,1)` | tem | `(1,N)` **Pagamento** | **1:N** | Uma fatura pode ter vários pagamentos. |
-| **Oportunidade** `(0,N)` | exige | `(0,N)` **Certificação** | **N:N** | Uma oportunidade pode exigir várias certificações. |
-| **Oportunidade** `(0,1)` | gera | `(1,1)` **Contrato** | **1:0..1** | Uma oportunidade pode gerar no máximo um contrato. |
-| **Oportunidade** `(0,N)` | exige | `(0,N)` **Perfil técnico** | **N:N** | Uma oportunidade pode ainda não ter perfis definidos ou exigir vários; um perfil pode ser exigido por várias oportunidades. |
-| **Oportunidade** `(0,N)` | envolve | `(0,N)` **Serviço** | **N:N** | Uma oportunidade pode envolver vários serviços. |
-| **Serviço** `(0,N)` | envolve | `(0,N)` **Contrato** | **N:N** | Um serviço pode estar em vários contratos. |
-| **Usuário** `(1,1)` | realiza | `(1,N)` **Aprovação** | **1:N** | Um usuário pode realizar várias aprovações. |
-| **Usuário** `(0,N)` | precisa | `(0,N)` **Permissão** | **N:N** | Um usuário pode possuir várias permissões e uma permissão pode ser atribuída a vários usuários. |
-| **Usuário** `(1,N)` | possui | `(1,1)` **Perfil de acesso** | **N:1** | Vários usuários podem possuir o mesmo perfil de acesso. |
-| **Usuário** `(0,N)` | tem | `(0,N)` **Tag** | **N:N** | Um usuário pode possuir acesso a várias tags e uma tag pode conceder acesso a vários usuários. |
+| Entidade A | Quantidade de B para cada A | Entidade B | Quantidade de A para cada B | Regra e condição |
+| :--- | :--- | :--- | :--- | :--- |
+| Aditivo | 0..N aprovações por aditivo | Aprovação | 1 aditivo quando este for o alvo | Um aditivo pode aguardar decisão; cada aprovação escolhe exatamente um alvo. RN13 e RN36. |
+| Alocação | 0..N apontamentos por alocação | Apontamento de Horas | 1 alocação por apontamento | Uma alocação pode existir antes do primeiro apontamento; cada apontamento pertence a uma única alocação. RN21. |
+| Alocação | 0..N aprovações por alocação | Aprovação | 1 alocação quando este for o alvo | A aprovação pode referir-se a uma alocação; o alvo é exclusivo. RF06 e RN36. |
+| Cliente | 1..N contatos por cliente | Contato | 1 cliente por contato | Cliente mantém pelo menos um contato; cada contato pertence a exatamente um cliente. |
+| Cliente | 0..N contratos por cliente | Contrato | 1 cliente por contrato | Um cliente pode ainda não ter contratos. RN01 e RN02. |
+| Cliente | 0..N oportunidades por cliente | Oportunidade | 1 cliente por oportunidade | Cada oportunidade possui um cliente; o cadastro do cliente pode preceder uma oportunidade. RN04. |
+| Colaborador | 0..N alocações ao longo do tempo | Alocação | 1 colaborador por alocação | Até dois contratos simultâneos e dedicação total até 100%; esse limite temporal não é o total histórico. RN17 e RN19. |
+| Colaborador | 0..N certificações/obtenções | Certificação | 0..N colaboradores por certificação | N:N com data de obtenção e validade no vínculo; preservar renovações. RN38 e RN39. |
+| Colaborador | 0..N registros salariais | Contrato Salarial | 1 colaborador por registro | Cada registro salarial depende do colaborador; início e fim preservam vigências. |
+| Colaborador | 0..N evidências por colaborador | Evidência de Entrega | 1 colaborador por evidência | O responsável deve estar alocado no contrato da entrega. RN28. |
+| Colaborador | 0..1 usuário por colaborador | Usuário | 0..1 colaborador por usuário | Vínculo opcional e único; a atuação no sistema exige conta. Decisão de modelagem a validar. RN35. |
+| Contrato | 0..N aditivos por contrato | Aditivo | 1 contrato por aditivo | Um contrato pode existir sem aditivo. RN12. |
+| Contrato | 0..N alocações no cadastro | Alocação | 1 contrato por alocação | Ao tornar-se vigente, o contrato deve ter equipe de pelo menos um colaborador. RN16; não executar antes da vigência. |
+| Contrato | 0..N aprovações por contrato | Aprovação | 1 contrato quando este for o alvo | O cadastro pode aguardar análise; a vigência exige aprovação e assinatura. RN14 e RN36. |
+| Contrato | 0..N certificações exigidas | Certificação | 0..N contratos por certificação | N:N com obrigatorio e data_limite no vínculo. RN41. |
+| Contrato | 0..N evidências por contrato | Evidência de Entrega | 1 contrato por evidência | O contrato pode ser cadastrado antes da primeira entrega. RN27. |
+| Contrato | 0..N faturas por contrato | Fatura | 1 contrato por fatura | O contrato pode existir antes da primeira fatura. RN29. |
+| Contrato | 1..N provedores por contrato | Provedor de Nuvem | 0..N contratos por provedor | N:N; mínimo contratual da RN42 a validar com a KXP. |
+| Contrato | 0..N tags por contrato | Tag | 0..N contratos por tag | N:N por CONTRATO_TAG, com data_associacao. |
+| Fatura | 0..N pagamentos por fatura | Pagamento | 1 fatura por pagamento | Fatura pode existir sem pagamento; pagamento depende da fatura. RN31. |
+| Oportunidade | 0..N certificações exigidas | Certificação | 0..N oportunidades por certificação | N:N; exigências podem ainda estar pendentes de levantamento. RN41. |
+| Oportunidade | 0..1 contrato por oportunidade | Contrato | 0..1 oportunidade por contrato | FK de origem opcional e única. Se preenchida, refere-se a oportunidade ganha. RN05. |
+| Oportunidade | 0..N serviços por oportunidade | Serviço | 0..N oportunidades por serviço | N:N por OPORTUNIDADE_SERVICO; valor_negociado e quantidade no vínculo. |
+| Serviço | 0..N contratos por serviço | Contrato | 1..N serviços por contrato | Cada contrato inclui ao menos um serviço com valor próprio. RN11. |
+| Usuário | 0..N aprovações por usuário | Aprovação | 1 usuário por aprovação | Cada decisão identifica exatamente um usuário, distinto de quem cadastrou o objeto. RN36 e RN37. |
+| Usuário | 0..N permissões por usuário | Permissão | 0..N usuários por permissão | N:N; acesso restrito conforme permissões. RN34 e políticas de acesso. |
+| Usuário | 1 perfil por usuário | Perfil de Acesso | 0..N usuários por perfil | Cada usuário possui um perfil; um perfil pode ainda não ter usuários. RN34. |
+| Usuário | 0..N tags por usuário | Tag | 0..N usuários por tag | N:N por USUARIO_TAG. |
+| Oportunidade | 0..N perfis exigidos | Perfil Técnico | 0..N oportunidades por perfil | N:N; perfil técnico não é certificação. RN45. |
+| Colaborador | 0..N perfis por colaborador | Perfil Técnico | 0..N colaboradores por perfil | N:N para apoiar a seleção técnica. RN45. |
+| Oportunidade | 0..N provedores por oportunidade | Provedor de Nuvem | 0..N oportunidades por provedor | N:N por OPORTUNIDADE_PROVEDOR; levantamento inicial pode estar incompleto. RF03 e RN42. |
 
 # # 15 . Dicionário de dados conceitual
 ### Entidade: Aditivo
