@@ -639,7 +639,7 @@ Cada entidade do DER virou uma tabela, e cada atributo virou uma coluna. Foram 2
 Essas são as tabela principais que foram criadas:
 <img width="853" height="1460" alt="image" src="https://github.com/user-attachments/assets/236a350e-bff7-4e8b-b0e0-5edc61e5749d" />
 
-# Resumo das tabelas principais:
+**Resumo das tabelas principais:**
 | Tabela | O que representa | Colunas |
 | :--- | :--- | :--- |
 | CLIENTE | Empresa que contrata ou pode contratar os serviços da KXP. | 3 |
@@ -730,12 +730,19 @@ Relacionamentos 1:N viraram uma FK no lado N. Os N:N viraram tabelas associativa
 
 **Casos que exigiram decisão**
 **Apontamento de horas.** Cada apontamento pertence a uma alocação, que já identifica colaborador e contrato. Guardamos só id_alocacao. Assim não há como o apontamento dizer um colaborador e a alocação dizer outro.
+
 **Aprovação.** Uma aprovação pode ser de contrato, de aditivo ou de alocação. Por isso há três FKs opcionais, e um CHECK garante que exatamente uma esteja preenchida. A regra de que quem cadastrou não pode aprovar (RN37) depende de comparar registros diferentes e fica para o sistema e para a auditoria.
+
 **Oportunidade e contrato.** Uma oportunidade gera no máximo um contrato, mas nem todo contrato vem de oportunidade. A FK id_oportunidade em CONTRATO pode ser nula e é UNIQUE.
+
 **Colaborador e usuário.** Cada colaborador tem no máximo um usuário. A FK id_colaborador fica em USUARIO, com UNIQUE, e pode ser nula (usuário que não é colaborador).
+
 **Colaborador e contrato.** É N:N (RN17) e foi representado pela tabela ALOCACAO, que guarda função, datas, dedicação e custo/hora congelado.
+
 **Evidência.** Tem FK para contrato (qual entrega) e para colaborador (quem enviou), mais o mês de referência.
+
 **Fatura e pagamento.** A FK id_fatura em PAGAMENTO é obrigatória, mas a fatura não precisa ter pagamento quando é criada.
+
 **ON DELETE.** Nas tabelas principais usamos RESTRICT: o banco recusa apagar um registro que tem histórico ligado (um contrato com faturas, por exemplo). Nas associativas usamos CASCADE: se o registro principal for apagado, o vínculo não faz mais sentido e sai junto.
 
 ### Relacionamentos N
@@ -764,11 +771,17 @@ O relacionamento tem informação própria? Em CONTRATO_SERVICO o valor contrata
 Revisamos o modelo procurando registros que não fazem sentido sem outro. As tabelas dependentes possuem identificador próprio; neste trabalho, a classificação como fraca considera dependência de existência, e não necessariamente chave primária composta. Entidades fracas encontradas:
 
 •	Contato depende de CLIENTE (FK id_cliente)
+
 •	Contrato_Salarial depende de COLABORADOR (FK id_colaborador)
+
 •	Apontamento_De_Horas depende de ALOCACAO (FK id_alocacao)
+
 •	Aditivo depende de CONTRATO (FK id_contrato)
+
 •	Fatura depende de CONTRATO (FK id_contrato)
+
 •	Pagamento depende de FATURA (FK id_fatura)
+
 Entidade associativa e entidade fraca não são a mesma coisa: as 12 tabelas associativas existem por causa de relacionamentos N:N, não por dependência de existência. PAGAMENTO também depende da existência de FATURA e entrou na lista de entidades fracas, para o mesmo critério valer para todas as tabelas dependentes.
 
 
