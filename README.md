@@ -951,92 +951,597 @@ Foram avaliadas seis categorias de restrição. Cada uma só foi usada onde prot
 
 
 **Tabela - Cliente**
-| CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
 | :--- | :--- | :--- |
-| id_cliente | PRIMARY KEY | Identificador único e inequívoco de cada empresa cliente no sistema. |
+| id_cliente | PRIMARY KEY | Identifica cada empresa cliente sem depender de dados que podem mudar. |
 | cnpj | NOT NULL, UNIQUE | O CNPJ é obrigatório para emissão de faturas e contratos e não pode ser cadastrado em duplicidade. |
 | nome | NOT NULL | A razão social ou o nome fantasia é obrigatório para a identificação comercial do cliente. |
 
 **Tabela - Contato**
-| CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
 | :--- | :--- | :--- |
 | id_contato | PRIMARY KEY | Chave primária atômica de identificação do contato. |
-| id_cliente | FOREIGN KEY, NOT NULL, ON DELETE RESTRICT | Garante a integridade referencial com a tabela Cliente. Um contato não pode existir sem um cliente associado, e um cliente com contatos cadastrados não pode ser apagado. |
+| id_cliente | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Um contato não pode existir sem um cliente, e um cliente com contatos cadastrados não pode ser apagado. |
 | nome | NOT NULL | O nome da pessoa de contato é indispensável para atendimento. |
-| email | CHECK (formato válido de e-mail) | O e-mail, quando informado, deve ter formato válido para notificações e comunicação. |
-| telefone | CHECK (apenas números, com código de área) | O telefone é guardado apenas com números e código de área, para padronizar o registro. |
+| email | CHECK (email IS NULL OR email LIKE '%_@_%._%'), (pode ser nulo) | O e-mail, quando informado, deve ter formato válido para notificações e comunicação. |
+| telefone | CHECK (telefone IS NULL OR telefone REGEXP '^[0-9]{10,13}$'), (pode ser nulo) | O telefone é guardado apenas com números e código de área, para padronizar o registro (1FN). |
+
+**Tabela - Oportunidade**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_oportunidade | PRIMARY KEY | Identifica cada oportunidade do funil comercial. |
+| id_cliente | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Toda oportunidade pertence a um cliente existente. |
+| valor_estimado | NOT NULL, DEFAULT 0.00, CHECK (valor_estimado >= 0) | A estimativa comercial não pode ser negativa. |
+| data_prevista_inicio | Pode ser nulo | Permite saber quando a demanda futura vai exigir profissionais. |
+| estagio_negociacao | NOT NULL, DEFAULT 'Prospecção', CHECK (estagio_negociacao IN ('Prospecção','Negociação','Ganha','Perdida')) | Só os estágios do funil da Fase 1 são aceitos; toda oportunidade nova começa em Prospecção. |
+
+**Tabela - Serviço**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_servico | PRIMARY KEY | Identifica cada serviço do catálogo. |
+| nome_servico | NOT NULL, UNIQUE | Impede cadastrar o mesmo serviço duas vezes. |
+| descricao | Pode ser nulo | Campo informativo; não é obrigatório. |
+| preco_base | NOT NULL, DEFAULT 0.00, CHECK (preco_base >= 0) | O preço de tabela não pode ser negativo; o valor fechado fica em CONTRATO_SERVICO. |
 
 **Tabela - Contrato**
-| CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
 | :--- | :--- | :--- |
 | id_contrato | PRIMARY KEY | Identificador único do contrato no sistema. |
-| id_cliente | FOREIGN KEY, NOT NULL, ON DELETE RESTRICT | Todo contrato pertence a um cliente existente, e um cliente com contratos não pode ser apagado. |
-| id_oportunidade | FOREIGN KEY, UNIQUE, ON DELETE RESTRICT (pode ser nulo) | Liga o contrato à oportunidade de origem. Pode ser nulo quando o contrato não nasce de uma oportunidade, e é único porque uma oportunidade gera no máximo um contrato. |
+| id_cliente | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Todo contrato pertence a um cliente existente, e um cliente com contratos não pode ser apagado. |
+| id_oportunidade | FOREIGN KEY, ON DELETE RESTRICT, UNIQUE | Pode ser nulo quando o contrato não nasce de uma oportunidade, e é único porque uma oportunidade gera no máximo um contrato. |
 | numero | NOT NULL, UNIQUE | O número formal do contrato é obrigatório e não pode ser duplicado. |
-| valor_mensal | NOT NULL, CHECK (valor_mensal >= 0) | O valor financeiro mensal do contrato é obrigatório e não pode ser negativo. |
-| data_inicio | NOT NULL | A data de início da vigência do contrato é obrigatória. |
-| vigencia | DEFAULT 12 (meses), CHECK (vigencia > 0) | Quando não informada, a vigência é de 12 meses. Deve ser maior que zero. |
-| tipo_renovacao | NOT NULL, CHECK (Prazo determinado ou Evergreen) | Define se o contrato termina no prazo ou se renova automaticamente, e só aceita esses dois tipos. |
-| prazo_aviso_previo | DEFAULT 30 (dias) | Quando não informado, o prazo de aviso prévio é de 30 dias. |
-| moeda | NOT NULL, CHECK (BRL ou USD) | A moeda do contrato é obrigatória e só aceita as moedas adotadas (real e dólar). |
-| referencia_docusign | NOT NULL | Todo contrato deve ter a referência ao documento assinado no DocuSign. |
-| status | NOT NULL, DEFAULT 'Em aprovação', CHECK (Em aprovação, Vigente, Aviso prévio, Encerrado ou Cancelado) | Define o ciclo de vida do contrato. Todo contrato novo começa em aprovação, e valores fora da lista são recusados. |
-| data_aviso_cancelamento | Pode ser nulo | Só é preenchida quando há um aviso de cancelamento. |
-| data_efetiva_termino | CHECK (data_efetiva_termino >= data_aviso_cancelamento); pode ser nulo | Só é preenchida quando há cancelamento, e nunca pode ser anterior à data do aviso. |
+| valor_mensal | NOT NULL, CHECK (valor_mensal >= 0) | O valor mensal é obrigatório e não pode ser negativo. |
+| data_inicio | NOT NULL | A data de início da vigência é obrigatória. |
+| vigencia | NOT NULL, DEFAULT 12, CHECK (vigencia > 0) | Quando não informada, a vigência é de 12 meses. |
+| tipo_renovacao | NOT NULL, CHECK (tipo_renovacao IN ('Prazo determinado','Evergreen')) | Define se o contrato termina no prazo ou se renova automaticamente. |
+| prazo_aviso_previo | NOT NULL, DEFAULT 30, CHECK (prazo_aviso_previo >= 0) | Quando não informado, o aviso prévio é de 30 dias (padrão de mercado confirmado pela KXP). |
+| moeda | NOT NULL, CHECK (moeda IN ('BRL','USD')) | A moeda é obrigatória e só aceita as adotadas (real e dólar). |
+| referencia_docusign | Pode ser nulo | Opcional enquanto o contrato estiver Em aprovação, porque a referência do DocuSign só existe depois da assinatura (premissa a confirmar com a KXP). Contratos Vigentes sem referência são listados na auditoria. |
+| status | NOT NULL, DEFAULT 'Em aprovação', CHECK (status IN ('Em aprovação','Vigente','Aviso prévio','Encerrado','Cancelado')) | Define o ciclo de vida; todo contrato novo começa em aprovação. |
+| data_aviso_cancelamento | Pode ser nulo | Diferencia cancelamento de renovação e de alteração (devolutiva do professor). |
+| data_efetiva_termino | CHECK (data_efetiva_termino IS NULL OR data_aviso_cancelamento IS NULL OR data_efetiva_termino >= data_aviso_cancelamento), (pode ser nulo) | Só é preenchida quando há cancelamento e nunca pode ser anterior ao aviso. |
 
-**Tabela - Contrato_Servico**
-| CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
+**Tabela - Colaborador**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
 | :--- | :--- | :--- |
-| id_contrato, id_servico | PRIMARY KEY (composta) | Chave primária composta: evita que o mesmo serviço seja incluído mais de uma vez no mesmo contrato. |
-| id_contrato | FOREIGN KEY, NOT NULL | Integridade referencial com a tabela Contrato. Todo serviço contratado pertence a um contrato. |
-| id_servico | FOREIGN KEY, NOT NULL | Integridade referencial com a tabela Serviço. O serviço contratado precisa existir no cadastro. |
-| valor_contratado | NOT NULL | O valor acordado para o serviço dentro do contrato é obrigatório, porque o mesmo serviço pode ter valores diferentes em contratos diferentes. |
-| data_inicio | NOT NULL | A data em que o serviço começa a ser prestado no contrato é obrigatória. |
-| data_fim | Pode ser nulo | Pode ficar vazia enquanto o serviço continua sendo prestado no contrato. |
+| id_colaborador | PRIMARY KEY | Identifica cada colaborador; ele nunca é excluído, só inativado. |
+| nome | NOT NULL | Sem o nome, nenhuma consulta de alocação ou disponibilidade mostraria pessoas. |
+| funcao | NOT NULL | A função base orienta a alocação (pode diferir da função no contrato). |
+| senioridade | NOT NULL, CHECK (senioridade IN ('Júnior','Pleno','Sênior')) | Só os três níveis adotados pela KXP são aceitos. |
+| custo_hora | NOT NULL, CHECK (custo_hora > 0) | O custo por hora alimenta o cálculo de margem e deve ser maior que zero. |
+| status | NOT NULL, DEFAULT 'Ativo', CHECK (status IN ('Ativo','Inativo')) | O colaborador é inativado, nunca excluído, para preservar o histórico. |
+
+**Tabela - Contrato_Salarial**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_contrato_salarial | PRIMARY KEY | Cada reajuste é um registro próprio. |
+| id_colaborador | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Um registro salarial não existe sem colaborador. |
+| salario | NOT NULL, CHECK (salario > 0) | O salário alimenta o cálculo do custo/hora e deve ser positivo. |
+| data_inicio | NOT NULL | Permite saber qual salário valia em cada período. |
+| data_fim | CHECK (data_fim IS NULL OR data_fim >= data_inicio), (pode ser nulo) | Data vazia indica o salário atual; quando preenchida, não pode ser anterior ao início. |
+
+**Tabela - Alocacao***
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_alocacao | PRIMARY KEY | Usa chave própria porque o colaborador pode voltar ao mesmo contrato em outro período. |
+| id_colaborador | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Toda alocação tem um colaborador existente. |
+| id_contrato | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Toda alocação pertence a um contrato existente. |
+| funcao | NOT NULL | A função no contrato pode ser diferente da função base. |
+| data_inicio | NOT NULL | Sem a data de início não há como calcular disponibilidade. |
+| data_termino_prevista | NOT NULL, CHECK (data_termino_prevista >= data_inicio) | Base do planejamento de capacidade (disponíveis em 30, 60 e 90 dias). |
+| data_termino_real | CHECK (data_termino_real IS NULL OR data_termino_real >= data_inicio), (pode ser nulo) | Fica vazia enquanto a alocação está ativa; nunca pode ser anterior ao início. |
+| percentual_dedicacao | NOT NULL, CHECK (percentual_dedicacao > 0 AND percentual_dedicacao <= 100) | Um colaborador pode atender até 2 contratos dividindo a dedicação (RN17). A soma simultânea ≤ 100% e o limite de 2 contratos simultâneos são conferidos por consulta de auditoria e pela aplicação. |
+| custo_hora | NOT NULL, CHECK (custo_hora > 0) | Congela o custo para que reajustes posteriores não alterem a margem do período. |
+| status | NOT NULL, DEFAULT 'Ativa', CHECK (status IN ('Planejada','Ativa','Encerrada')) | Controla o ciclo de vida da alocação (valores propostos pela equipe). |
+
+**Tabela – Certificacao**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_certificacao | PRIMARY KEY | Identifica cada certificação do catálogo. |
+| nome_certificacao | NOT NULL, UNIQUE | Impede certificações duplicadas no catálogo. |
+| provedor_nuvem | Pode ser nulo | Mantido como texto, conforme decisão da equipe. |
+| nivel | Pode ser nulo | Campo informativo. |
+
+**Tabela – Apontamento_de_Horas**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_apontamento_de_horas | PRIMARY KEY | Identifica cada lançamento de horas. |
+| id_alocacao | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | A alocação já identifica colaborador e contrato; guardar só ela evita repetição e divergência (3FN). |
+| data | NOT NULL | Data futura não é checável por CHECK no MySQL; é conferida em consulta de auditoria. |
+| quantidade_horas | NOT NULL, CHECK (quantidade_horas > 0 AND quantidade_horas <= 24) | Não existe apontamento de zero hora nem mais de 24 horas num dia. |
+| descricao | Pode ser nulo | Campo informativo. |
+| status | NOT NULL, DEFAULT 'Registrado', CHECK (status IN ('Registrado','Ajustado','Cancelado')) | Preserva o histórico quando um apontamento é corrigido (valores propostos pela equipe). |
+
+**Tabela – Permissao**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_permissao | PRIMARY KEY | Identifica cada permissão. |
+| nome_permissao | NOT NULL, UNIQUE | Não faz sentido haver duas permissões com o mesmo nome. |
+| modulo | NOT NULL | Agrupa as permissões por módulo. |
+| status | NOT NULL, DEFAULT 'Ativo', CHECK (status IN ('Ativo','Inativo')) | Permite desativar sem apagar. |
+
+**Tabela – Perfil_de_Acesso**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_perfil_de_acesso | PRIMARY KEY | Identifica cada perfil. |
+| nome_perfil | NOT NULL, UNIQUE | Dois perfis com o mesmo nome causariam confusão na concessão de acesso. |
+| nivel_acesso | NOT NULL, CHECK (nivel_acesso >= 1) | Nível numérico positivo, quanto maior, mais acesso. |
+| descricao | Pode ser nulo | Campo informativo. |
+| status | NOT NULL, DEFAULT 'Ativo', CHECK (status IN ('Ativo','Inativo')) | Permite desativar sem apagar. |
+
+**Tabela – Evidencia**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_evidencia | PRIMARY KEY | Identifica cada evidência. |
+| id_contrato | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | A evidência comprova a entrega de um contrato. |
+| id_colaborador | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Registra quem é responsável por submeter a evidência. |
+| mes_referencia | NOT NULL, CHECK (DAY(mes_referencia) = 1) | Guarda o mês como data no dia 1, para permitir ordenar e comparar. |
+| caminho_arquivo | NOT NULL | Sem o arquivo não há evidência. |
+| nome_arquivo | NOT NULL | Identifica o arquivo enviado. |
+| tipo_arquivo | Pode ser nulo | Campo informativo. |
+| data_upload | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Registra quando a evidência entrou no sistema. |
+| descricao | Pode ser nulo | Campo informativo. |
+
+**Tabela – Usuario**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_usuario | PRIMARY KEY | Identifica cada credencial. |
+| id_perfil_de_acesso | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Todo usuário tem exatamente um perfil. |
+| id_colaborador | FOREIGN KEY, ON DELETE RESTRICT, UNIQUE | Cada colaborador tem no máximo um usuário, e nem todo usuário precisa ser colaborador. |
+| nome_usuario | NOT NULL, UNIQUE | Dois usuários não podem ter o mesmo login. |
+| email | NOT NULL, UNIQUE | O e-mail identifica o usuário para recuperação de acesso. |
+| senha | NOT NULL | Somente o hash da senha é armazenado. |
+| status | NOT NULL, DEFAULT 'Ativo', CHECK (status IN ('Ativo','Inativo')) | Permite bloquear acesso sem apagar histórico. |
+| ultimo_acesso | Pode ser nulo | Vazia até o primeiro acesso. |
+
+**Tabela – Aprovacao**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_aprovacao | PRIMARY KEY | Identifica cada decisão. |
+| id_usuario | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Toda aprovação registra exatamente um aprovador. |
+| id_contrato | FOREIGN KEY, ON DELETE RESTRICT | Opcional: a aprovação pode ser de contrato, aditivo ou alocação. |
+| id_aditivo | FOREIGN KEY, ON DELETE RESTRICT | Opcional, como acima. |
+| id_alocacao | FOREIGN KEY, ON DELETE RESTRICT | Opcional, como acima. |
+| data_aprovacao | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Gerada automaticamente no momento da decisão. |
+| status | NOT NULL, CHECK (status IN ('Aprovado','Reprovado')) | A decisão só pode ser Aprovado ou Reprovado. |
+| observacao | Pode ser nulo | Registra o motivo; obrigatória quando reprovado. |
+| etapa | Pode ser nulo | Mantido como texto livre, conforme decisão da equipe. |
+| (tabela) chk_aprovacao_um_alvo | CHECK ((id_contrato IS NOT NULL) + (id_aditivo IS NOT NULL) + (id_alocacao IS NOT NULL) = 1) | Exatamente um dos três itens (contrato, aditivo ou alocação) pode ser aprovado por registro. |
+| (tabela) chk_aprovacao_obs | CHECK (status <> 'Reprovado' OR observacao IS NOT NULL) | Reprovação exige observação. |
+
+**Tabela – Aditivo**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_aditivo | PRIMARY KEY | Identifica cada aditivo. |
+| id_contrato | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Um aditivo não existe sem contrato. |
+| numero_aditivo | NOT NULL, CHECK (numero_aditivo > 0) | Numera os aditivos de cada contrato (1º, 2º...). |
+| data_assinatura | Pode ser nulo | Nula enquanto o aditivo estiver Pendente e não assinado; preenchida na assinatura (premissa a confirmar com a KXP). Aditivos Aprovados sem data são listados na auditoria. |
+| descricao | NOT NULL | Preserva o histórico do que mudou. |
+| impacto_financeiro | DEFAULT 0.00, (pode ser nulo) | Pode ser positivo ou negativo, por isso sem CHECK. |
+| nova_vigencia | CHECK (nova_vigencia IS NULL OR nova_vigencia > 0), (pode ser nulo) | Só existe quando o aditivo altera a vigência. |
+| status | NOT NULL, DEFAULT 'Pendente', CHECK (status IN ('Pendente','Aprovado','Rejeitado')) | Segue o fluxo de aprovação. |
+| id_contrato, numero_aditivo | UNIQUE (composta) | Impede repetir o mesmo número de aditivo dentro de um contrato. |
+
+**Tabela – Provedor_de_Nuvem**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_provedor_de_nuvem | PRIMARY KEY | Identifica cada provedor. |
+| nome_provedor | NOT NULL, UNIQUE | Impede provedores duplicados. |
+| site_oficial | Pode ser nulo | Campo informativo. |
+| descricao | Pode ser nulo | Campo informativo. |
+| status | NOT NULL, DEFAULT 'Ativo', CHECK (status IN ('Ativo','Inativo')) | Permite desativar sem apagar. |
+
+**Tabela – Tag**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_tag | PRIMARY KEY | Identifica cada tag. |
+| nome_tag | NOT NULL, UNIQUE | Impede tags duplicadas. |
+| cor | Pode ser nulo | Campo visual. |
+| descricao | Pode ser nulo | Campo informativo. |
+| status | NOT NULL, DEFAULT 'Ativo', CHECK (status IN ('Ativo','Inativo')) | Permite desativar sem apagar. |
+
+**Tabela – Fatura**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_fatura | PRIMARY KEY | Identifica cada fatura. |
+| id_contrato | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Todo faturamento pertence a um contrato existente. A moeda não é repetida na fatura: ela depende do contrato (3FN). |
+| numero_fatura | NOT NULL, UNIQUE | Chave de rastreio fiscal; não pode repetir. |
+| competencia | NOT NULL, CHECK (DAY(competencia) = 1) | A competência é o mês do serviço prestado (RN29, valor mensal fixo). |
+| valor | NOT NULL, CHECK (valor > 0) | Uma fatura de valor zero ou negativo não faz sentido. |
+| data_emissao | NOT NULL | Registra quando a fatura foi emitida. |
+| data_vencimento | NOT NULL, CHECK (data_vencimento >= data_emissao) | O vencimento não pode ser anterior à emissão. |
+| status | NOT NULL, DEFAULT 'Em aberto', CHECK (status IN ('Em aberto','Paga','Em atraso','Cancelada')) | Uma fatura nasce em aberto, sem pagamentos (devolutiva do professor). “Parcialmente paga” não é gravada: é calculada pelos pagamentos Confirmados. |
+
+**Tabela – Pagamento**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_pagamento | PRIMARY KEY | Identifica cada pagamento. |
+| id_fatura | FOREIGN KEY, ON DELETE RESTRICT, NOT NULL | Todo pagamento pertence a uma fatura, mas uma fatura pode existir sem pagamento. PAGAMENTO é entidade fraca: não existe sem a fatura. |
+| valor | NOT NULL, CHECK (valor > 0) | Pagamento sempre positivo; a soma não pode passar o valor da fatura (auditoria). |
+| data_pagamento | NOT NULL | Data em que o valor entrou na conta. |
+| metodo_pagamento | NOT NULL | Ex.: boleto, transferência. |
+| codigo_transacao | UNIQUE, (pode ser nulo) | Evita registrar a mesma transação duas vezes. |
+| status | NOT NULL, DEFAULT 'Confirmado', CHECK (status IN ('Confirmado','Estornado')) | Permite estornar sem apagar (valores propostos pela equipe). |
+
+**Tabela – Perfil_tecnico**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_perfil_tecnico | PRIMARY KEY | Identifica cada perfil técnico. |
+| nome_perfil | NOT NULL, UNIQUE | Impede perfis duplicados. |
+| descricao | Pode ser nulo | Campo informativo. |
+| nivel_experiencia | CHECK (nivel_experiencia IS NULL OR nivel_experiencia IN ('Júnior','Pleno','Sênior')), (pode ser nulo) | Usa os mesmos níveis de senioridade dos colaboradores. |
+| status | NOT NULL, DEFAULT 'Ativo', CHECK (status IN ('Ativo','Inativo')) | Permite desativar sem apagar. |
+
+**Tabela – Coloborador_Certificacao**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_colaborador | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com COLABORADOR. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_certificacao | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com CERTIFICACAO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| data_obtencao | PRIMARY KEY (composta) | Entra na chave porque o colaborador pode renovar a mesma certificação mais de uma vez. |
+| data_validade | CHECK (data_validade IS NULL OR data_validade >= data_obtencao), (pode ser nulo) | Usada para saber se a certificação está vencida (RN40). |
+
+**Tabela – Contrato_Certificacao**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_contrato | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com CONTRATO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_certificacao | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com CERTIFICACAO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| obrigatorio | NOT NULL, DEFAULT 1, CHECK (obrigatorio IN (0,1)) | Diferencia certificação obrigatória de desejável. |
+| data_limite | Pode ser nulo | Só existe quando o contrato dá prazo. |
+
+**Tabela – Oportunidade_Certificacao**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_oportunidade | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com OPORTUNIDADE. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_certificacao | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com CERTIFICACAO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| obrigatorio | NOT NULL, DEFAULT 1, CHECK (obrigatorio IN (0,1)) | Diferencia certificação obrigatória de desejável. |
+
+**Tabela – Contrato_Provedor**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_contrato | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com CONTRATO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_provedor_de_nuvem | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com PROVEDOR_DE_NUVEM. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| data_inicio | NOT NULL | Registra desde quando o provedor é usado. |
+| data_fim | CHECK (data_fim IS NULL OR data_fim >= data_inicio), (pode ser nulo) | Vazia enquanto o provedor continua em uso. |
+
+**Tabela – Contrato_Servico**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_contrato | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com CONTRATO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_servico | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com SERVICO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| valor_contratado | NOT NULL, CHECK (valor_contratado >= 0) | O mesmo serviço pode ter valores diferentes em contratos diferentes (2FN). |
+| data_inicio | NOT NULL | Data em que o serviço começa a ser prestado. |
+| data_fim | CHECK (data_fim IS NULL OR data_fim >= data_inicio), (pode ser nulo) | Vazia enquanto o serviço continua sendo prestado. |
+
+**Tabela – Oportunidade_Servico**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_oportunidade | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com OPORTUNIDADE. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_servico | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com SERVICO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| valor_negociado | NOT NULL, CHECK (valor_negociado >= 0) | Valor não pode ser negativo. |
+| quantidade | NOT NULL, DEFAULT 1, CHECK (quantidade > 0) | Quantidade positiva. |
+
+**Tabela – Oportunidade_Perfil_Tecnico**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_oportunidade | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com OPORTUNIDADE. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_perfil_tecnico | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com PERFIL_TECNICO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+
+**Tabela – Coloborador_Perfil_Tecnico**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_colaborador | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com COLABORADOR. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_perfil_tecnico | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com PERFIL_TECNICO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+
+**Tabela – Contrato_Tag**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_contrato | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com CONTRATO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_tag | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com TAG. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| data_associacao | NOT NULL, DEFAULT CURRENT_DATE | Registra quando a tag foi aplicada. |
+
+**Tabela – Usuario_tag**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_usuario | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com USUARIO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_tag | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com TAG. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| data_permissao | NOT NULL, DEFAULT CURRENT_DATE | Registra quando o acesso foi concedido. |
+
+**Tabela – Usuario_Permissao**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_usuario | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com USUARIO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_permissao | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com PERMISSAO. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| data_permissao | NOT NULL, DEFAULT CURRENT_DATE | Registra quando a permissão foi concedida. |
+
+**Tabela – Oportunidade_Provedor**
+| Campo / atributo | Restrição aplicada | Justificativa de negócio |
+| :--- | :--- | :--- |
+| id_oportunidade | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com OPORTUNIDADE. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
+| id_provedor_de_nuvem | PRIMARY KEY (composta), FOREIGN KEY, ON DELETE CASCADE | Parte da chave composta; integridade com PROVEDOR_DE_NUVEM. Se o registro principal for apagado, o vínculo perde o sentido e sai junto. |
 
 ### Resumo da cobertura de restrições
-| CATEGORIA DE RESTRIÇÃO | QUANTIDADE APLICADA | PRINCIPAIS ALVOS DE PROTEÇÃO NO BANCO |
+| Categoria | Quantidade aplicada | Principais alvos de proteção |
 | :--- | :--- | :--- |
-| PRIMARY KEY | 100% das tabelas (33): chave simples nas 21 principais e chave composta nas 12 associativas | Garantia de identificação única atômica ou composta. |
-| FOREIGN KEY | Todas as relações, com ON DELETE RESTRICT nas principais | Integridade referencial entre entidades principais e associativas, sem apagar registros que têm histórico. |
-| NOT NULL | Atributos obrigatórios | Impede registros incompletos que afetem a lógica de negócio. |
-| UNIQUE | CNPJ, número do contrato, número da NF, nomes (serviço, certificação, permissão, provedor, tag, perfil) e oportunidade do contrato | Impede duplicação acidental de entidades e documentos no sistema. |
-| CHECK | Valores positivos, datas coerentes, percentual de dedicação e listas de valores (status, moeda, senioridade) | Impede valores financeiros negativos, inconsistências de datas e status inválidos. |
-| DEFAULT | Vigência (12 meses), aviso prévio (30 dias) e status iniciais | Garante padronização e automação no preenchimento de campos operacionais. |
+| PRIMARY KEY | 33 tabelas: chave simples nas 21 principais e composta nas 12 associativas | Identificação única atômica ou composta |
+| FOREIGN KEY | 43 chaves estrangeiras (RESTRICT nas principais e CASCADE nas associativas) | Integridade entre principais e associativas, sem apagar histórico |
+| NOT NULL | 91 colunas | Impede registros incompletos |
+| UNIQUE | 16 restrições (inclui 1 composta) | CNPJ, número do contrato, número da NF, nomes de catálogo, oportunidade do contrato, usuário do colaborador |
+| CHECK | 53 restrições | Valores positivos, datas coerentes, dedicação até 100%, listas de status, moeda e senioridade, exatamente um alvo na aprovação |
+| DEFAULT | 27 colunas | Vigência 12 meses, aviso prévio 30 dias e status iniciais |
 
 # # 19 . Dicionário de dados
-| TABELA | ATRIBUTO | DESCRIÇÃO | TIPO | TAMANHO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| CLIENTE | id_cliente | Identificador único do cliente | Int | - | Sim | Não | Não permitido | Sim | Auto-Increment | Chave Primária de Cliente |
-| CLIENTE | cnpj | CNPJ da empresa cliente | Varchar | 18 | Não | Não | Não permitido | Sim | - | Formato válido (XX.XXX.XXX/XXXX-XX) e único |
-| CLIENTE | nome | Razão Social/Nome Fantasia | Varchar | 100 | Não | Não | Não permitido | Não | - | Preenchimento obrigatório |
-| CONTATO | id_contato | Identificador único do contacto | Int | - | Sim | Não | Não permitido | Sim | Auto-Increment | Chave Primária (Isolado na 1FN) |
-| CONTATO | id_cliente | Cliente associado ao contacto | Int | - | Não | Sim | Não permitido | Não | - | Foreign Key para Cliente(id_cliente) |
-| CONTATO | nome | Nome da pessoa de contacto | Varchar | 100 | Não | Não | Não permitido | Não | - | Preenchimento obrigatório |
-| CONTATO | email | E-mail de contacto | Varchar | 100 | Não | Não | Permitido | Não | - | Formato de e-mail válido |
-| CONTATO | telefone | Telefone Atómico | Varchar | 20 | Não | Não | Permitido | Não | - | Armazena 1 número por linha (1FN) |
-| OPORTUNIDADE | id_oportunidade | Identificador da oportunidade | Int | - | Sim | Não | Não permitido | Sim | Auto-Increment | Chave Primária |
-| OPORTUNIDADE | id_cliente | Cliente associado | Int | - | Não | Sim | Não permitido | Não | - | Foreign Key (Removido nome de cliente em 3FN) |
-| OPORTUNIDADE | valor_estimado | Valor previsto do negócio | Decimal | 12.2 | Não | Não | Permitido | Não | 0.00 | CHECK (valor_estimado >= 0) |
-| OPORTUNIDADE | data_prevista_inicio | Data estimada de início | Date | - | Não | Não | Permitido | Não | - | Formato de data (YYYY-MM-DD) |
-| OPORTUNIDADE | estagio_negociacao | Fase atual da negociação | Varchar | 50 | Não | Não | Permitido | Não | 'Em aberto' | CHECK com lista restrita de estágios |
-| SERVIÇO | id_servico | Identificador do serviço | Int | - | Sim | Não | Não permitido | Sim | Auto-Increment | Chave Primária |
-| SERVIÇO | nome_servico | Nome do serviço prestado | Varchar | 100 | Não | Não | Não permitido | Sim | - | Nome único no catálogo |
-| SERVIÇO | descricao | Detalhamento técnico | Text | - | Não | Não | Permitido | Não | - | Descrição detalhada do serviço |
-| SERVIÇO | preco_base | Preço de tabela | Decimal | 12.2 | Não | Não | Não permitido | Não | 0.00 | CHECK (preco_base >= 0) |
-| CONTRATO | id_contrato | Identificador do contrato | Int | - | Sim | Não | Não permitido | Sim | Auto-Increment | Chave Primária |
-| CONTRATO | id_cliente | Cliente Contratante | Int | - | Não | Sim | Não permitido | Não | - | Foreign Key para Cliente(id_cliente) |
-| CONTRATO | id_oportunidade | Oportunidade de origem | Int | - | Não | Sim | Permitido | Não | - | Foreign Key para Oportunidade(id_oportunidade) |
-| CONTRATO | numero | Número do contrato | Varchar | 50 | Não | Não | Não permitido | Sim | - | Número de documento único |
-| CONTRATO | valor | Valor total do contrato | Decimal | 12.2 | Não | Não | Não permitido | Não | - | CHECK (valor > 0) |
-| CONTRATO | data_inicio | Início da vigência | Date | - | Não | Não | Não permitido | Não | - | Data válida de início |
-| CONTRATO | vigencia | Período de vigência | Varchar | 50 | Não | Não | Não permitido | Não | - | Exemplo: '12 meses' |
-| CONTRATO | status | Situação do contrato | Varchar | 30 | Não | Não | Não permitido | Não | 'Ativo' | CHECK (status IN ('Ativo', 'Encerrado', ...)) |
-| CONTRATO_SERVICO | id_contrato | Contrato associado | Int | - | Sim | Sim | Não permitido | Não | - | PK / FK (Chave Composta em 2FN) |
-| CONTRATO_SERVICO | id_servico | Serviço prestado | Int | - | Sim | Sim | Não permitido | Não | - | PK / FK (Chave Composta em 2FN) |
-| CONTRATO_SERVICO | valor_contratado | Valor ajustado do serviço | Decimal | 12.2 | Não | Não | Não permitido | Não | - | Depende da chave toda (id_contrato + id_servico) |
-| CONTRATO_SERVICO | data_inicio | Início do serviço no contrato | Date | - | Não | Não | Não permitido | Não | - | Data válida |
-| CONTRATO_SERVICO | data_fim | Término do serviço | Date | - | Não | Não | Permitido | Não | - | CHECK (data_fim >= data_inicio) |
+
+**Tabela - cliente**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_cliente | Identificador do cliente | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador gerado automaticamente |
+| cnpj | CNPJ do cliente | VARCHAR | Não | Não | Não | Sim | - | Deve possuir 14 dígitos |
+| nome | Nome do cliente | VARCHAR | Não | Não | Não | Não | - | Preenchimento obrigatório |
+
+**Tabela - contato**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_contato | Identificador do contato | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_cliente | Cliente relacionado ao contato | INT | Não | Sim | Não | Não | - | ON DELETE RESTRICT |
+| nome | Nome da pessoa de contato | VARCHAR | Não | Não | Não | Não | - | Obrigatório |
+| email | Endereço eletrônico do contato | VARCHAR | Não | Não | Não | Não | - | Deve possuir formato válido de e-mail |
+| telefone | Telefone do contato | VARCHAR | Não | Não | Não | Não | - | Apenas números, com código de área |
+
+**Tabela - oportunidade**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_oportunidade | Identificador da oportunidade | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_cliente | Cliente interessado na oportunidade | INT | Não | Sim | Não | Não | - | ON DELETE RESTRICT |
+| valor_estimado | Valor financeiro estimado | DECIMAL | Não | Não | Não | Não | - | Maior ou igual a zero |
+| data_prevista_inicio | Data prevista para início | DATE | Não | Não | Sim | Não | - | Pode ser nula |
+| estagio_negociacao | Etapa atual da negociação | VARCHAR | Não | Não | Não | Não | - | Valores: Prospecção, Negociação, Ganha ou Perdida |
+
+**Tabela - serviço**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_servico | Identificador do serviço | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| nome_servico | Nome do serviço oferecido | VARCHAR | Não | Não | Não | Sim | - | Nome obrigatório e exclusivo |
+
+**Tabela - contrato**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_contrato | Identificador do contrato | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_cliente | Cliente contratante | INT | Não | Sim | Não | Não | - | ON DELETE RESTRICT |
+| id_oportunidade | Oportunidade que originou o contrato | INT | Não | Sim | Sim | Sim | - | ON DELETE RESTRICT; valor único quando preenchido |
+| numero | Número de identificação do contrato | VARCHAR | Não | Não | Não | Sim | - | Número obrigatório e exclusivo |
+| valor_mensal | Valor mensal do contrato | DECIMAL | Não | Não | Não | Não | - | Maior ou igual a zero |
+| data_inicio | Data de início do contrato | DATE | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| vigencia | Duração do contrato em meses | INT | Não | Não | Não | Não | 12 | Padrão de 12 meses, maior que zero |
+| tipo_renovacao | Modalidade de renovação | VARCHAR | Não | Não | Não | Não | - | Prazo determinado ou Evergreen |
+| prazo_aviso_previo | Prazo de antecedência para cancelamento | INT | Não | Não | Não | Não | 30 | Padrão de 30 dias |
+| moeda | Moeda utilizada no contrato | CHAR | Não | Não | Não | Não | - | Valores permitidos: BRL ou USD |
+| referencia_docusign | Referência do documento no DocuSign | VARCHAR | Não | Não | Não | Não | - | Referência obrigatória |
+| status | Situação atual do contrato | VARCHAR | Não | Não | Não | Não | Em aprovação | Valores: Em aprovação, Vigente, Aviso prévio, Encerrado ou Cancelado |
+| data_aviso_cancelamento | Data em que o cancelamento foi comunicado | DATE | Não | Não | Sim | Não | - | Pode ser nula |
+| data_efetiva_termino | Data efetiva do encerramento | DATE | Não | Não | Sim | Não | - | Deve ser maior ou igual à data de aviso de cancelamento |
+
+**Tabela - colaborador**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_colaborador | Identificador do colaborador | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| funcao | Função desempenhada pelo colaborador | VARCHAR | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| senioridade | Nível de experiência profissional | VARCHAR | Não | Não | Não | Não | - | Júnior, Pleno ou Sênior |
+| custo_hora | Custo por hora do colaborador | DECIMAL | Não | Não | Não | Não | - | Maior que zero |
+| status | Situação do colaborador | VARCHAR | Não | Não | Não | Não | Ativo | Valores: Ativo ou Inativo |
+
+**Tabela - alocação**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_alocacao | Identificador da alocação | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_colaborador | Colaborador alocado | INT | Não | Sim | Não | Não | - | ON DELETE RESTRICT |
+| id_contrato | Contrato relacionado à alocação | INT | Não | Sim | Não | Não | - | ON DELETE RESTRICT |
+| funcao | Função exercida na alocação | VARCHAR | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| data_inicio | Data inicial da alocação | DATE | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| data_termino_previsto | Data prevista para encerramento | DATE | Não | Não | Não | Não | - | Maior ou igual à data de início |
+| data_termino_real | Data efetiva de encerramento | DATE | Não | Não | Sim | Não | - | Se preenchida, maior ou igual à data de início |
+| dedicacao | Percentual de dedicação do colaborador | DECIMAL | Não | Não | Não | Não | - | Maior que zero e menor ou igual a 100 |
+| custo_hora | Custo por hora aplicado à alocação | DECIMAL | Não | Não | Não | Não | - | Maior que zero |
+
+**Tabela - contrato salarial**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_contrato_salarial | Identificador do registro salarial | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_colaborador | Colaborador relacionado ao salário | INT | Não | Sim | Não | Não | - | Referência a Colaborador |
+| salario | Valor salarial do colaborador | DECIMAL | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| data_inicio | Início da vigência salarial | DATE | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| data_fim | Encerramento da vigência salarial | DATE | Não | Não | Sim | Não | - | NULL representa salário vigente |
+
+**Tabela - certificação**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_certificacao | Identificador da certificação | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| nome_certificacao | Nome da certificação | VARCHAR | Não | Não | Não | Sim | - | Nome obrigatório e exclusivo |
+
+**Tabela - apontamento de horas**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_apontamento_de_horas | Identificador do apontamento | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_alocacao | Alocação relacionada ao apontamento | INT | Não | Sim | Não | Não | - | Referência a Alocação |
+| horas_trabalhadas | Quantidade de horas trabalhadas | DECIMAL | Não | Sim | Não | Não | - | Maior que zero |
+| data_apontamento | Data do registro das horas | DATE | Não | Não | Não | Não | - | Não pode ser uma data futura |
+| custo_hora | Custo por hora registrado | DECIMAL | Não | Não | Não | Não | - | Preenchimento obrigatório |
+
+**Tabela - permissão**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_permissao | Identificador da permissão | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| nome_permissao | Nome da permissão | VARCHAR | Não | Não | Não | Sim | - | Nome obrigatório e exclusivo |
+| descricao | Descrição da finalidade da permissão | TEXT | Não | Não | Sim | Não | - | Pode ser nula |
+
+**Tabela - perfil de acesso**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_perfil_de_acesso | Identificador do perfil de acesso | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| nome_perfil | Nome do perfil de acesso | VARCHAR | Não | Não | Não | Sim | - | Nome obrigatório e exclusivo |
+
+**Tabela - evidência de entrega**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_evidencia | Identificador da evidência | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_contrato | Contrato relacionado à entrega | INT | Não | Sim | Não | Não | - | Referência a Contrato |
+| id_colaborador | Colaborador responsável pela entrega | INT | Não | Sim | Não | Não | - | Referência a Colaborador |
+| mes_referencia | Mês de referência da evidência | DATE | Não | Não | Não | Não | - | Deve ser sempre o primeiro dia do mês |
+| descricao_evidencia | Descrição da entrega realizada | TEXT | Não | Não | Não | Não | - | Preenchimento obrigatório |
+
+**Tabela - usuário**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_usuario | Identificador do usuário | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_perfil_de_acesso | Perfil de acesso do usuário | INT | Não | Sim | Não | Não | - | Referência a Perfil de Acesso |
+| id_colaborador | Colaborador associado ao usuário | INT | Não | Sim | Sim | Sim | - | Referência a Colaborador; único quando preenchido |
+
+**Tabela - aprovação**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_aprovacao | Identificador da aprovação | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_usuario | Usuário responsável pela decisão | INT | Não | Sim | Não | Não | - | Referência a Usuário |
+| id_contrato | Contrato submetido à aprovação | INT | Não | Sim | Sim | Não | - | Referência a Contrato |
+| id_aditivo | Aditivo submetido à aprovação | INT | Não | Sim | Sim | Não | - | Referência a Aditivo |
+| id_alocacao | Alocação submetida à aprovação | INT | Não | Sim | Sim | Não | - | Referência a Alocação |
+| data_decisao | Data e horário da decisão | DATETIME | Não | Não | Sim | Não | Gerado pelo Sistema | Registro automático da decisão |
+| decisao | Resultado da aprovação | VARCHAR | Não | Não | Não | Não | - | Valores: Aprovado ou Reprovado |
+| observacao | Justificativa ou comentário da decisão | TEXT | Não | Não | Sim | Não | - | Obrigatória quando a decisão for Reprovado |
+
+**Tabela - aditivo**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_aditivo | Identificador do aditivo | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_contrato | Contrato ao qual o aditivo pertence | INT | Não | Sim | Não | Não | - | Referência a Contrato |
+| data_aditivo | Data de criação do aditivo | DATE | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| condicoes_anteriores | Condições contratuais anteriores | TEXT | Não | Não | Sim | Não | - | Pode ser nula |
+| novas_condicoes | Novas condições estabelecidas | TEXT | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| status | Situação atual do aditivo | VARCHAR | Não | Não | Não | Não | Pendente | Valores: Pendente, Aprovado ou Rejeitado |
+
+**Tabela - provedor de nuvem**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_provedor_nuvem | Identificador do provedor | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| nome_provedor | Nome do provedor de nuvem | VARCHAR | Não | Não | Não | Sim | - | Nome obrigatório e exclusivo |
+
+**Tabela - tag**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_tag | Identificador da TAG | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| nome_tag | Nome da etiqueta | VARCHAR | Não | Não | Não | Sim | - | Nome obrigatório e exclusivo |
+
+**Tabela - fatura**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_fatura | Identificador da fatura | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_contrato | Contrato relacionado à fatura | INT | Não | Sim | Não | Não | - | Referência a Contrato |
+| competencia | Mês de referência da cobrança | DATE | Não | Não | Não | Não | - | Sempre o primeiro dia do mês |
+| valor | Valor financeiro da fatura | DECIMAL | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| moeda | Moeda utilizada na cobrança | CHAR | Não | Não | Não | Não | - | Igual à moeda do contrato |
+| data_vencimento | Data limite para pagamento | DATE | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| numero_nf | Número da nota fiscal | VARCHAR | Não | Não | Sim | Sim | - | Único quando preenchido |
+| status | Situação atual da fatura | VARCHAR | Não | Não | Não | Não | - | Valores não especificados no diagrama |
+
+**Tabela - pagamento**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_pagamento | Identificador do pagamento | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| id_fatura | Fatura à qual o pagamento pertence | INT | Não | Sim | Não | Não | - | Referência a Fatura |
+| data_pagamento | Data de realização do pagamento | DATE | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| valor | Valor financeiro pago | DECIMAL | Não | Não | Não | Não | - | Maior que zero |
+
+**Tabela - perfil técnico**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_perfil_tecnico | Identificador do perfil técnico | INT | Sim | Não | Não | Não | AUTO_INCREMENT | Identificador automático |
+| nome_perfil | Nome do perfil técnico | VARCHAR | Não | Não | Não | Sim | - | Nome obrigatório e exclusivo |
+| descricao_competencias | Descrição das competências técnicas | TEXT | Não | Não | Sim | Não | - | Pode ser nula |
+
+**Tabela - colaborador_certificação**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_colaborador | Colaborador certificado | INT | Sim | Sim | Não | Não | - | Referência a Colaborador |
+| id_certificacao | Certificação obtida | INT | Sim | Sim | Não | Não | - | Referência a Certificação |
+| data_obtencao | Data em que a certificação foi obtida | DATE | Sim | Não | Não | Não | - | Integra a chave primária composta |
+| data_validade | Data de vencimento da certificação | DATE | Não | Não | Sim | Não | - | Pode ser nula |
+
+**Tabela - oportunidade_certificação**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_oportunidade | Oportunidade comercial | INT | Sim | Sim | Não | Não | - | Referência a Oportunidade |
+| id_certificacao | Certificação exigida | INT | Sim | Sim | Não | Não | - | Referência a Certificação |
+| obrigatorio | Indica se a certificação é obrigatória | BOOLEAN | Não | Não | Não | Não | - | Deve receber verdadeiro ou falso |
+
+**Tabela - contrato_servico**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_contrato | Contrato relacionado | INT | Sim | Sim | Não | Não | - | Referência a Contrato |
+| id_servico | Serviço contratado | INT | Sim | Sim | Não | Não | - | Referência a Serviço |
+| valor_contratado | Valor acordado para o serviço | DECIMAL | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| data_inicio | Início da prestação do serviço | DATE | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| data_fim | Término da prestação do serviço | DATE | Não | Não | Sim | Não | - | Pode ser nula |
+
+**Tabela - contrato_tag**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_contrato | Contrato classificado | INT | Sim | Sim | Não | Não | - | Referência a Contrato |
+| id_tag | Etiqueta associada | INT | Sim | Sim | Não | Não | - | Referência a TAG |
+| data_associacao | Data da associação da etiqueta | DATE | Não | Não | Não | Não | - | Preenchimento obrigatório |
+
+**Tabela - usuário_tag**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_usuario | Usuário relacionado | INT | Sim | Sim | Não | Não | - | Referência a Usuário |
+| id_tag | TAG relacionada | INT | Sim | Sim | Não | Não | - | Referência a TAG |
+| id_tag | Data do registro de acesso | DATATIME | Não | Não | Não | Não | - | Preenchimento obrigatório |
+
+**Tabela - oportunidade_perfil_técnico**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_oportunidade | Oportunidade relacionada | INT | Sim | Sim | Não | Não | - | Referência a Oportunidade |
+| id_perfil_tecnico | Perfil técnico requerido | INT | Sim | Sim | Não | Não | - | Referência a Perfil Técnico |
+
+**Tabela - contrato_certificação**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_contrato | Contrato relacionado | INT | Sim | Sim | Não | Não | - | Referência a Contrato |
+| id_certificacao | Certificação exigida | INT | Sim | Sim | Não | Não | - | Referência a Certificação |
+| obrigatoria | Indica se a certificação é obrigatória | BOOLEAN | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| data_limite | Data limite para apresentação | DATE | Não | Não | Sim | Não | - | Pode ser nula |
+
+**Tabela - contrato_provedor**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_contrato | Contrato relacionado | INT | Sim | Sim | Não | Não | - | Referência a Contrato |
+| id_provedor_nuvem | Provedor de nuvem associado | INT | Sim | Sim | Não | Não | - | Referência a Provedor de Nuvem |
+| data_inicio | Data de início do vínculo | DATE | Não | Não | Não | Não | - | Preenchimento obrigatório |
+| data_fim | Data de término do vínculo | DATE | Não | Não | Sim | Não | - | Pode ser nula |
+
+**Tabela - oportunidade_serviço**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_oportunidade | Oportunidade relacionada | INT | Sim | Sim | Não | Não | - | Referência a Oportunidade |
+| id_servico | Serviço associado | INT | Sim | Sim | Não | Não | - | Referência a Serviço |
+| valor_negociado | Valor negociado para o serviço | DECIMAL | Não | Não | Sim | Não | - | Pode ser nulo; Maior ou igual a zero |
+| quantidade | Quantidade contratada do serviço | INT | Não | Não | Sim | Não | - | Pode ser nula |
+
+**Tabela - usuário_permissão**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_usuario | Usuário relacionado | INT | Sim | Sim | Não | Não | - | Referência a Usuário |
+| id_permissao | Permissão concedida | INT | Sim | Sim | Não | Não | - | Referência a Permissão |
+| data_permissao | Data de atribuição da permissão | DATE | Não | Não | Não | Não | - | Preenchimento obrigatório |
+
+**Tabela - colaborador_perfil_técnico**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_colaborador | Colaborador relacionado | INT | Sim | Sim | Não | Não | - | Referência a Colaborador |
+| id_perfil_tecnico | Perfil técnico do colaborador | INT | Sim | Sim | Não | Não | - | Referência a Perfil Técnico |
+
+**Tabela - oportunidade_provedor**
+| ATRIBUTO | DESCRIÇÃO | TIPO | PK | FK | NULL | UNIQUE | DEFAULT | REGRA/RESTRIÇÃO |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| id_oportunidade | Oportunidade relacionada | INT | Sim | Sim | Não | Não | - | Referência a Oportunidade |
+| id_provedor_nuvem | Provedor de nuvem envolvido | INT | Sim | Sim | Não | Não | - | Referência a Provedor de Nuvem |
 
 # # 20 . Implementação SQL
 Etapas 14 e 15
