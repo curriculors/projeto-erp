@@ -838,147 +838,117 @@ Pergunta: cada campo guarda um único valor? Regra prática: um campo → um val
 
 ### 2FN
 Pergunta: cada atributo não chave depende da chave toda? A 2FN só importa em tabelas com chave composta. As 21 tabelas principais têm chave simples (id), então não podem ter dependência parcial. Verificamos as 12 associativas:
+| Tabela | Chave composta | Dependência funcional | Depende da chave toda? |
+| :--- | :--- | :--- | :--- |
+| COLABORADOR_CERTIFICACAO | id_colaborador, id_certificacao, data_obtencao | (id_colaborador, id_certificacao, data_obtencao) → data_validade | Sim: o valor só existe para o par inteiro. |
+| CONTRATO_CERTIFICACAO | id_contrato, id_certificacao | (id_contrato, id_certificacao) → obrigatorio, data_limite | Sim: o valor só existe para o par inteiro. |
+| OPORTUNIDADE_CERTIFICACAO | id_oportunidade, id_certificacao | (id_oportunidade, id_certificacao) → obrigatorio | Sim: o valor só existe para o par inteiro. |
+| CONTRATO_PROVEDOR | id_contrato, id_provedor_de_nuvem | (id_contrato, id_provedor_de_nuvem) → data_inicio, data_fim | Sim: o valor só existe para o par inteiro. |
+| CONTRATO_SERVICO | id_contrato, id_servico | (id_contrato, id_servico) → valor_contratado, data_inicio, data_fim | Sim: o valor só existe para o par inteiro. |
+| OPORTUNIDADE_SERVICO | id_oportunidade, id_servico | (id_oportunidade, id_servico) → valor_negociado, quantidade | Sim: o valor só existe para o par inteiro. |
+| OPORTUNIDADE_PERFIL_TECNICO | id_oportunidade, id_perfil_tecnico | Sem atributos além da chave | Sim (nada a depender de parte da chave). |
+| COLABORADOR_PERFIL_TECNICO | id_colaborador, id_perfil_tecnico | Sem atributos além da chave | Sim (nada a depender de parte da chave). |
+| CONTRATO_TAG | id_contrato, id_tag | (id_contrato, id_tag) → data_associacao | Sim: o valor só existe para o par inteiro. |
+| USUARIO_TAG | id_usuario, id_tag | (id_usuario, id_tag) → data_permissao | Sim: o valor só existe para o par inteiro. |
+| USUARIO_PERMISSAO | id_usuario, id_permissao | (id_usuario, id_permissao) → data_permissao | Sim: o valor só existe para o par inteiro. |
+| OPORTUNIDADE_PROVEDOR | id_oportunidade, id_provedor_de_nuvem | Sem atributos além da chave | Sim (nada a depender de parte da chave). |
 
+Caso real que justificou a 2FN: na primeira entrega, “Valor no Contrato” estava em SERVICO, mas o valor depende do serviço e do contrato juntos. Ele foi para CONTRATO_SERVICO.
+
+Em COLABORADOR_CERTIFICACAO a chave inclui data_obtencao porque o colaborador pode obter a mesma certificação mais de uma vez; assim data_validade depende da chave toda.
 
 ### 3FN
-| CAMPO / ATRIBUTO | TIPO DE CHAVE | DEPENDÊNCIA FUNCIONAL | ANÁLISE 3FN |
+Pergunta: o atributo depende diretamente da chave ou de outro atributo? Procuramos dependências transitivas. Os casos encontrados e corrigidos foram:
+| Tabela | Dependência | Problema | Correção |
 | :--- | :--- | :--- | :--- |
-| id_oportunidade | PK | Identificador único | Chave Primária |
-| id_cliente | FK | id_oportunidade -> id_cliente | Chave Estrangeira (Direta) |
-| valor_estimado | Nenhum | id_oportunidade -> valor_estimado | Depende diretamente da chave |
-| data_prevista_inicio | Nenhum | id_oportunidade -> data_prevista_inicio | Depende diretamente da chave |
-| estagio_negociacao | Nenhum | id_oportunidade -> estagio_negociacao | Depende diretamente da chave |
-| cliente | Removido | id_cliente -> cliente | **Removido**: Dependência transitiva |
-| servico | Removido | id_oportunidade -> vários serviços (N:N) | **Removido**: vira a tabela OPORTUNIDADE_SERVICO |
+| OPORTUNIDADE | id_oportunidade → id_cliente → nome do cliente | Nome do cliente repetido na oportunidade | Atributo cliente removido; o nome vem por JOIN com CLIENTE |
+| OPORTUNIDADE | id_oportunidade → serviço(s) → nome do serviço | Redundância de serviço | Atributo servico removido; OPORTUNIDADE_SERVICO |
+| APONTAMENTO_DE_HORAS | id_apontamento → id_alocacao → id_colaborador e id_contrato | Colaborador e contrato repetidos, podendo divergir da alocação | Só id_alocacao fica como FK |
+| FATURA | id_fatura → id_contrato → moeda | Moeda repetida na fatura | Moeda lida do contrato (CONTRATO.moeda) |
+| FATURA | Data de pagamento já existe em PAGAMENTO | Mesmo dado em dois lugares | data_pagamento removida de FATURA |
+| APONTAMENTO / ALOCACAO | Custo/hora do apontamento = custo/hora da alocação | Mesmo valor em dois lugares | Custo/hora fica só em ALOCACAO (congelado) |
+| FATURA | situação "Parcialmente paga" = função dos pagamentos Confirmados da fatura | Dado derivável de outra tabela: gravar no status poderia divergir da soma real dos pagamentos | Não é gravado em FATURA.status; é calculado pela soma dos pagamentos Confirmados (status: Em aberto, Paga, Em atraso, Cancelada) |
+
+As demais tabelas foram conferidas uma a uma: nenhum atributo não chave depende de outro atributo não chave. Os nomes de tabelas referenciadas (cliente, serviço, perfil, provedor) ficam só nas tabelas de origem e as demais usam FK.
 
 ### Documentação
-**Situação 1: Aplicação da 1FN (Atributos multivalorados e grupos repetitivos)**
+**Situação 1: 1FN (atributo multivalorado em Cliente)**
 
-**ANTES**
+**ANTES:** CLIENTE (id_cliente, cnpj, nome, contato)
 
-Estrutura Analisada: CLIENTE (id_cliente, cnpj, nome, contato) 
+**DEPENDÊNCIAS:** Um cliente tem vários contatos (nomes, e-mails e telefones). Guardar tudo no campo contato obriga a usar listas separadas por vírgula ou telefone1, telefone2.
 
-Dependências: 
+**PROBLEMA:** Violação da 1FN: atributo não atômico e grupo repetitivo.
 
-•	Um cliente pode possuir múltiplos contatos (diferentes nomes, e-mails e telefones). 
+**DEPOIS:** CLIENTE (id_cliente, cnpj, nome) e CONTATO (id_contato, id_cliente, nome, email, telefone), com id_contato PK e id_cliente FK.
 
-•	Manter o campo contato na tabela CLIENTE obriga a armazenar listas separadas por vírgula (ex.: "9999-1111, 9888-2222") ou a criar campos repetitivos (telefone1, telefone2). 
 
-Problema Identificado: 
+**Situação 2: 1FN e 2FN (Contrato × Serviço)**
 
-1.	Violação da 1FN: Atributo multivalorado (não atômico) e presença de grupos repetitivos. A 1FN exige a regra “um campo -> um valor”. 
+**ANTES:** CONTRATO (id_contrato, numero, valor_mensal, servicos) e SERVICO (id_servico, nome_servico, valor_no_contrato)
 
- 
+**DEPENDÊNCIAS:** id_contrato → numero, valor_mensal. Um contrato tem vários serviços e um serviço está em vários contratos (N:N). O valor do serviço depende do contrato e do serviço ao mesmo tempo.
 
-**DEPOIS**
+**PROBLEMA:** servicos guardava vários valores no mesmo campo (1FN) e valor_no_contrato estava na tabela errada (depende da chave toda de uma associação, 2FN).
 
-Correção Realizada: Criação da tabela dependente CONTATO, isolando cada informação em registros atômicos com chave estrangeira vinculada ao cliente. 
+**DEPOIS:** SERVICO (id_servico, nome_servico, descricao, preco_base) e CONTRATO_SERVICO (id_contrato, id_servico, valor_contratado, data_inicio, data_fim). Dependência: (id_contrato, id_servico) → valor_contratado, data_inicio, data_fim.
 
-•	CLIENTE (id_cliente, cnpj, nome) 
 
-•	CONTATO (id_contato, id_cliente, nome, email, telefone) 
+**Situação 3: 3FN (Oportunidade)**
 
-•	id_contato: PK 
+**ANTES:** OPORTUNIDADE (id_oportunidade, id_cliente, cliente, servico, valor_estimado, data_prevista_inicio, estagio_negociacao)
 
-•	id_cliente: FK (referenciando CLIENTE)
+**DEPENDÊNCIAS:** id_oportunidade → id_cliente e id_cliente → cliente (nome). Uma oportunidade pode ter vários serviços.
 
-**Situação 2: Aplicação da 1FN e 2FN (Relacionamento N:N e chave composta)**
+**PROBLEMA:** Dependência transitiva (cliente) e redundância de serviço.
 
-**ANTES**
+**DEPOIS:** OPORTUNIDADE (id_oportunidade, id_cliente, valor_estimado, data_prevista_inicio, estagio_negociacao) e OPORTUNIDADE_SERVICO (id_oportunidade, id_servico, valor_negociado, quantidade).
 
-Estrutura Analisada: Na primeira entrega, o mapa de atributos apresentava “Serviço(s)” como atributo do CONTRATO e “Valor no Contrato” como atributo do SERVIÇO:
 
-CONTRATO (id_contrato, numero, valor_mensal, servicos)
+**Situação 4: 3FN (Apontamento de horas)**
 
-SERVICO (id_servico, nome_servico, valor_no_contrato)
+**ANTES:** APONTAMENTO_DE_HORAS (id_apontamento_de_horas, id_alocacao, id_colaborador, id_contrato, data, quantidade_horas, descricao, status)
 
-Dependências / Análise:
+**DEPENDÊNCIAS:** id_alocacao → id_colaborador e id_alocacao → id_contrato. O apontamento já chega ao colaborador e ao contrato pela alocação.
 
-•	id_contrato → numero, valor_mensal (cada contrato possui um número e um valor mensal).
-•	Um contrato pode possuir vários serviços, e um mesmo serviço pode estar presente em vários contratos, caracterizando um relacionamento N:N.
-•	O valor de um serviço pode variar de acordo com o contrato. Portanto, depende da combinação entre id_contrato e id_servico.
+**PROBLEMA:** Dependência transitiva: colaborador e contrato dependem da alocação, e não do apontamento. Dava para gravar um apontamento com colaborador diferente do da alocação.
 
-Problemas Identificados:
+**DEPOIS:** APONTAMENTO_DE_HORAS (id_apontamento_de_horas, id_alocacao, data, quantidade_horas, descricao, status).
 
-•	Violação da 1FN: o atributo servicos armazenava vários valores no mesmo campo, como “Nuvem Gerenciada, SRE”, contrariando a regra de que cada campo deve armazenar apenas um valor.
-•	Problema de organização dos atributos: o valor_no_contrato estava na tabela SERVICO, embora seu valor dependesse do serviço e do contrato ao qual ele estava associado, e não somente do serviço.
 
-**DEPOIS**
+**Situação 5: 3FN (Fatura)**
 
-Correção Realizada: Foi removido o atributo servicos da tabela CONTRATO e o atributo valor_no_contrato da tabela SERVICO. Para representar corretamente o relacionamento N:N, foi criada a tabela associativa CONTRATO_SERVICO, responsável por relacionar contratos e serviços e armazenar o valor contratado de cada serviço.
+**ANTES:** FATURA (id_fatura, id_contrato, numero_fatura, valor, moeda, data_emissao, data_vencimento, data_pagamento, status)
 
-Estrutura corrigida, conforme o DER:
+**DEPENDÊNCIAS:** id_fatura → id_contrato e id_contrato → moeda. A data de pagamento já é guardada em PAGAMENTO.
 
-CONTRATO (id_contrato, id_cliente, id_oportunidade, numero, valor_mensal, data_inicio, vigencia, tipo_renovacao, prazo_aviso_previo, moeda, referencia_docusign, status, data_aviso_cancelamento, data_efetiva_termino)
+**PROBLEMA:** Dependência transitiva (moeda) e dado duplicado (data de pagamento). Além disso, faltava a competência.
 
-SERVICO (id_servico, nome_servico)
+**DEPOIS:** FATURA (id_fatura, id_contrato, numero_fatura, competencia, valor, data_emissao, data_vencimento, status). A moeda vem do contrato.
 
-CONTRATO_SERVICO (id_contrato, id_servico, valor_contratado, data_inicio, data_fim)
-
-Validação da 2FN em CONTRATO_SERVICO
-
-Chave primária composta: (id_contrato, id_servico).
-
-Dependência funcional:(id_contrato, id_servico) → valor_contratado, data_inicio, data_fim.
-
-**Situação 3: Aplicação da 3fn (Dependência transitiva)**
-
-**ANTES**
-
-OPORTUNIDADE (id_oportunidade, id_cliente, cliente, servico, valor_estimado, data_prevista_inicio, estagio_negociacao)
-
-Dependências:
-
-id_oportunidade → id_cliente.
-id_cliente → cliente (o nome do cliente depende do id_cliente).
-id_servico → nome_servico (a identificação do serviço determina seu nome e descrição na entidade SERVICO).
-
-Problema Identificado:
-
-•	 Dependência Transitiva (Violação da 3FN): O atributo cliente não depende diretamente da chave primária id_oportunidade, mas sim do atributo id_cliente.
-•	Além disso, manter a informação de serviço diretamente em OPORTUNIDADE gera redundância, considerando que uma oportunidade pode estar vinculada a vários serviços.
-
-**DEPOIS**
-
-Correção Realizada:
-
-Remoção dos atributos redundantes cliente e servico da entidade OPORTUNIDADE. O nome do cliente é obtido por meio de junção relacional com a tabela CLIENTE, enquanto os serviços vinculados são gerenciados pela tabela associativa OPORTUNIDADE_SERVICO.
-
-OPORTUNIDADE (id_oportunidade, id_cliente, valor_estimado, data_prevista_inicio, estagio_negociacao)
-
-OPORTUNIDADE_SERVICO (id_oportunidade, id_servico, valor_negociado, quantidade)
-
-Chaves e relacionamentos:
-
-•	id_oportunidade: PK em OPORTUNIDADE.
-•	id_cliente: FK em OPORTUNIDADE (referenciando CLIENTE).
-•	id_oportunidade: FK em OPORTUNIDADE_SERVICO (referenciando OPORTUNIDADE).
-•	id_servico: FK em OPORTUNIDADE_SERVICO (referenciando SERVICO).
-•	PK composta em OPORTUNIDADE_SERVICO: (id_oportunidade, id_servico).
 
 **Resumo da documentação**
-| ETAPA | PERGUNTA-CHAVE | DIAGNÓSTICO NO ERP | AÇÃO TOMADA |
-| :--- | :--- | :--- | :--- |
-| 1FN | "Cada campo armazena um único valor?" | Atributos multivalorados em Cliente e grupos repetitivos em N:N. | Criação da tabela Contato e 11 tabelas associativas. |
-| 2FN | "Cada atributo não chave depende da CHAVE TODA?" | Verificação de chaves compostas nas tabelas associativas. | Garantido que atributos como valor_contratado dependem do par (id_contrato, id_servico). |
-| 3FN | "O atributo depende diretamente da chave ou depende de outro atributo?" | Dependências transitivas de cliente e servico na tabela Oportunidade. | Remoção de cliente e servico da tabela Oportunidade, utilizando apenas a FK id_cliente e a associativa OPORTUNIDADE_SERVICO. |
+| Forma normal | Situações documentadas | Resultado |
+| :--- | :--- | :--- |
+| 1FN | 1 (Cliente × Contato) e 2 (Contrato × Serviço) | 33 tabelas com colunas atômicas |
+| 2FN | 2 (valor do serviço no contrato) | 12 associativas sem dependência parcial |
+| 3FN | 3, 4 e 5 (Oportunidade, Apontamento e Fatura) | Nenhuma dependência transitiva restante |
 
 ### Restrições
-Para esta etapa, foram avaliadas e aplicadas seis categorias de restrições:
+Foram avaliadas seis categorias de restrição. Cada uma só foi usada onde protege uma regra real do negócio.
 
-•	PRIMARY KEY (PK): Identificação única e obrigatória de cada registro.
+•	PRIMARY KEY: identificação única e obrigatória de cada registro.
 
-•	FOREIGN KEY (FK): Garantia de integridade referencial entre entidades relacionadas.
+•	FOREIGN KEY: integridade referencial. ON DELETE RESTRICT nas principais (não apaga registro com histórico) e CASCADE nas associativas (o vínculo sai junto).
 
-•	NOT NULL: Obrigatoriedade de preenchimento de atributos fundamentais.
+•	NOT NULL: obrigatoriedade dos atributos fundamentais.
 
-•	UNIQUE: Impedimento de duplicidade de registros que exigem exclusividade (ex.: CNPJ, e-mail).
+•	UNIQUE: impede duplicidade (CNPJ, número do contrato, número da NF, nomes de catálogo).
 
-•	CHECK: Validação de condições de negócio. O “Valores: ...” indica uma restrição CHECK de lista: só os valores listados são aceitos, e qualquer outro é recusado. Por exemplo, a senioridade do colaborador só pode ser Júnior, Pleno ou Sênior, e a decisão de uma aprovação só pode ser Aprovado ou Reprovado. “Maior que 0” e “Maior ou igual a 0” indicam uma restrição CHECK numérica: impedem valores negativos ou zerados onde isso não faz sentido para o negócio. Por exemplo, o valor mensal do contrato não pode ser negativo, e o custo por hora do colaborador deve ser maior que zero.
+•	CHECK: validações de negócio: lista de valores (status, moeda, senioridade), números positivos e datas coerentes.
 
-•	DEFAULT: Atribuição automática de valores padrão caso não informados. O “Padrão ...” indica uma restrição DEFAULT, sendo o valor que o banco preenche sozinho quando nenhum valor é informado. Por exemplo, “Padrão 12 (meses)” na vigência do contrato, “Padrão 30 (dias)” no prazo de aviso prévio e “Padrão ’Em aprovação’” no status de um novo contrato.
+•	DEFAULT: valor automático quando nada é informado (vigência 12 meses, aviso prévio 30 dias, status inicial).
 
-Abaixo estão detalhadas as restrições reais aplicadas às entidades do ERP KXP, contendo suas respectivas justificativas funcionais.
 
 **Tabela - Cliente**
 | CAMPO / ATRIBUTO | RESTRIÇÃO APLICADA | JUSTIFICATIVA DE NEGÓCIO |
