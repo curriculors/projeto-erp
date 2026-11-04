@@ -74,8 +74,9 @@ Com base nestas informações, a equipa chegou ao consenso de que esta seria uma
 
 ### Integração dos Processos
 As informações obtidas durante as reuniões de prospecção e negociação deverão ser formalizadas no contrato ou em um registro vinculado à oportunidade correspondente. A solução proposta deverá permitir o relacionamento entre oportunidades, requisitos técnicos, contratos, alocações de colaboradores, apontamentos de horas e faturamento, possibilitando a rastreabilidade das decisões e a comparação entre o tempo efetivamente dedicado aos contratos e o previsto contratualmente. 
- 
-Essa integração visa reduzir a perda de informações, minimizar inconsistências nos registros e apoiar o acompanhamento da execução dos contratos. Ressalta-se que o fluxo descrito representa uma proposta de melhoria para os processos da KXP, não constituindo uma afirmação de que essas práticas já estejam integralmente implementadas na organização. 
+
+Essa integração visa reduzir a perda de informações, minimizar inconsistências nos registros e apoiar o acompanhamento da execução dos contratos. Ressalta-se que o fluxo descrito representa uma proposta de melhoria para os processos da KXP, não constituindo uma afirmação de que essas práticas já estejam integralmente implementadas na organização.  
+
 
 
 ### Tabela de Problemas e Consequências
@@ -103,7 +104,7 @@ Essa integração visa reduzir a perda de informações, minimizar inconsistênc
 | **Quem participa?** | Comercial, Diretoria e cliente |
 | **O que inicia?** | Oportunidade ganha |
 | **O que acontece?** | Elaboração do contrato → aprovação interna → assinatura digital pelo DocuSign → registro das condições no sistema |
-| **Qual informação é gerada?** | Contrato: número, serviço(s), valor, data de início, vigência, tipo (12 meses ou *evergreen*), prazo de aviso prévio, provedor(es) de nuvem, moeda e referência ao DocuSign |
+| **Qual informação é gerada?** | Contrato: número, cliente, oportunidade de origem quando houver, serviço(s), valor mensal, data de início, vigência em meses, tipo de renovação (Prazo determinado ou Evergreen), prazo de aviso prévio, provedor(es), moeda, referência ao DocuSign e status. Em cancelamentos, registrar data do aviso e data efetiva de término |
 | **Qual é o resultado?** | Contrato vigente somente após aprovação interna e assinatura digital no DocuSign |
 
 ### PN03 — Alocação da equipe
@@ -129,7 +130,7 @@ Essa integração visa reduzir a perda de informações, minimizar inconsistênc
 | :--- | :--- |
 | **Quem participa?** | Administrativo-Financeiro, ERP Nibo e cliente |
 | **O que inicia?** | Competência do contrato. Premissa a validar com a KXP: faturamento mensal com valor fixo; o trabalho original informa que essa periodicidade foi adotada como padrão, não confirmada pela empresa |
-| **O que acontece?** | Gerar a fatura → enviar os dados ao Nibo para emissão da nota fiscal e do boleto → registrar zero, um ou vários pagamentos recebidos até a quitação. A fatura pode existir antes de qualquer pagamento |
+| **O que acontece?** | Gerar a fatura → enviar os dados ao Nibo para emissão da nota fiscal e do boleto → registrar zero, um ou vários pagamentos. A fatura pode existir antes do primeiro pagamento. O saldo considera apenas pagamentos com status Confirmado; o total confirmado não pode exceder o valor da fatura |
 | **Qual informação é gerada?** | Fatura (competência, valor, moeda, vencimento, nº da NF, status) e pagamento (data, valor) |
 | **Qual é o resultado?** | Fatura paga ou em atraso; margem do contrato (receita − custo real) |
 
@@ -137,7 +138,7 @@ Essa integração visa reduzir a perda de informações, minimizar inconsistênc
 | Pergunta | Resposta |
 | :--- | :--- |
 | **Quem participa?** | Diretoria, Comercial e cliente |
-| **O que inicia?** | Fim da vigência, pedido de alteração ou pedido de cancelamento |
+| **O que inicia?** | Fim da vigência, pedido de renovação, pedido de alteração ou pedido de cancelamento/encerramento |
 | **O que acontece?** | Contrato 12 meses: Renovar registrar o novo ciclo e manter a equipe quando a continuidade do escopo for confirmada. Alteração: registrar aditivo aprovado e atualizar somente as condições e alocações afetadas. Cancelamento/encerramento: registrar aviso e data efetiva de término; ajustar as alocações afetadas conforme essa data. Não presumir que os três eventos liberam automaticamente a equipe |
 | **Qual informação é gerada?** | Tipo de evento, aditivo e aprovação quando aplicáveis, condições anteriores e novas, data do aviso, data efetiva de término e alterações de alocação decorrentes |
 | **Qual é o resultado?** | Contrato renovado, alterado, encerrado ou cancelado, com histórico preservado e alocações atualizadas somente conforme os efeitos do evento confirmado |
@@ -145,18 +146,22 @@ Essa integração visa reduzir a perda de informações, minimizar inconsistênc
 ### PN07 — Planejamento trimestral de capacidade
 | Pergunta | Resposta |
 | :--- | :--- |
-| **Quem participa?** | Diretoria e equipe, na reunião presencial trimestral |
-| **O que inicia?** | Reunião que acontece a cada 3 meses |
+| **Quem participa?** | Diretoria e equipe; o uso da reunião presencial trimestral para esse planejamento é uma premissa da equipe, ainda a validar com a KXP |
+| **O que inicia?** | Necessidade de revisar capacidade e demanda futura. A reunião ocorre a cada 3 meses, mas sua pauta de planejamento de capacidade não foi confirmada pela KXP |
 | **O que acontece?** | Revisar contratos e alocações com término previsto, dedicação já comprometida, colaboradores potencialmente disponíveis, oportunidades em andamento e os perfis/competências/certificações necessários para a demanda futura. Disponibilidade, isoladamente, não comprova aderência técnica |
 | **Qual informação é gerada?** | Relatório de capacidade e decisões de realocação |
 | **Qual é o resultado?** | Plano de alocação para o próximo trimestre |
 
 ### Integração entre os processos
-* **Fluxo Base:** PN01 Negociação (3–6 meses) → PN02 Contrato → PN03 Alocação compatível com perfil, competências, certificações e disponibilidade → PN04 Horas e entregas vinculadas à alocação → PN05 Faturamento (Nibo) e pagamentos. 
+* **Fluxo Base:** PN01 Negociação (3–6 meses) → PN02 Contrato → PN03 Alocação compatível com perfil, competências, certificações e disponibilidade → PN04 Horas e entregas vinculadas à alocação → PN05 Faturamento (Nibo) e pagamentos.   
 * **Margem do Contrato:** PN04 fornece o custo real calculado pelas horas válidas e pelo custo/hora aplicável a cada apontamento; PN05 fornece a receita faturada do mesmo período. A comparação deve usar períodos compatíveis.
-* **Ciclo de Capacidade:** PN06 registra renovação, alteração ou encerramento/cancelamento e seus efeitos reais sobre cada alocação → PN07 compara capacidade disponível e demanda técnica das oportunidades → subsidia PN01 e PN03. PN07 Planejamento trimestral → volta ao PN01 e ao PN03 (nova oportunidade e realocação). 
-o sistema deve permitir antecipar a disponibilidade sem presumir que todo colaborador livre atende a uma oportunidade. O planejamento precisa cruzar datas, dedicação, perfis técnicos, competências e certificações válidas. O planejamento trimestral deve ser utilizado para avaliar capacidade, demanda e possibilidades de realocação. 
-> **Ponto-chave:** O PN06 alimenta o PN07 e o PN01. Saber quando cada contrato termina permite planejar a realocação antes que a equipe fique ociosa — o principal problema relatado pela KXP. 
+* **Ciclo de Capacidade:** PN06 registra renovação, alteração ou encerramento/cancelamento e seus efeitos reais sobre cada alocação → PN07 compara capacidade disponível e demanda técnica das oportunidades → subsidia PN01 e PN03.
+
+PN07 Planejamento trimestral → volta ao PN01 e ao PN03 (nova oportunidade e realocação). 
+
+O sistema deve estimar a disponibilidade cruzando datas previstas e reais das alocações, dedicação comprometida, perfis técnicos, competências e certificações válidas. O término previsto indica disponibilidade futura estimada; a liberação efetiva depende do encerramento real. Um colaborador parcialmente alocado pode ter capacidade remanescente, respeitando até dois contratos simultâneos e dedicação total de 100%. 
+
+PN06 alimenta PN07 e PN01. Conhecer o término dos contratos e das alocações apoia a realocação e o controle da ociosidade, em conjunto com o acompanhamento das horas e dos custos por contrato. 
 
 ---
 # # 6 . Requisitos funcionais
@@ -165,19 +170,19 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RF01** | O sistema deverá cadastrar clientes e seus contatos. | PN01 |
 | **RF02** | O sistema deverá cadastrar os serviços oferecidos (Nuvem Gerenciada, FinOps, SRE e Revisão de Arquitetura). | PN01, PN02 |
 | **RF03** | O sistema deverá registrar oportunidades em negociação com cliente, serviço(s), estágio, valor estimado, data prevista de início, provedor(es), perfis técnicos necessários e certificações exigidas quando conhecidas, permitindo indicar pendências de levantamento. | PN01 |
-| **RF04** | O sistema deverá cadastrar contratos com número, serviço(s), valor, data de início, vigência, tipo de renovação, prazo de aviso prévio e referência ao DocuSign. | PN02 |
+| **RF04** | O sistema deverá cadastrar contratos com número único, cliente, oportunidade de origem opcional, serviços, valor mensal não negativo, início, vigência em meses, tipo de renovação, aviso prévio, moeda, referência ao DocuSign e status. A referência pode ser nula durante a aprovação e é obrigatória para a vigência. | PN02 |
 | **RF05** | O sistema deverá controlar o status do contrato (em aprovação, vigente, em aviso prévio, encerrado, cancelado). | PN02, PN06 |
 | **RF06** | O sistema deverá registrar a aprovação de contratos, aditivos e alocações (quem aprovou, quando e a decisão). | PN02, PN03, PN06 |
-| **RF07** | O sistema deverá cadastrar colaboradores com função, senioridade e custo/hora, mantendo o histórico do custo. | PN03 |
-| **RF08** | O sistema deverá alocar colaboradores em contratos, informando função, data de início, término previsto e dedicação. | PN03 |
+| **RF07** | O sistema deverá cadastrar colaboradores com nome, função, senioridade, custo/hora e status, mantendo o histórico de custos e de contratos salariais. | PN03 |
+| **RF08** | O sistema deverá alocar colaboradores em contratos vigentes, informando função, início, término previsto, término real quando encerrada, percentual de dedicação, custo/hora congelado e status. | PN03 |
 | **RF09** | O sistema deverá exibir as alocações atuais e futuras, a dedicação já comprometida e a disponibilidade estimada de cada colaborador, considerando os términos previstos e reais das alocações. | PN03, PN07 |
-| **RF10** | O sistema deverá sinalizar colaboradores que ficarão livres nos próximos 30, 60 e 90 dias. | PN03, PN07 |
+| **RF10** | O sistema deverá sinalizar colaboradores que ficarão livres nos próximos 30, 60 e 90 dias. (Prazos não confirmados pela KXP, mas coerentes com a reunião trimestral). | PN03, PN07 |
 | **RF11** | O sistema deverá permitir que cada colaborador registre, remotamente, as horas trabalhadas em cada contrato. | PN04 |
 | **RF12** | O sistema deverá registrar evidências de entrega vinculadas ao contrato e ao mês de referência. | PN04 |
-| **RF13** | O sistema deverá calcular o custo real de cada contrato pela soma de horas válidas apontadas multiplicadas pelo custo/hora aplicável à data de cada apontamento, preservando o histórico dos valores. | PN04 |
+| **RF13** | O sistema deverá calcular o custo real de cada contrato pela soma das horas válidas de cada alocação multiplicadas pelo custo/hora congelado nessa alocação. Mudanças posteriores de custo não podem alterar os períodos já executados; qualquer alteração aplicável à execução deve possuir vigência e histórico próprios. | PN04 |
 | **RF14** | O sistema deverá gerar as faturas de cada contrato. | PN05 |
 | **RF15** | O sistema deverá enviar os dados das faturas ao Nibo para emissão de nota fiscal e boleto. | PN05 |
-| **RF16** | O sistema deverá registrar o número da nota fiscal e a situação do pagamento de cada fatura. | PN05 |
+| **RF16** | O sistema deverá registrar o número da nota fiscal e o status de cada fatura, além dos pagamentos vinculados, com data, valor e status. O saldo utiliza apenas pagamentos Confirmados; a situação parcialmente paga é calculada, sem ser gravada como status da fatura. | PN05 |
 | **RF17** | O sistema deverá calcular a margem de cada contrato (receita faturada − custo real). | PN05 |
 | **RF18** | O sistema deverá registrar aditivos vinculados ao contrato, mantendo o histórico das condições anteriores. | PN06 |
 | **RF19** | O sistema deverá renovar automaticamente os contratos *evergreen* ao fim de cada ciclo. | PN06 |
@@ -186,11 +191,11 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RF22** | O sistema deverá ajustar o término das alocações afetadas quando houver encerramento/cancelamento, usando a data efetiva confirmada, sem encerrar automaticamente alocações em caso de renovação ou alteração que não exija liberação. | PN06, PN03 |
 | **RF23** | O sistema deverá gerar relatório de capacidade com contratos e alocações a vencer, dedicação comprometida, colaboradores potencialmente disponíveis e oportunidades em andamento, cruzando a demanda futura com perfis técnicos, competências e certificações válidas. A periodicidade trimestral depende de validação com a KXP. | PN07 |
 | **RF24** | O sistema deverá gerar relatórios de margem por contrato e de ociosidade dos colaboradores. | PN05, PN07 |
-| **RF25** | O sistema deverá cadastrar usuários e vinculá-los a um colaborador e a um perfil de acesso. | Todos |
+| **RF25** | O sistema deverá cadastrar usuários, cada um com exatamente um perfil de acesso. O vínculo com colaborador é opcional e único: um usuário pode vincular-se a no máximo um colaborador, e um colaborador pode possuir no máximo um usuário. A opcionalidade é uma decisão de modelagem a validar com o grupo e a KXP. | Todos |
 | **RF26** | O sistema deverá cadastrar as certificações de cada colaborador (AWS, Azure, GCP, FinOps, Scrum, Datadog etc.), com data de obtenção e de validade. | PN03 |
 | **RF27** | O sistema deverá apoiar a busca de colaboradores que estejam disponíveis no período necessário e que atendam aos perfis/competências exigidos e possuam as certificações válidas requeridas pelo contrato ou oportunidade. | PN01, PN03 |
 | **RF28** | O sistema deverá registrar em qual(is) provedor(es) de nuvem (AWS, Azure, GCP) cada contrato é executado. | PN02 |
-| **RF29** | O sistema deverá registrar a moeda de cada contrato e de cada fatura. *(Premissa baseada no endereço nos EUA e venda do Kura em dólar).* | PN02, PN05 |
+| **RF29** | O sistema deverá registrar a moeda do contrato e obter por esse vínculo a moeda de suas faturas, sem duplicar o atributo em FATURA. A moeda de contratos com faturas não pode ser alterada de modo a modificar o histórico de cobrança. O uso de múltiplas moedas permanece uma premissa baseada na atuação nos EUA e na venda do Kura em dólar. | PN02, PN05 |
 | **RF30** | O sistema deverá alertar sobre certificações de colaboradores próximas do vencimento. | PN03 |
 | **RF31** | O sistema deverá relacionar a demanda de perfil técnico de cada oportunidade aos perfis/competências cadastrados para os colaboradores, sem confundir perfil profissional com certificação. | PN01, PN03, PN07 |
 
@@ -231,10 +236,10 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN07** | O contrato padrão tem vigência de 12 meses. | Entrevista | Valor padrão |
 | **RN08** | Um contrato pode ser de prazo determinado ou *evergreen* (renovação contínua). | Entrevista | Atributo "tipo de renovação" |
 | **RN09** | Contrato *evergreen* é renovado automaticamente ao fim de cada ciclo, até ser cancelado. | Entrevista | Regra de status |
-| **RN10** | O cliente pode cancelar o contrato mediante aviso prévio; a data efetiva de término é a data do aviso somada ao prazo de aviso prévio. *(Padrão de 30 dias confirmado).* | Entrevista | Atributos de cancelamento |
+| **RN10** | O cliente pode cancelar mediante aviso prévio. O prazo padrão confirmado é 30 dias; a data efetiva de término resulta da data do aviso acrescida do prazo aplicável ao contrato. Registrar separadamente data_aviso_cancelamento e data_efetiva_termino. | Entrevista | Atributos de cancelamento |
 | **RN11** | Um contrato pode incluir um ou mais serviços, e um serviço pode estar em vários contratos, com valor próprio em cada um. *(Confirmada divisão de operações).* | Proposta | Contrato–Serviço (N:N com atributo) |
-| **RN12** | Um contrato pode ter nenhum ou vários aditivos; todo aditivo pertence a um único contrato. A cardinalidade mínima do lado do contrato é zero, pois um contrato pode existir sem alterações.  | Proposta | Contrato–Aditivo |
-| **RN13** | Um aditivo só altera as condições do contrato depois de aprovado. | Proposta | Status do aditivo |
+| **RN12** | Um contrato pode ter nenhum ou vários aditivos; todo aditivo pertence a um único contrato. A cardinalidade mínima do lado do contrato é zero, pois um contrato pode existir sem alterações. | Proposta | Contrato–Aditivo |
+| **RN13** | Um aditivo só altera o contrato depois de aprovado. A criação possui data obrigatória; a data de assinatura pode permanecer nula enquanto não houver assinatura. Exigir assinatura quando aplicável à efetivação. A separação dessas datas é premissa de modelagem a confirmar. | Status do aditivo |
 | **RN14** | Um contrato só se torna vigente após aprovação interna e assinatura no DocuSign. | Proposta | Status + aprovação |
 | **RN15** | Contrato encerrado ou cancelado não pode receber novas alocações, apontamentos de horas ou faturas. | Proposta | Restrição de status |
 
@@ -245,8 +250,8 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 | **RN17** | Um colaborador pode estar alocado em nenhum, um ou até dois contratos ao mesmo tempo, dividindo a dedicação entre eles. | Entrevista | N:N Colaborador–Contrato |
 | **RN18** | Cada alocação deve registrar função, data de início, término previsto e dedicação (horas/mês ou %); o término real é registrado quando a alocação acaba. | Proposta | Atributos do relacionamento |
 | **RN19** | A dedicação total de um colaborador em alocações simultâneas não pode ultrapassar 100%, respeitando o limite de até 2 contratos. | Entrevista | Restrição |
-| **RN20** | Todo colaborador deve ter um custo/hora; quando o valor muda, o anterior é mantido no histórico. | Entrevista | Histórico de custo |
-| **RN21** | O colaborador só pode apontar horas por uma alocação válida, vinculada ao contrato, dentro do período efetivo da alocação; cada apontamento deve preservar a data/período e o custo/hora aplicável. | Proposta | Apontamento ligado à alocação |
+| **RN20** | Todo colaborador possui custo/hora, mantendo o histórico quando o valor muda. A alocação preserva o custo/hora aplicável ao seu período de execução; esse valor não pode ser sobrescrito se alterar custos já apurados. Reajustes aplicáveis exigem preservação do valor anterior e distinção dos períodos de vigência. | Entrevista | Histórico de custo e custo/hora congelado por alocação |
+| **RN21** | O colaborador só aponta horas por uma alocação válida e dentro do período efetivo dessa alocação. O apontamento registra data, quantidade de horas e id_alocacao; colaborador, contrato e custo/hora são obtidos pelo vínculo com Alocação, sem FKs diretas redundantes. Horas devem ser positivas e a data não pode ser futura. | Proposta | Apontamento ligado exclusivamente à Alocação |
 | **RN22** | O apontamento de horas é feito pelo próprio colaborador, remotamente. | Adendo | Apontamento–Colaborador |
 | **RN23** | O custo real de um contrato é a soma das horas válidas apontadas multiplicadas pelo custo/hora aplicável à data de cada apontamento. Mudanças futuras no custo/hora não alteram retroativamente os custos já apurados. | Entrevista | Cálculo |
 | **RN24** | Um colaborador é considerado disponível a partir do término previsto da sua última alocação. | Entrevista | Cálculo |
@@ -257,32 +262,32 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 ### 8.4 Evidências, Faturas e Pagamentos
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
-| **RN27** | Um contrato pode ter nenhuma ou várias evidências de entrega; cada evidência pertence a um único contrato, a um colaborador responsável e a um mês de referência. A ausência inicial de evidência não impede o cadastro do contrato.  | Proposta | Contrato–Evidência |
+| **RN27** | Um contrato pode ter nenhuma ou várias evidências de entrega; cada evidência pertence a um único contrato, a um colaborador responsável e a um mês de referência. A ausência inicial de evidência não impede o cadastro do contrato. | Contrato–Evidência |
 | **RN28** | Toda evidência deve ser registrada por um colaborador alocado no contrato. | Proposta | Colaborador–Evidência |
 | **RN29** | Um contrato vigente pode gerar nenhuma ou várias faturas ao longo do seu ciclo; cada fatura pertence a um único contrato. A primeira fatura pode ainda não existir no momento da formalização do contrato. | Proposta | Contrato–Fatura |
 | **RN30** | A nota fiscal e o boleto de cada fatura são emitidos pelo Nibo; o sistema guarda o número da NF e o status. | Entrevista | Atributos da fatura |
-| **RN31** | Uma fatura pode receber nenhum, um ou vários pagamentos; cada pagamento pertence a uma única fatura. O mínimo zero representa a fatura recém-criada ou ainda em aberto. | Proposta | Fatura–Pagamento |
-| **RN32** | A soma dos pagamentos não pode ultrapassar o valor da fatura. | Proposta | Restrição |
+| **RN31** | Uma fatura pode receber nenhum, um ou vários pagamentos; cada pagamento pertence a exatamente uma fatura. A ausência de pagamentos é permitida. O saldo considera apenas pagamentos com status Confirmado, admitindo quitação parcial ou total. | Proposta | Fatura–Pagamento |
+| **RN32** | A soma dos pagamentos Confirmados não pode ultrapassar o valor da fatura. O registro deve ser validado considerando os demais pagamentos confirmados; consultas de auditoria podem detectar violações, mas não substituem a prevenção no processamento. | Proposta | Restrição |
 | **RN33** | A margem do contrato é a receita faturada menos o custo real no mesmo período. | Entrevista | Cálculo |
 
 ### 8.5 Usuários e Aprovações
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN34** | Todo usuário possui exatamente um perfil de acesso; um perfil pode ser atribuído a vários usuários. | Proposta | Perfil–Usuário |
-| **RN35** | Um usuário pode estar vinculado a no máximo um colaborador, e cada colaborador ativo possui um usuário. | Adendo | Usuário–Colaborador (1,1) |
-| **RN36** | Toda aprovação registra quem aprovou, data, decisão e observação. | Proposta | Atributos da aprovação |
+| **RN35** | Um usuário pode estar vinculado a zero ou um colaborador, e um colaborador pode possuir zero ou um usuário. Quando informado, id_colaborador é único. Para operar o sistema, o colaborador deve possuir uma conta de acesso. A opcionalidade cadastral é decisão de modelagem a validar com o grupo e a KXP. | Adendo; refinamento do modelo a validar | Usuário–Colaborador opcional e único em ambos os sentidos |
+| **RN36** | Toda aprovação registra usuário responsável, data e hora da decisão e decisão. Deve referir-se a exatamente um objeto: contrato, aditivo ou alocação. Observação é opcional, exceto em reprovação, quando a justificativa é obrigatória. O campo etapa identifica, em texto livre, a fase da aprovação. | Proposta | Exatamente uma FK de alvo; observação condicional |
 | **RN37** | Quem cadastrou um contrato, aditivo ou alocação não pode aprová-lo. | Proposta | Restrição |
 
 ### 8.6 Certificações, Provedores e Moeda
 | Cód. | Regra | Fonte | Impacto no modelo |
 | :--- | :--- | :--- | :--- |
 | **RN38** | Um colaborador pode ter nenhuma ou várias certificações, e uma certificação pode pertencer a vários colaboradores. | Site KXP | N:N Colaborador–Certificação |
-| **RN39** | Cada certificação obtida por um colaborador registra a data de obtenção e a data de validade. | Proposta | Atributos do relacionamento |
+| **RN39** | Cada obtenção de certificação registra colaborador, certificação e data de obtenção. A data de validade pode ser nula quando não informada; antes de usar a certificação na seleção, deve ser verificada a vigência, sem presumir que ausência de data comprova validade. A data de obtenção distingue renovações da mesma certificação. | Proposta | Atributos do relacionamento |
 | **RN40** | Certificação vencida não é considerada na busca de colaboradores para alocação. | Proposta | Restrição |
 | **RN41** | Um contrato ou oportunidade pode exigir nenhuma ou várias certificações. | Site KXP | Contrato–Certificação (N:N) |
-| **RN42** | Um contrato é executado em um ou mais provedores de nuvem (AWS, Azure, GCP), e um provedor pode estar em vários contratos. | Site KXP | Contrato–Provedor (N:N) |
-| **RN43** | Todo contrato possui uma moeda, e suas faturas são emitidas na mesma moeda. | Site KXP | Atributo "moeda" |
-| **RN44** | Perfil técnico é distinto de certificação: o perfil descreve a atuação/competência necessária (por exemplo, SRE ou FinOps), enquanto a certificação registra uma qualificação formal. A oportunidade pode indicar um ou vários perfis; o colaborador pode possuir um ou vários perfis/competências. Confirmar com a KXP a terminologia e o cadastro usados. | Proposta a validar | Oportunidade–Perfil Técnico; Colaborador–Perfil Técnico |
+| **RN42** | Cada contrato utiliza um ou mais provedores de nuvem; um provedor pode estar em vários contratos. Uma oportunidade pode indicar zero ou vários provedores enquanto o escopo é levantado, por meio de OPORTUNIDADE_PROVEDOR. Validar com a KXP o mínimo de provedores exigido na contratação. | Site KXP; detalhamento proposto a validar | Contrato–Provedor e Oportunidade–Provedor N:N |
+| **RN43** | Todo contrato possui uma moeda e suas faturas utilizam essa mesma moeda, obtida pelo vínculo com o contrato. Não duplicar moeda em FATURA. Preservar a moeda histórica dos contratos que já possuem faturas. | Site KXP; representação lógica da equipe | Moeda armazenada em Contrato e derivada em Fatura |
+| **RN45** | Perfil técnico é distinto de certificação: o perfil descreve a atuação/competência necessária (por exemplo, SRE ou FinOps), enquanto a certificação registra uma qualificação formal. A oportunidade pode indicar um ou vários perfis; o colaborador pode possuir um ou vários perfis/competências. Confirmar com a KXP a terminologia e o cadastro usados. | Proposta a validar | Oportunidade–Perfil Técnico; Colaborador–Perfil Técnico |
 
 # # 9 . Restrições e políticas organizacionais
 *Baseado no levantamento, o sistema precisará respeitar as seguintes regras da empresa:*
@@ -298,7 +303,7 @@ o sistema deve permitir antecipar a disponibilidade sem presumir que todo colabo
 
 
 # # 11 . Entidades
-A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Relacionamento (DER):
+As 21 entidades principais são mantidas. O modelo lógico revisado prevê 12 tabelas associativas para os relacionamentos N:N, incluindo OPORTUNIDADE_PROVEDOR. Colaborador e Contrato são identificados no apontamento por meio de Alocação, sem relacionamentos diretos redundantes. A tabela apresenta os vínculos do modelo revisado.
 
 | Entidade Base | Entidade Relacionada |
 | :--- | :--- |
@@ -312,7 +317,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 | **Colaborador** | Apontamento de horas |
 | **Colaborador** | Certificação |
 | **Colaborador** | Contrato salarial |
-| **Colaborador** | Evidência |
+| **Colaborador** | Evidência de Entrega |
 | **Colaborador** | Perfil Técnico |
 | **Colaborador** | Usuário |
 | **Contrato** | Aditivo |
@@ -320,7 +325,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 | **Contrato** | Apontamento de horas |
 | **Contrato** | Aprovação |
 | **Contrato** | Certificação |
-| **Contrato** | Evidência |
+| **Contrato** | Evidência de Entrega |
 | **Contrato** | Fatura |
 | **Contrato** | Oportunidade |
 | **Contrato** | Provedor de nuvem |
@@ -339,26 +344,27 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
 # # 12 . Atributos
 | Entidade | Atributos Mapeados |
 | :--- | :--- |
-| **Aditivo** | Contrato, Data, Condições Anteriores, Novas Condições, Status/Aprovação |
-| **Alocação** | Colaborador, Contrato, Função, Data de Início, Término Previsto, Término Real, Dedicação, Custo/Hora no Momento |
+| **Aditivo** | Contrato, Data de Criação, Data de Assinatura, Condições Anteriores, Novas Condições, Impacto Financeiro, Nova Vigência, Status/Aprovação |
+| **Alocação** | Colaborador, Contrato, Função, Data de Início, Término Previsto, Término Real, Percentual de Dedicação, Custo/Hora Congelado, Status |
 | **Apontamento de Horas** | Colaborador, Contrato/Alocação, Horas Trabalhadas, Data/Período do Apontamento, Custo/Hora Vigente |
 | **Aprovação** | Quem Aprovou, Data, Decisão, Observação |
-| **Certificação** | Nome da Certificação, Data de Obtenção, Data de Validade |
+| **Certificação** | Nome da Certificação, Provedor de Nuvem (texto); Data de Obtenção e Data de Validade pertencem ao vínculo Colaborador–Certificação |
 | **Cliente** | CNPJ, Nome, Contatos |
-| **Colaborador** | Função, Senioridade, Custo/Hora, Status, Certificações |
+| **Colaborador** | Nome, Função, Senioridade, Custo/Hora, Status; Certificações e Perfis Técnicos por relacionamento |
 | **Contato** | Nome, E-mail, Telefone |
-| **Contrato** | Número, Serviço(s), Valor, Data de Início, Vigência, Tipo de Renovação, Prazo de Aviso Prévio, Provedor(es) de Nuvem, Moeda, Referência ao DocuSign, Status |
+| **Contrato** | Número, Cliente, Oportunidade de Origem opcional, Serviço(s), Valor Mensal, Data de Início, Vigência em Meses, Tipo de Renovação, Prazo de Aviso Prévio, Provedor(es) de Nuvem, Moeda, Referência ao DocuSign, Status, Data do Aviso de Cancelamento, Data Efetiva de Término |
 | **Contrato Salarial** | Salário, Data de Início, Data de Fim |
 | **Evidência de Entrega** | Contrato, Colaborador, Mês de Referência, Entrega/Evidência |
-| **Fatura** | Contrato, Competência, Valor, Moeda, Vencimento, Número da NF, Status da Fatura |
-| **Oportunidade** | Cliente, Serviço, Valor Estimado, Data Prevista de Início, Provedor de Nuvem, Certificações/Perfis Técnicos Necessários, Estágio da Negociação |
+| **Fatura** | Contrato, Competência, Valor, Vencimento, Número da NF, Status; moeda obtida do Contrato e saldo calculado pelos pagamentos Confirmados |
+| **Oportunidade** | Cliente, Serviços por relacionamento, Valor Estimado, Data Prevista de Início, Provedores por OPORTUNIDADE_PROVEDOR, Certificações e Perfis Técnicos Necessários por relacionamento, Estágio da Negociação |
+| **Perfil Técnico** | Nome do Perfil, Descrição/Competências Associadas |
 | **Pagamento** | Fatura, Data, Valor |
 | **Perfil de Acesso** | Nome do Perfil, Usuários Vinculados |
 | **Permissão** | Nome da Permissão, Descrição |
 | **Provedor de Nuvem** | Nome do Provedor |
-| **Serviço** | Nome/Descrição do Serviço, Valor no Contrato |
+| **Serviço** | Nome do Serviço, Descrição, Preço Base; Valor Contratado no relacionamento Contrato–Serviço |
 | **Tag** | Nome da Tag |
-| **Usuário** | Perfil de Acesso, Colaborador Vinculado |
+| **Usuário** | Perfil de Acesso obrigatório, Colaborador Vinculado opcional e único |
 
 # # 13. Relacionamentos
 
@@ -424,7 +430,7 @@ A tabela a seguir apresenta os relacionamentos mapeados no Diagrama Entidade-Rel
   * *Atributos:* data_permissao
 
 # # 14 . Cardinalidades
-A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade-Relacionamento (DER), separando a notação técnica (Mínima, Máxima) e a regra de negócio que justifica o modelo estrutural.
+As quantidades são lidas nos dois sentidos indicados pelos cabeçalhos: quantos registros de B podem relacionar-se a um A e quantos de A a um B. Mínimos de cadastro são separados das condições exigidas para vigência e operação. As aprovações têm exatamente um alvo entre contrato, aditivo e alocação; cada FK de alvo é opcional isoladamente, mas a combinação exige um único preenchimento. 
 
 | Entidade Origem (Mín, Máx) | Ação | Entidade Destino (Mín, Máx) | Tipo | Regra de Negócio |
 | :--- | :---: | :--- | :---: | :--- |
