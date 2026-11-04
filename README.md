@@ -667,66 +667,110 @@ Essas são as tabela principais que foram criadas:
 ### Chaves primárias
 Nas tabelas principais usamos um id inteiro com auto incremento. Escolhemos assim porque os dados naturais (CNPJ, número do contrato, nome) podem mudar ou ter formatos diferentes, e o id curto facilita usar a chave como FK nas outras tabelas. Nas tabelas associativas a chave é composta pelas FKs, porque a própria combinação identifica a associação.
 
-### Relacionamentos convertidos
-| Relacionamento | Onde fica a FK | Obrigatória? |
+| Tabela | Chave primária | Por que é uma boa chave? |
 | :--- | :--- | :--- |
-| Cliente -> Contato | id_cliente em CONTATO | SIM |
-| Cliente -> Oportunidade | id_cliente em OPORTUNIDADE | SIM |
-| Cliente -> Contrato | id_cliente em CONTRATO | SIM |
-| Oportunidade -> Contrato (1:0..1) | id_oportunidade em CONTRATO, com UNIQUE | NÃO |
-| Colaborador -> Alocação | id_colaborador em ALOCAÇÃO | SIM |
-| Contrato -> Alocação | id_contrato em ALOCAÇÃO | SIM |
-| Alocação -> Apontamento de horas | id_alocacao em APONTAMENTO DE HORAS | SIM |
-| Colaborador -> Contrato salarial | id_colaborador em CONTRATO_SALARIAL | SIM |
-| Colaborador -> Evidência | id_colaborador em EVIDÊNCIA DE ENTREGA | SIM |
-| Contrato -> Evidência | id_contrato em EVIDÊNCIA DE ENTREGA | SIM |
-| Contrato -> Aditivo | id_contrato em ADITIVO | SIM |
-| Contrato -> Fatura | id_contrato em FATURA | SIM |
-| Fatura -> Pagamento | id_fatura em PAGAMENTO | SIM |
-| Usuário -> Aprovação | id_usuario em APROVAÇÃO | SIM |
-| Contrato -> Aprovação | id_contrato em APROVAÇÃO | NÃO |
-| Aditivo -> Aprovação | id_aditivo em APROVAÇÃO | NÃO |
-| Alocação -> Aprovação | id_alocacao em APROVAÇÃO | NÃO |
-| Perfil de Acesso -> Usuário | id_perfil_de_acesso em USUÁRIO | SIM |
-| Colaborador -> Usuário (1:0..1) | id_colaborador em USUÁRIO, com UNIQUE | NÃO |
+| CLIENTE | id_cliente | O CNPJ continua único (UNIQUE), mas a PK é um id para não depender de um formato que pode mudar. |
+| CONTATO | id_contato | Identificador próprio, estável e sem significado de negócio. |
+| OPORTUNIDADE | id_oportunidade | Identificador próprio, estável e sem significado de negócio. |
+| SERVICO | id_servico | Identificador próprio, estável e sem significado de negócio. |
+| CONTRATO | id_contrato | O número do contrato continua único (UNIQUE), mas a PK é um id. |
+| COLABORADOR | id_colaborador | Identificador próprio, estável e sem significado de negócio. |
+| CONTRATO_SALARIAL | id_contrato_salarial | Identificador próprio, estável e sem significado de negócio. |
+| ALOCACAO | id_alocacao | Chave própria, porque o colaborador pode voltar ao mesmo contrato em outro período. |
+| CERTIFICACAO | id_certificacao | Identificador próprio, estável e sem significado de negócio. |
+| APONTAMENTO_DE_HORAS | id_apontamento_de_horas | Identificador próprio, estável e sem significado de negócio. |
+| PERMISSAO | id_permissao | Identificador próprio, estável e sem significado de negócio. |
+| PERFIL_DE_ACESSO | id_perfil_de_acesso | Identificador próprio, estável e sem significado de negócio. |
+| EVIDENCIA | id_evidencia | Identificador próprio, estável e sem significado de negócio. |
+| USUARIO | id_usuario | Identificador próprio, estável e sem significado de negócio. |
+| APROVACAO | id_aprovacao | Identificador próprio, estável e sem significado de negócio. |
+| ADITIVO | id_aditivo | Identificador próprio, estável e sem significado de negócio. |
+| PROVEDOR_DE_NUVEM | id_provedor_de_nuvem | Identificador próprio, estável e sem significado de negócio. |
+| TAG | id_tag | Identificador próprio, estável e sem significado de negócio. |
+| FATURA | id_fatura | Identificador próprio, estável e sem significado de negócio. |
+| PAGAMENTO | id_pagamento | Identificador próprio, estável e sem significado de negócio. |
+| PERFIL_TECNICO | id_perfil_tecnico | Identificador próprio, estável e sem significado de negócio. |
+| COLABORADOR_CERTIFICACAO | id_colaborador, id_certificacao, data_obtencao | Chave composta com a data de obtenção, porque o colaborador pode obter a mesma certificação mais de uma vez (renovação). |
+| CONTRATO_CERTIFICACAO | id_contrato, id_certificacao | Chave composta: impede repetir o mesmo vínculo e dispensa um id separado. |
+| OPORTUNIDADE_CERTIFICACAO | id_oportunidade, id_certificacao | Chave composta: impede repetir o mesmo vínculo e dispensa um id separado. |
+| CONTRATO_PROVEDOR | id_contrato, id_provedor_de_nuvem | Chave composta: impede repetir o mesmo vínculo e dispensa um id separado. |
+| CONTRATO_SERVICO | id_contrato, id_servico | Chave composta: impede repetir o mesmo vínculo e dispensa um id separado. |
+| OPORTUNIDADE_SERVICO | id_oportunidade, id_servico | Chave composta: impede repetir o mesmo vínculo e dispensa um id separado. |
+| OPORTUNIDADE_PERFIL_TECNICO | id_oportunidade, id_perfil_tecnico | Chave composta: impede repetir o mesmo vínculo e dispensa um id separado. |
+| COLABORADOR_PERFIL_TECNICO | id_colaborador, id_perfil_tecnico | Chave composta: impede repetir o mesmo vínculo e dispensa um id separado. |
+| CONTRATO_TAG | id_contrato, id_tag | Chave composta: impede repetir o mesmo vínculo e dispensa um id separado. |
+| USUARIO_TAG | id_usuario, id_tag | Chave composta: impede repetir o mesmo vínculo e dispensa um id separado. |
+| USUARIO_PERMISSAO | id_usuario, id_permissao | Chave composta: impede repetir o mesmo vínculo e dispensa um id separado. |
+| OPORTUNIDADE_PROVEDOR | id_oportunidade, id_provedor_de_nuvem | Chave composta: impede repetir o mesmo vínculo e dispensa um id separado. |
 
-A maioria dos relacionamentos foi representada diretamente por chaves estrangeiras (FKs), mas alguns casos exigiram decisões específicas para evitar informações duplicadas e manter o modelo organizado.
- 
-**Apontamento de horas**
+### Relacionamentos convertidos
+Relacionamentos 1:N viraram uma FK no lado N. Os N:N viraram tabelas associativas. Abaixo estão as FKs das tabelas principais.
 
-Como cada apontamento pertence a uma alocação, que já identifica o colaborador e o contrato, decidimos guardar apenas o “id_alocacao”. Assim, evitamos repetir informações e possíveis divergências nos registros. 
+| Relacionamento | Onde fica a FK | Obrigatória? | ON DELETE |
+| :--- | :--- | :--- | :--- |
+| CLIENTE -> CONTATO | id_cliente em CONTATO | SIM | RESTRICT |
+| CLIENTE -> OPORTUNIDADE | id_cliente em OPORTUNIDADE | SIM | RESTRICT |
+| CLIENTE -> CONTRATO | id_cliente em CONTRATO | SIM | RESTRICT |
+| OPORTUNIDADE -> CONTRATO | id_oportunidade em CONTRATO, com UNIQUE | NÃO (pode ser nula) | RESTRICT |
+| COLABORADOR -> CONTRATO_SALARIAL | id_colaborador em CONTRATO_SALARIAL | SIM | RESTRICT |
+| COLABORADOR -> ALOCACAO | id_colaborador em ALOCACAO | SIM | RESTRICT |
+| CONTRATO -> ALOCACAO | id_contrato em ALOCACAO | SIM | RESTRICT |
+| ALOCACAO -> APONTAMENTO_DE_HORAS | id_alocacao em APONTAMENTO_DE_HORAS | SIM | RESTRICT |
+| CONTRATO -> EVIDENCIA | id_contrato em EVIDENCIA | SIM | RESTRICT |
+| COLABORADOR -> EVIDENCIA | id_colaborador em EVIDENCIA | SIM | RESTRICT |
+| PERFIL_DE_ACESSO -> USUARIO | id_perfil_de_acesso em USUARIO | SIM | RESTRICT |
+| COLABORADOR -> USUARIO | id_colaborador em USUARIO, com UNIQUE | NÃO (pode ser nula) | RESTRICT |
+| USUARIO -> APROVACAO | id_usuario em APROVACAO | SIM | RESTRICT |
+| CONTRATO -> APROVACAO | id_contrato em APROVACAO | NÃO (pode ser nula) | RESTRICT |
+| ADITIVO -> APROVACAO | id_aditivo em APROVACAO | NÃO (pode ser nula) | RESTRICT |
+| ALOCACAO -> APROVACAO | id_alocacao em APROVACAO | NÃO (pode ser nula) | RESTRICT |
+| CONTRATO -> ADITIVO | id_contrato em ADITIVO | SIM | RESTRICT |
+| CONTRATO -> FATURA | id_contrato em FATURA | SIM | RESTRICT |
+| FATURA -> PAGAMENTO | id_fatura em PAGAMENTO | SIM | RESTRICT |
 
-**Aprovação**
-
-Uma aprovação pode estar relacionada a um contrato, aditivo ou alocação. Por isso, utilizamos três FKs opcionais, mas apenas uma pode ser preenchida por registro. A regra que impede alguém de aprovar algo que ele mesmo cadastrou (RN37) fica sob responsabilidade do sistema.
-
-**Oportunidade e contrato**
-
-Uma oportunidade pode gerar no máximo um contrato, mas nem todo contrato vem de uma oportunidade. Por isso, a FK “id_oportunidade” pode ser nula e possui a restrição UNIQUE, impedindo que uma oportunidade seja vinculada a mais de um contrato. 
-
-**Colaborador e usuário**
-
-Cada colaborador pode ter, no máximo, um usuário no sistema. Para garantir isso, colocamos a FK ”id_colaborador” na tabela USUÁRIO com a restrição UNIQUE. 
-
-**Colaborador e contrato**
-
-Esse relacionamento é muitos para muitos (RN17) e foi representado pela tabela ALOCAÇÃO, que também armazena informações como função, datas e dedicação. Utilizamos uma chave primária própria porque um colaborador pode retornar ao mesmo contrato em outro período.
+**Casos que exigiram decisão**
+**Apontamento de horas.** Cada apontamento pertence a uma alocação, que já identifica colaborador e contrato. Guardamos só id_alocacao. Assim não há como o apontamento dizer um colaborador e a alocação dizer outro.
+**Aprovação.** Uma aprovação pode ser de contrato, de aditivo ou de alocação. Por isso há três FKs opcionais, e um CHECK garante que exatamente uma esteja preenchida. A regra de que quem cadastrou não pode aprovar (RN37) depende de comparar registros diferentes e fica para o sistema e para a auditoria.
+**Oportunidade e contrato.** Uma oportunidade gera no máximo um contrato, mas nem todo contrato vem de oportunidade. A FK id_oportunidade em CONTRATO pode ser nula e é UNIQUE.
+**Colaborador e usuário.** Cada colaborador tem no máximo um usuário. A FK id_colaborador fica em USUARIO, com UNIQUE, e pode ser nula (usuário que não é colaborador).
+**Colaborador e contrato.** É N:N (RN17) e foi representado pela tabela ALOCACAO, que guarda função, datas, dedicação e custo/hora congelado.
+**Evidência.** Tem FK para contrato (qual entrega) e para colaborador (quem enviou), mais o mês de referência.
+**Fatura e pagamento.** A FK id_fatura em PAGAMENTO é obrigatória, mas a fatura não precisa ter pagamento quando é criada.
+**ON DELETE.** Nas tabelas principais usamos RESTRICT: o banco recusa apagar um registro que tem histórico ligado (um contrato com faturas, por exemplo). Nas associativas usamos CASCADE: se o registro principal for apagado, o vínculo não faz mais sentido e sai junto.
 
 ### Relacionamentos N
-Os relacionamentos muitos para muitos (N:N) foram representados por tabelas associativas, que conectam as duas tabelas principais por meio de chaves estrangeiras (FKs). Essas tabelas utilizam, geralmente, uma chave primária composta pelas duas FKs, evitando associações duplicadas e mantendo os dados organizados.
+Todo relacionamento N:N virou uma tabela associativa com chave primária composta pelas duas FKs. São 12 tabelas (a versão anterior tinha 11; entrou OPORTUNIDADE_PROVEDOR).
+<img width="945" height="662" alt="image" src="https://github.com/user-attachments/assets/648b26b1-37d7-4a93-b54b-d94a71078342" />
 
-Tabelas associativas criadas:
-<img width="712" height="1033" alt="Tabelas Associativas" src="https://github.com/user-attachments/assets/aea1fe78-5b46-4db9-95a5-4e73e666d512" />
+| Tabela associativa | Liga | Chave primária (composta) | Informações próprias do vínculo |
+| :--- | :--- | :--- | :--- |
+| COLABORADOR_CERTIFICACAO | COLABORADOR × CERTIFICACAO | id_colaborador, id_certificacao, data_obtencao | data_validade |
+| CONTRATO_CERTIFICACAO | CONTRATO × CERTIFICACAO | id_contrato, id_certificacao | obrigatorio, data_limite |
+| OPORTUNIDADE_CERTIFICACAO | OPORTUNIDADE × CERTIFICACAO | id_oportunidade, id_certificacao | obrigatorio |
+| CONTRATO_PROVEDOR | CONTRATO × PROVEDOR DE NUVEM | id_contrato, id_provedor_de_nuvem | data_inicio, data_fim |
+| CONTRATO_SERVICO | CONTRATO × SERVICO | id_contrato, id_servico | valor_contratado, data_inicio, data_fim |
+| OPORTUNIDADE_SERVICO | OPORTUNIDADE × SERVICO | id_oportunidade, id_servico | valor_negociado, quantidade |
+| OPORTUNIDADE_PERFIL_TECNICO | OPORTUNIDADE × PERFIL_TECNICO | id_oportunidade, id_perfil_tecnico | - |
+| COLABORADOR_PERFIL_TECNICO | COLABORADOR × PERFIL TECNICO | id_colaborador, id_perfil_tecnico | - |
+| CONTRATO_TAG | CONTRATO × TAG | id_contrato, id_tag | data_associacao |
+| USUARIO_TAG | USUARIO × TAG | id_usuario, id_tag | data_permissao |
+| USUARIO_PERMISSAO | USUARIO × PERMISSAO | id_usuario, id_permissao | data_permissao |
+| OPORTUNIDADE_PROVEDOR | OPORTUNIDADE × PROVEDOR DE NUVEM | id_oportunidade, id_provedor_de_nuvem | - |
+
+O relacionamento tem informação própria? Em CONTRATO_SERVICO o valor contratado depende do contrato e do serviço ao mesmo tempo; em COLABORADOR_CERTIFICACAO a validade depende do colaborador e da certificação; em OPORTUNIDADE_SERVICO o valor negociado e a quantidade. Nas demais, o vínculo existe sem atributos extras.
 
 **Entidades fracas**
 
-Foi realizada a revisão do modelo para identificar as entidades que dependem de outra para existir. Como todas as tabelas possuem chave primária própria, a dependência encontrada é de existência: o registro não faz sentido sem a entidade à qual está vinculado. Foram identificadas as seguintes entidades fracas: 
- 
-1. Contato depende de Cliente (FK id_cliente). 
-2. Contrato_Salarial depende de Colaborador (FK id_colaborador). 
-3. Aditivo depende de Contrato (FK id_contrato). 
-4. Apontamento_de_Horas depende de Alocação (FK id_alocacao). 
-5. Fatura depende de Contrato (FK id_contrato). 
+Revisamos o modelo procurando registros que não fazem sentido sem outro. As tabelas dependentes possuem identificador próprio; neste trabalho, a classificação como fraca considera dependência de existência, e não necessariamente chave primária composta. Entidades fracas encontradas:
+
+•	Contato depende de CLIENTE (FK id_cliente)
+•	Contrato_Salarial depende de COLABORADOR (FK id_colaborador)
+•	Apontamento_De_Horas depende de ALOCACAO (FK id_alocacao)
+•	Aditivo depende de CONTRATO (FK id_contrato)
+•	Fatura depende de CONTRATO (FK id_contrato)
+•	Pagamento depende de FATURA (FK id_fatura)
+Entidade associativa e entidade fraca não são a mesma coisa: as 12 tabelas associativas existem por causa de relacionamentos N:N, não por dependência de existência. PAGAMENTO também depende da existência de FATURA e entrou na lista de entidades fracas, para o mesmo critério valer para todas as tabelas dependentes.
+
 
 # # 18 . Normalização
 ### 1FN
