@@ -634,13 +634,38 @@ A tabela a seguir consolida as cardinalidades estabelecidas no Diagrama Entidade
 <img width="3508" height="2479" alt="der (1)" src="https://github.com/user-attachments/assets/2ed28c14-fff9-4526-86d2-b176c5a11dba" />
 
 # # 17 . Modelo Lógico
-Este Modelo Lógico foi criado a partir do DER entregue na última parte do trabalho. Ou seja, todas as entidades e atributos foram colocados aqui. Uma adição feita: As restrições.
+Cada entidade do DER virou uma tabela, e cada atributo virou uma coluna. Foram 21 tabelas principais. Em relação à versão anterior, mudaram: CONTRATO, COLABORADOR, ALOCACAO, FATURA, APONTAMENTO_DE_HORAS, APROVACAO, EVIDENCIA, OPORTUNIDADE e CLIENTE.
 
 Essas são as tabela principais que foram criadas:
-<img width="2273" height="1387" alt="Tabela principais e lógicas" src="https://github.com/user-attachments/assets/ed05238b-09cd-4aa2-99a6-36c11d6dbf55" />
+<img width="853" height="1460" alt="image" src="https://github.com/user-attachments/assets/236a350e-bff7-4e8b-b0e0-5edc61e5749d" />
+
+# Resumo das tabelas principais:
+| Tabela | O que representa | Colunas |
+| :--- | :--- | :--- |
+| CLIENTE | Empresa que contrata ou pode contratar os serviços da KXP. | 3 |
+| CONTATO | Pessoa de referência dentro do cliente (isolada na 1FN). | 5 |
+| OPORTUNIDADE | Negociação comercial com um cliente, ainda sem contrato fechado. | 5 |
+| SERVICO | Servico do catálogo da KXP (Nuvem Gerenciada, SRE, FinOps...). | 4 |
+| CONTRATO | Contrato fechado com um cliente. | 14 |
+| COLABORADOR | Profissional da KXP que pode ser alocado em contratos. | 6 |
+| CONTRATO_SALARIAL | Histórico de salários do colaborador (reajustes e vigências). | 5 |
+| ALOCACAO | Período em que um colaborador atua em um contrato (relação N:N Colaborador–Contrato). | 10 |
+| CERTIFICACAO | Certificação técnica (AWS, Azure, GCP...). | 4 |
+| APONTAMENTO_DE_HORAS | Horas trabalhadas por um colaborador em uma alocação. | 6 |
+| PERMISSAO | Ação que pode ser liberada a um usuário no sistema. | 4 |
+| PERFIL_DE_ACESSO | Grupo de acesso dos usuários (Administrador, Financeiro...). | 5 |
+| EVIDENCIA | Evidência de entrega de um contrato, enviada por um colaborador. | 9 |
+| USUARIO | Credencial de acesso ao ERP. | 8 |
+| APROVACAO | Decisão de um usuário sobre um contrato, aditivo ou alocação. | 9 |
+| ADITIVO | Alteração formal de um contrato já existente. | 8 |
+| PROVEDOR_DE_NUVEM | Plataforma de nuvem (AWS, Azure, GCP). | 5 |
+| TAG | Rótulo para agrupar e buscar contratos e controlar acessos. | 5 |
+| FATURA | Cobrança emitida para um contrato em uma competência. | 8 |
+| PAGAMENTO | Pagamento (total ou parcial) de uma fatura. | 7 |
+| PERFIL_TECNICO | Competência ou função profissional exigida pelas oportunidades e disponível entre os colaboradores. | 5 |
 
 ### Chaves primárias
-Utilizamos IDs com auto incremento como chaves primárias das tabelas. Dessa forma, cada registro possui um identificador próprio, facilitando sua identificação e utilização como chave estrangeira em outras tabelas. Nas tabelas associativas, utilizamos uma chave composta, formada pelas chaves estrangeiras  que ligam as duas tabelas principais. Dessa forma, conseguimos identificar cada associação sem precisar criar um ID separado. 
+Nas tabelas principais usamos um id inteiro com auto incremento. Escolhemos assim porque os dados naturais (CNPJ, número do contrato, nome) podem mudar ou ter formatos diferentes, e o id curto facilita usar a chave como FK nas outras tabelas. Nas tabelas associativas a chave é composta pelas FKs, porque a própria combinação identifica a associação.
 
 ### Relacionamentos convertidos
 | Relacionamento | Onde fica a FK | Obrigatória? |
