@@ -1,4 +1,4 @@
-<img width="663" height="492" alt="image" src="https://github.com/user-attachments/assets/2a10b3ba-9d80-471d-bf25-29767335c094" /># Projeto ERP — KXP
+# Projeto ERP — KXP
 
 # # 1 . Identificação da equipe
 * **Diego Marinho de Sousa Camara** — RGM: 1749267345
