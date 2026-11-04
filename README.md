@@ -1,4 +1,4 @@
-# Projeto ERP — KXP
+<img width="663" height="492" alt="image" src="https://github.com/user-attachments/assets/2a10b3ba-9d80-471d-bf25-29767335c094" /># Projeto ERP — KXP
 
 # # 1 . Identificação da equipe
 * **Diego Marinho de Sousa Camara** — RGM: 1749267345
@@ -786,52 +786,59 @@ Entidade associativa e entidade fraca não são a mesma coisa: as 12 tabelas ass
 
 
 # # 18 . Normalização
+Pergunta: cada campo guarda um único valor? Regra prática: um campo → um valor. Procuramos listas dentro de campos, grupos repetidos (telefone1, telefone2) e atributos que tentavam guardar várias ocorrências.
+
 ### 1FN
-| TABELA | CAMPO / ATRIBUTO | TIPO DE CHAVE | REGRA DA 1FN APLICADA |
-| :--- | :--- | :--- | :--- |
-| CLIENTE | id_cliente | PK | Chave primária atômica |
-| CLIENTE | cnpj | Atributo | Valor atômico único |
-| CLIENTE | nome | Atributo | Nome/Razão Social |
-| CONTATO | id_contato | PK | Chave primária atômica |
-| CONTATO | id_cliente | FK | Chave estrangeira de ligação |
-| CONTATO | nome | Atributo | Nome do contato |
-| CONTATO | email | Atributo | Endereço individual de e-mail |
-| CONTATO | telefone | Atributo | **Atômico**: Um único telefone por linha |
-| OPORTUNIDADE | id_oportunidade | PK | Chave primária atômica |
-| OPORTUNIDADE | id_cliente | FK | Ligação com a tabela Cliente |
-| OPORTUNIDADE | valor_estimado | Atributo | Valor monetário único |
-| OPORTUNIDADE | data_prevista_inicio | Atributo | Data formatada |
-| OPORTUNIDADE | estagio_negociacao | Atributo | Status do processo |
-| CONTRATO | id_contrato | PK | Chave primária atômica |
-| CONTRATO | id_cliente | FK | Cliente associado |
-| CONTRATO | id_oportunidade | FK | Oportunidade associada |
-| CONTRATO | numero | Atributo | Número único do documento |
-| CONTRATO | valor_mensal | Atributo | Valor financeiro mensal atômico |
-| CONTRATO | data_inicio | Atributo | Data de início |
-| CONTRATO | vigencia | Atributo | Período de vigência |
-| CONTRATO | tipo_renovacao | Atributo | Regra de renovação |
-| CONTRATO | prazo_aviso_previo | Atributo | Prazo em dias/meses |
-| CONTRATO | moeda | Atributo | Indicador monetário |
-| CONTRATO | referencia_docusign | Atributo | Código identificador DocuSign |
-| CONTRATO | status | Atributo | Estado do contrato |
-| CONTRATO | data_aviso_cancelamento | Atributo | Data do aviso de cancelamento |
-| CONTRATO | data_efetiva_termino | Atributo | Data efetiva de término |
+| Onde havia o problema | Atributo que quebrava a 1FN | Como ficou |
+| :--- | :--- | :--- |
+| Cliente | contato (vários contatos, vários telefones) | Tabela CONTATO, um contato e um telefone por linha |
+| Contrato | serviços ("Nuvem Gerenciada, SRE") | CONTRATO_SERVICO |
+| Contrato | provedores de nuvem (AWS, Azure, GCP) | CONTRATO_PROVEDOR |
+| Contrato | certificações exigidas e tags | CONTRATO_CERTIFICACAO e CONTRATO_TAG |
+| Oportunidade | serviços, provedores, perfis técnicos e certificações necessárias | OPORTUNIDADE_SERVICO, OPORTUNIDADE_PROVEDOR, OPORTUNIDADE_PERFIL_TECNICO e OPORTUNIDADE_CERTIFICACAO |
+| Colaborador | certificações e perfis técnicos | COLABORADOR_CERTIFICACAO e COLABORADOR_PERFIL_TECNICO |
+| Usuário | tags e permissões | USUARIO_TAG e USUARIO_PERMISSAO |
+
+**Resumo por tabela:**
+| Tabela | Chave primária | Demais colunas (todas atômicas) |
+| :--- | :--- | :--- |
+| CLIENTE | id_cliente | cnpj, nome |
+| CONTATO | id_contato | id_cliente, nome, email, telefone |
+| OPORTUNIDADE | id_oportunidade | id_cliente, valor_estimado, data_prevista_inicio, estagio_negociacao |
+| SERVICO | id_servico | nome_servico, descricao, preco_base |
+| CONTRATO | id_contrato | id_cliente, id_oportunidade, numero, valor_mensal, data_inicio, vigencia, tipo_renovacao, prazo_aviso_previo, moeda, referencia_docusign, status, data_aviso_cancelamento, data_efetiva_termino |
+| COLABORADOR | id_colaborador | nome, funcao, senioridade, custo_hora, status |
+| CONTRATO_SALARIAL | id_contrato_salarial | id_colaborador, salario, data_inicio, data_fim |
+| ALOCACAO | id_alocacao | id_colaborador, id_contrato, funcao, data_inicio, data_termino_prevista, data_termino_real, percentual_dedicacao, custo_hora, status |
+| CERTIFICACAO | id_certificacao | nome_certificacao, provedor_nuvem, nivel |
+| APONTAMENTO_DE_HORAS | id_apontamento_de_horas | id_alocacao, data, quantidade_horas, descricao, status |
+| PERMISSAO | id_permissao | nome_permissao, modulo, status |
+| PERFIL_DE_ACESSO | id_perfil_de_acesso | nome_perfil, nivel_acesso, descricao, status |
+| EVIDENCIA | id_evidencia | id_contrato, id_colaborador, mes_referencia, caminho_arquivo, nome_arquivo, tipo_arquivo, data_upload, descricao |
+| USUARIO | id_usuario | id_perfil_de_acesso, id_colaborador, nome_usuario, email, senha, status, ultimo_acesso |
+| APROVACAO | id_aprovacao | id_usuario, id_contrato, id_aditivo, id_alocacao, data_aprovacao, status, observacao, etapa |
+| ADITIVO | id_aditivo | id_contrato, numero_aditivo, data_assinatura, descricao, impacto_financeiro, nova_vigencia, status |
+| PROVEDOR_DE_NUVEM | id_provedor_de_nuvem | nome_provedor, site_oficial, descricao, status |
+| TAG | id_tag | nome_tag, cor, descricao, status |
+| FATURA | id_fatura | id_contrato, numero_fatura, competencia, valor, data_emissao, data_vencimento, status |
+| PAGAMENTO | id_pagamento | id_fatura, valor, data_pagamento, metodo_pagamento, codigo_transacao, status |
+| PERFIL_TECNICO | id_perfil_tecnico | nome_perfil, descricao, nivel_experiencia, status |
+| COLABORADOR_CERTIFICACAO | id_colaborador, id_certificacao, data_obtencao | data_validade |
+| CONTRATO_CERTIFICACAO | id_contrato, id_certificacao | obrigatorio, data_limite |
+| OPORTUNIDADE_CERTIFICACAO | id_oportunidade, id_certificacao | obrigatorio |
+| CONTRATO_PROVEDOR | id_contrato, id_provedor_de_nuvem | data_inicio, data_fim |
+| CONTRATO_SERVICO | id_contrato, id_servico | valor_contratado, data_inicio, data_fim |
+| OPORTUNIDADE_SERVICO | id_oportunidade, id_servico | valor_negociado, quantidade |
+| OPORTUNIDADE_PERFIL_TECNICO | id_oportunidade, id_perfil_tecnico | — |
+| COLABORADOR_PERFIL_TECNICO | id_colaborador, id_perfil_tecnico | — |
+| CONTRATO_TAG | id_contrato, id_tag | data_associacao |
+| USUARIO_TAG | id_usuario, id_tag | data_permissao |
+| USUARIO_PERMISSAO | id_usuario, id_permissao | data_permissao |
+| OPORTUNIDADE_PROVEDOR | id_oportunidade, id_provedor_de_nuvem | — |
 
 ### 2FN
-| TABELA | CAMPO / ATRIBUTO | TIPO DE CHAVE | DEPENDÊNCIA FUNCIONAL | STATUS 2FN |
-| :--- | :--- | :--- | :--- | :--- |
-| CLIENTE | id_cliente | PK | Identificador | OK |
-| CLIENTE | cnpj, nome | Nenhum | Depende totalmente de "id_cliente" | OK (Total) |
-| CONTATO | id_contato | PK | Identificador | OK |
-| CONTATO | nome, email, telefone | Nenhum | Depende totalmente de "id_contato" | OK (Total) |
-| CONTRATO | id_contrato | PK | Identificador | OK |
-| CONTRATO | numero, valor_mensal, data_inicio | Nenhum | Depende totalmente de "id_contrato" | OK (Total) |
-| COLABORADOR_CERTIFICACAO | id_colaborador, id_certificacao, data_obtencao | PK composta | Chave composta | OK |
-| COLABORADOR_CERTIFICACAO | data_validade | Nenhum | Depende de "id_colaborador" + "id_certificacao" + "data_obtencao" | OK (Total) |
-| CONTRATO_SERVICO | id_contrato, id_servico | PK/FK | Chave composta | OK |
-| CONTRATO_SERVICO | valor_contratado, data_inicio, data_fim | Nenhum | Depende de "id_contrato" + "id_servico" | OK (Total) |
-| OPORTUNIDADE_SERVICO | id_oportunidade, id_servico | PK/FK | Chave composta | OK |
-| OPORTUNIDADE_SERVICO | valor_negociado, quantidade | Nenhum | Depende de "id_oportunidade" + "id_servico" | OK (Total) |
+Pergunta: cada atributo não chave depende da chave toda? A 2FN só importa em tabelas com chave composta. As 21 tabelas principais têm chave simples (id), então não podem ter dependência parcial. Verificamos as 12 associativas:
+
 
 ### 3FN
 | CAMPO / ATRIBUTO | TIPO DE CHAVE | DEPENDÊNCIA FUNCIONAL | ANÁLISE 3FN |
