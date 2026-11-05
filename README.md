@@ -889,57 +889,57 @@ As demais tabelas foram conferidas uma a uma: nenhum atributo não chave depende
 ### Documentação
 **Situação 1: 1FN (atributo multivalorado em Cliente)**
 
-**ANTES:** CLIENTE (id_cliente, cnpj, nome, contato)
+ANTES: CLIENTE (id_cliente, cnpj, nome, contato)
 
-**DEPENDÊNCIAS:** Um cliente tem vários contatos (nomes, e-mails e telefones). Guardar tudo no campo contato obriga a usar listas separadas por vírgula ou telefone1, telefone2.
+DEPENDÊNCIAS: Um cliente tem vários contatos (nomes, e-mails e telefones). Guardar tudo no campo contato obriga a usar listas separadas por vírgula ou telefone1, telefone2.
 
-**PROBLEMA:** Violação da 1FN: atributo não atômico e grupo repetitivo.
+PROBLEMA: Violação da 1FN: atributo não atômico e grupo repetitivo.
 
-**DEPOIS:** CLIENTE (id_cliente, cnpj, nome) e CONTATO (id_contato, id_cliente, nome, email, telefone), com id_contato PK e id_cliente FK.
+DEPOIS: CLIENTE (id_cliente, cnpj, nome) e CONTATO (id_contato, id_cliente, nome, email, telefone), com id_contato PK e id_cliente FK.
 
 
 **Situação 2: 1FN e 2FN (Contrato × Serviço)**
 
-**ANTES:** CONTRATO (id_contrato, numero, valor_mensal, servicos) e SERVICO (id_servico, nome_servico, valor_no_contrato)
+ANTES: CONTRATO (id_contrato, numero, valor_mensal, servicos) e SERVICO (id_servico, nome_servico, valor_no_contrato)
 
-**DEPENDÊNCIAS:** id_contrato → numero, valor_mensal. Um contrato tem vários serviços e um serviço está em vários contratos (N:N). O valor do serviço depende do contrato e do serviço ao mesmo tempo.
+DEPENDÊNCIAS: id_contrato → numero, valor_mensal. Um contrato tem vários serviços e um serviço está em vários contratos (N:N). O valor do serviço depende do contrato e do serviço ao mesmo tempo.
 
-**PROBLEMA:** servicos guardava vários valores no mesmo campo (1FN) e valor_no_contrato estava na tabela errada (depende da chave toda de uma associação, 2FN).
+PROBLEMA: servicos guardava vários valores no mesmo campo (1FN) e valor_no_contrato estava na tabela errada (depende da chave toda de uma associação, 2FN).
 
-**DEPOIS:** SERVICO (id_servico, nome_servico, descricao, preco_base) e CONTRATO_SERVICO (id_contrato, id_servico, valor_contratado, data_inicio, data_fim). Dependência: (id_contrato, id_servico) → valor_contratado, data_inicio, data_fim.
+DEPOIS: SERVICO (id_servico, nome_servico, descricao, preco_base) e CONTRATO_SERVICO (id_contrato, id_servico, valor_contratado, data_inicio, data_fim). Dependência: (id_contrato, id_servico) → valor_contratado, data_inicio, data_fim.
 
 
 **Situação 3: 3FN (Oportunidade)**
 
-**ANTES:** OPORTUNIDADE (id_oportunidade, id_cliente, cliente, servico, valor_estimado, data_prevista_inicio, estagio_negociacao)
+ANTES: OPORTUNIDADE (id_oportunidade, id_cliente, cliente, servico, valor_estimado, data_prevista_inicio, estagio_negociacao)
 
-**DEPENDÊNCIAS:** id_oportunidade → id_cliente e id_cliente → cliente (nome). Uma oportunidade pode ter vários serviços.
+DEPENDÊNCIAS: id_oportunidade → id_cliente e id_cliente → cliente (nome). Uma oportunidade pode ter vários serviços.
 
-**PROBLEMA:** Dependência transitiva (cliente) e redundância de serviço.
+PROBLEMA: Dependência transitiva (cliente) e redundância de serviço.
 
-**DEPOIS:** OPORTUNIDADE (id_oportunidade, id_cliente, valor_estimado, data_prevista_inicio, estagio_negociacao) e OPORTUNIDADE_SERVICO (id_oportunidade, id_servico, valor_negociado, quantidade).
+DEPOIS: OPORTUNIDADE (id_oportunidade, id_cliente, valor_estimado, data_prevista_inicio, estagio_negociacao) e OPORTUNIDADE_SERVICO (id_oportunidade, id_servico, valor_negociado, quantidade).
 
 
 **Situação 4: 3FN (Apontamento de horas)**
 
-**ANTES:** APONTAMENTO_DE_HORAS (id_apontamento_de_horas, id_alocacao, id_colaborador, id_contrato, data, quantidade_horas, descricao, status)
+ANTES: APONTAMENTO_DE_HORAS (id_apontamento_de_horas, id_alocacao, id_colaborador, id_contrato, data, quantidade_horas, descricao, status)
 
-**DEPENDÊNCIAS:** id_alocacao → id_colaborador e id_alocacao → id_contrato. O apontamento já chega ao colaborador e ao contrato pela alocação.
+DEPENDÊNCIAS: id_alocacao → id_colaborador e id_alocacao → id_contrato. O apontamento já chega ao colaborador e ao contrato pela alocação.
 
-**PROBLEMA:** Dependência transitiva: colaborador e contrato dependem da alocação, e não do apontamento. Dava para gravar um apontamento com colaborador diferente do da alocação.
+PROBLEMA: Dependência transitiva: colaborador e contrato dependem da alocação, e não do apontamento. Dava para gravar um apontamento com colaborador diferente do da alocação.
 
-**DEPOIS:** APONTAMENTO_DE_HORAS (id_apontamento_de_horas, id_alocacao, data, quantidade_horas, descricao, status).
+DEPOIS: APONTAMENTO_DE_HORAS (id_apontamento_de_horas, id_alocacao, data, quantidade_horas, descricao, status).
 
 
 **Situação 5: 3FN (Fatura)**
 
-**ANTES:** FATURA (id_fatura, id_contrato, numero_fatura, valor, moeda, data_emissao, data_vencimento, data_pagamento, status)
+ANTES: FATURA (id_fatura, id_contrato, numero_fatura, valor, moeda, data_emissao, data_vencimento, data_pagamento, status)
 
-**DEPENDÊNCIAS:** id_fatura → id_contrato e id_contrato → moeda. A data de pagamento já é guardada em PAGAMENTO.
+DEPENDÊNCIAS: id_fatura → id_contrato e id_contrato → moeda. A data de pagamento já é guardada em PAGAMENTO.
 
-**PROBLEMA:** Dependência transitiva (moeda) e dado duplicado (data de pagamento). Além disso, faltava a competência.
+PROBLEMA: Dependência transitiva (moeda) e dado duplicado (data de pagamento). Além disso, faltava a competência.
 
-**DEPOIS:** FATURA (id_fatura, id_contrato, numero_fatura, competencia, valor, data_emissao, data_vencimento, status). A moeda vem do contrato.
+DEPOIS: FATURA (id_fatura, id_contrato, numero_fatura, competencia, valor, data_emissao, data_vencimento, status). A moeda vem do contrato.
 
 
 **Resumo da documentação**
