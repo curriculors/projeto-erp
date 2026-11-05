@@ -470,11 +470,11 @@ As quantidades são lidas nos dois sentidos indicados pelos cabeçalhos: quantos
 ### Entidade: Aditivo
 | Atributo | Descrição | Regra/Observação |
 | :--- | :--- | :--- |
-| **Contrato** | Vínculo com o contrato original que está sendo alterado. | Relacionamento (Obrigatório). |
+| **Contrato** | Contrato original alterado. | Relacionamento (Obrigatório). |
 | **Data** | Data de criação ou assinatura do aditivo. | Preenchimento obrigatório. |
 | **Condições Anteriores** | Descrição das cláusulas e termos antes da alteração. | Preservação de histórico. |
-| **Novas Condições** | Descrição das novas cláusulas e termos acordados. | Campo de texto detalhado. |
-| **Status/Aprovação** | Situação atual da alteração contratual. | Ex: Pendente, Aprovado, Rejeitado. |
+| **Novas Condições** | Condições aprovadas da alteração. | Campo de texto detalhado. |
+| **Status/Aprovação** | Situação atual da alteração contratual. | Padrão Pendente; Pendente, Aprovado ou Rejeitado. A mudança só produz efeito após aprovação. |
 
 ### Entidade: Alocação
 | Atributo | Descrição | Regra/Observação |
@@ -509,7 +509,7 @@ As quantidades são lidas nos dois sentidos indicados pelos cabeçalhos: quantos
 | Atributo | Descrição | Regra/Observação |
 | :--- | :--- | :--- |
 | **Nome da Certificação** | Título oficial da qualificação técnica (ex: AWS Solutions Architect). | Identificação única da certificação. |
-| **Data de Obtenção** | Data em que o colaborador foi aprovado no exame/certificação. | Preenchimento obrigatório ao vincular ao colaborador. |
+| **Data de Obtenção** | Data em que o colaborador foi aprovado no exame/certificação. | No vínculo COLABORADOR_CERTIFICACAO; junto às FKs distingue obtenções/renovações. |
 | **Data de Validade** | Data de expiração da certificação técnica. | Utilizado para gerar alertas de renovação. |
 
 ### Entidade: Cliente
@@ -540,15 +540,17 @@ As quantidades são lidas nos dois sentidos indicados pelos cabeçalhos: quantos
 | :--- | :--- | :--- |
 | **Número** | Identificador único formal do contrato. | Obrigatório e Único. |
 | **Serviço(s)** | Tipo de soluções contratadas (Nuvem Gerenciada, SRE, etc.). | Relacionamento (Obrigatório). |
-| **Valor** | Valor financeiro mensal e/ou total do contrato. | Obrigatório. |
+| **Valor Mensal** | Valor financeiro mensal e/ou total do contrato. | Obrigatório. |
 | **Data de Início** | Data de efetivação e início das operações. | Preenchimento obrigatório. |
-| **Vigência** | Prazo total estipulado para a duração do contrato. | Valor padrão: 12 meses. |
-| **Tipo de Renovação** | Modelo de continuidade contratual. | Ex: Prazo determinado ou Evergreen (Renovação automática). |
+| **Vigência em Meses** | Duração numérica do ciclo.  | Inteiro positivo; padrão 12. |
+| **Tipo de Renovação** | Modelo de continuidade contratual. | Prazo determinado ou Evergreen; RN08. Renovação automática evergreen conforme RN09. |
 | **Prazo de Aviso Prévio** | Tempo mínimo exigido para comunicação de cancelamento. | Padrão: 30 dias (pode variar). |
 | **Provedor(es) de Nuvem** | Plataformas onde o serviço será executado (AWS, Azure, GCP). | Relacionamento (Obrigatório). |
-| **Moeda** | Moeda base para faturamento e controle do contrato. | Ex: Real (BRL), Dólar (USD). |
+| **Moeda** | Moeda base para faturamento e controle do contrato. | BRL ou USD no modelo revisado; obtida pelas faturas por vínculo. Preservar histórico. |
 | **Referência ao DocuSign** | Link ou ID de rastreamento do contrato assinado digitalmente. | Utilizado para auditoria e conferência. |
-| **Status** | Situação atual do ciclo de vida do contrato. | Ex: Em aprovação, Vigente, Aviso Prévio, Encerrado. |
+| **Status** | Situação atual do ciclo de vida do contrato. | Padrão Em aprovação. Valores: Em aprovação, Vigente, Aviso prévio, Encerrado, Cancelado. |
+| **Data do Aviso de Cancelamento** | Data da comunicação do cancelamento. | Nula enquanto não houver aviso. |
+| **Data Efetiva de Término** | Fim resultante do aviso e do prazo aplicável. | Preenchida quando houver encerramento/cancelamento; não anterior ao aviso. Atualiza apenas alocações afetadas. |
 
 ### Entidade: Contrato Salarial
 | Atributo | Descrição | Regra/Observação |
@@ -568,31 +570,36 @@ As quantidades são lidas nos dois sentidos indicados pelos cabeçalhos: quantos
 ### Entidade: Fatura
 | Atributo | Descrição | Regra/Observação |
 | :--- | :--- | :--- |
-| **Contrato** | Contrato ao qual a cobrança está associada. | Relacionamento (Obrigatório). |
-| **Competência** | Mês e ano de referência da prestação do serviço. | Formato MM/AAAA. |
-| **Valor** | Montante financeiro a ser cobrado do cliente. | Deve respeitar o valor e os serviços do contrato. |
-| **Moeda** | Moeda em que a fatura foi emitida. | Herdado do contrato (Ex: BRL, USD). |
+| **Contrato** | Contrato ao qual a cobrança está associada. | Obrigatório |
+| **Competência** | Mês e ano de referência da prestação do serviço. | Armazenada como data do primeiro dia do mês; exibida em MM/AAAA. |
+| **Valor** | Montante financeiro a ser cobrado do cliente. | Compatível com condições e serviços contratados. |
+| **Moeda Aplicável** | Moeda obtida do contrato. | Derivada; não há coluna moeda em FATURA no modelo revisado. |
 | **Vencimento** | Data limite para pagamento da fatura pelo cliente. | Preenchimento obrigatório. |
 | **Número da NF** | Número da Nota Fiscal emitida via integração com o Nibo. | Chave de rastreio fiscal. |
 | **Status da Fatura** | Situação atual de cobrança. | Ex: Paga, Em Aberto, Em Atraso, Cancelada. |
+| **Saldo e Situação Parcial** | Valor da fatura menos pagamentos Confirmados. | Calculados; Parcialmente paga não é gravado no status. A data de pagamento pertence a PAGAMENTO. |
 
 ### Entidade: Oportunidade
 | Atributo | Descrição | Regra/Observação |
 | :--- | :--- | :--- |
-| **Cliente** | Vínculo com a empresa prospectada ou base atual. | Relacionamento (Obrigatório). |
-| **Serviço** | Soluções tecnológicas que estão em negociação. | Relacionamento. |
-| **Valor Estimado** | Projeção financeira de receita da negociação. | Estimativa comercial. |
-| **Data Prevista de Início** | Projeção de quando a operação poderá iniciar. | Apoia o planejamento trimestral de capacidade. |
-| **Provedor de Nuvem** | Ambiente alvo do escopo da negociação. | Ex: AWS, Azure, GCP. |
-| **Certificações/Perfis Técnicos Necessários** | Exigências de conhecimento mapeadas para atender à demanda futura. | Ajuda a prever necessidade de alocações específicas. |
-| **Estágio da Negociação** | Fase atual no funil de vendas. | Ex: Prospecção, Negociação, Ganha, Perdida. |
+| **Cliente** | Vínculo com a empresa prospectada ou base atual. | FK id_cliente obrigatória; não repetir o nome do cliente. |
+| **Serviço** | Soluções tecnológicas que estão em negociação. | N:N por OPORTUNIDADE_SERVICO; valor_negociado e quantidade no vínculo. |
+| **Valor Estimado** | Projeção financeira de receita da negociação. | Não negativo quando informado; estimativa pode estar pendente. |
+| **Data Prevista de Início** | Projeção de quando a operação poderá iniciar. | Pode ser nula enquanto não definida. |
+| **Provedor de Nuvem** | Ambiente alvo do escopo da negociação. | N:N por OPORTUNIDADE_PROVEDOR; FKs id_oportunidade e id_provedor_de_nuvem. |
+| **Certificações Exigidas** | Qualificações formais requeridas. | N:N por OPORTUNIDADE_CERTIFICACAO; admite pendência de levantamento. |
+| **Perfis Técnicos Necessários** | Funções e competências para a demanda. | N:N por OPORTUNIDADE_PERFIL_TECNICO; distinto de certificação. |
+| **Estágio da Negociação** | Fase atual no funil de vendas. | Obrigatório; padrão Prospecção. Valores: Prospecção, Negociação, Ganha e Perdida. |
+
+Entidade: Perfil Técnico — representa a função ou competência profissional necessária às oportunidades e disponível entre os colaboradores. Atributos: nome do perfil (identificador) e descrição/competências associadas. 
 
 ### Entidade: Pagamento
 | Atributo | Descrição | Regra/Observação |
 | :--- | :--- | :--- |
-| **Fatura** | Vínculo com o título de cobrança gerado. | Relacionamento (Obrigatório). |
-| **Data** | Data da efetivação do crédito na conta da empresa. | Preenchimento obrigatório. |
-| **Valor** | Montante financeiro liquidado pelo cliente. | A soma dos pagamentos não pode ultrapassar o valor da fatura. |
+| **Fatura** | Título ao qual o pagamento pertence. | FK obrigatória; não existe pagamento sem fatura. |
+| **Data** | Data da efetivação do crédito na conta da empresa. | Obrigatória; mantida em PAGAMENTO, não em FATURA. |
+| **Valor** | Montante financeiro liquidado pelo cliente. | Positivo; soma dos pagamentos Confirmados não ultrapassa a fatura. |
+| **Status** | Situação do registro de pagamento. | Somente status Confirmado participa da quitação e do saldo; não confundir com status da fatura. |
 
 ### Entidade: Perfil de Acesso
 | Atributo | Descrição | Regra/Observação |
@@ -620,8 +627,11 @@ As quantidades são lidas nos dois sentidos indicados pelos cabeçalhos: quantos
 ### Entidade: Serviço
 | Atributo | Descrição | Regra/Observação |
 | :--- | :--- | :--- |
-| **Nome/Descrição do Serviço** | Identificação e escopo base do produto (ex: Nuvem Gerenciada). | Obrigatório e Único. |
+| **Nome do Serviço** | Identificação no catálogo. | Obrigatório e Único. |
+| **Descrição** | Detalhamento técnico do serviço. | Opcional, conforme o dicionário enviado. |
+| **Preço Base** | Preço de referência do catálogo. | Não negativo; distinto do valor negociado no contrato. |
 | **Valor no Contrato** | Preço negociado por este serviço dentro de um acordo específico. | Varia de acordo com o escopo fechado com o cliente. |
+| **Datas no Contrato** | Início e fim do serviço contratado. | No vínculo; início obrigatório e fim opcional, não anterior ao início. |
 
 ### Entidade: Tag
 | Atributo | Descrição | Regra/Observação |
