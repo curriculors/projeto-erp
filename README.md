@@ -1627,11 +1627,15 @@ Uma das formas estratégicas de utilizar o BI — representado por gráficos e p
 * **POSSÍVEL BENEFÍCIO:** Descentralização segura e transparente dos processos financeiros, eliminação de erros humanos operacionais, garantia de cumprimento rigoroso de prazos legais e trabalhistas, além do ganho de produtividade ao liberar o colaborador central para focar em atividades mais estratégicas para a KXP.
 
 # # 25 . Justificativas técnicas
-A separação entre CLIENTE e CONTATO evita reunir vários contatos em um único atributo. OPORTUNIDADE mantém id_cliente como chave estrangeira, enquanto serviços, provedores, certificações e perfis técnicos ficam em relacionamentos próprios. A revisão mantém 21 entidades principais e prevê 12 associativas, incluindo OPORTUNIDADE_PROVEDOR; a contagem representa o modelo lógico proposto, não uma comprovação de execução do SQL. 
+As entidades principais possuem identificadores próprios (PK), enquanto as tabelas associativas usam a cheve adequada para se vincular mesmo dependendo de outras entidades como CONTATO, CONTRATO_SALARIAL, FATURA etc... possui identificação própria.
 
-APONTAMENTO_DE_HORAS relaciona-se apenas a ALOCACAO; por esse vínculo são identificados colaborador, contrato e custo/hora congelado. A preservação das taxas e dos períodos impede alteração retroativa do custo. FATURA obtém a moeda do contrato, e a quitação é calculada pelos pagamentos Confirmados. Regras que somam registros, como dedicação e pagamentos, exigem validação no processamento; auditoria posterior é complementar, não substitui a prevenção. 
+As chaves estrangeiras (FK) garante que você vincule as tabelas. mantendo um PK como referência da tabela vinculada.
 
-Contato, Contrato Salarial, Aditivo, Apontamento de Horas, Fatura e Pagamento possuem dependência de existência de suas entidades de origem. Como possuem identificadores próprios, essa dependência não é tratada aqui como ausência de chave própria. A exclusão deve proteger o histórico: restrição nas referências principais e tratamento das associativas conforme seus vínculos, sem afirmar que as restrições foram executadas. Permanecem identificadas como premissas a periodicidade de faturamento, a pauta trimestral de capacidade e as decisões de anulabilidade ainda não confirmadas pela KXP. 
+APONTAMENTO_DE_HORAS relaciona-se apenas a ALOCACAO; por esse vínculo são identificados colaborador, contrato e custo/hora congelado. A preservação das taxas e dos períodos impede alteração retroativa do custo. FATURA obtém a moeda do contrato, e a quitação é calculada pelos pagamentos Confirmados. Regras que somam registros, como dedicação e pagamentos, exigem validação no processamento; auditoria posterior é complementar, não substitui a prevenção.
+
+As restrições foram definidas para evitar dados inválidos e duplicidades e exclusões que pode comprometer o histórico. Essas decisões fazem parte do modelo proposto.
+
+Sobre as decisões arquiteturais, a separação entre CLIENTE e CONTATO evita armazenar vários contatos em um único atributo. O nosso modelo prevê 21 entidades principais e 12 associativas, incluindo OPORTUNIDADE_PROVEDOR. Isso preserva o custo por hora em ALOCACAO e mantém os valores enquanto FATURA utiliza a moeda do contrato já calculado a quitação de pagamento. Isso visa reduzir repetições desnecessárias e manter a consistência dos dados. Permanecem identificadas como premissas a periodicidade de faturamento, a pauta trimestral de capacidade e as decisões de anulabilidade ainda não confirmadas pela KXP. 
 
 # # 26 . Histórico/evolução do projeto
 ### REVISÃO DA PRIMEIRA ENTREGA
