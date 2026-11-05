@@ -1564,24 +1564,24 @@ Foram avaliadas seis categorias de restrição. Cada uma só foi usada onde prot
 
 # # 20 . Implementação SQL
 **Script SQL**
-sql/ddl/ddl.sql
-sql/ddl/dml.sql
+[DDL](./sql/ddl/ddl.pdf)
+[DML](./sql/ddl/dml.pdf)
 
 **Teste do script**
-evidencias/testes_negativos.sql
+[Evidências](./evidencias/testes_negativos.sql)
 
 # # 21 . Massa de dados
 **Massa de dados coerente**
-sql/dados/dados.sql
+[Dados](./sql/dados/dados.sql)
 Etapas 16, 17
 
 # # 22 . Consultas gerenciais
 **Consultas**
-sql/consultas/gerenciais.sql
+[Gerenciais](./sql/consultas/gerenciais.sql)
 
 # # 23 . Consultas de auditoria
 **Auditoria**
-sql/auditoria/auditoria.sql
+[Auditoria](./sql/auditoria/auditoria.sql)
 
 # # 24 . Potencial para BI e IA
 ### Decisões Gerenciais a partir dos Dados da KXP
