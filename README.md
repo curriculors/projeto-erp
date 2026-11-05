@@ -1564,23 +1564,29 @@ Foram avaliadas seis categorias de restrição. Cada uma só foi usada onde prot
 
 # # 20 . Implementação SQL
 **Script SQL**
+
 [DDL](./sql/ddl/ddl.sql)
+
 [DML](./sql/ddl/dml.sql)
 
 **Teste do script**
+
 [Evidências](./evidencias/testes_negativos.sql)
 
 # # 21 . Massa de dados
 **Massa de dados coerente**
+
 [Dados](./sql/dados/dados.sql)
 Etapas 16, 17
 
 # # 22 . Consultas gerenciais
 **Consultas**
+
 [Gerenciais](./sql/consultas/gerenciais.sql)
 
 # # 23 . Consultas de auditoria
 **Auditoria**
+
 [Auditoria](./sql/auditoria/auditoria.sql)
 
 # # 24 . Potencial para BI e IA
