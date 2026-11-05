@@ -649,6 +649,9 @@ Entidade: Perfil Técnico — representa a função ou competência profissional
 <img width="3508" height="2479" alt="der (1)" src="https://github.com/user-attachments/assets/2ed28c14-fff9-4526-86d2-b176c5a11dba" />
 
 # # 17 . Modelo Lógico
+Aqui a tabela completa:
+<img width="1250" height="2297" alt="image" src="https://github.com/user-attachments/assets/8af7e902-90a0-44d7-8aaf-0551562aa96a" />
+
 Cada entidade do DER virou uma tabela, e cada atributo virou uma coluna. Foram 21 tabelas principais. Em relação à versão anterior, mudaram: CONTRATO, COLABORADOR, ALOCACAO, FATURA, APONTAMENTO_DE_HORAS, APROVACAO, EVIDENCIA, OPORTUNIDADE e CLIENTE.
 
 Essas são as tabela principais que foram criadas:
@@ -798,9 +801,6 @@ Revisamos o modelo procurando registros que não fazem sentido sem outro. As tab
 •	Pagamento depende de FATURA (FK id_fatura)
 
 Entidade associativa e entidade fraca não são a mesma coisa: as 12 tabelas associativas existem por causa de relacionamentos N:N, não por dependência de existência. PAGAMENTO também depende da existência de FATURA e entrou na lista de entidades fracas, para o mesmo critério valer para todas as tabelas dependentes.
-
-Aqui a tabela completa:
-<img width="1250" height="2297" alt="image" src="https://github.com/user-attachments/assets/8af7e902-90a0-44d7-8aaf-0551562aa96a" />
 
 
 
