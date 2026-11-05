@@ -1564,8 +1564,8 @@ Foram avaliadas seis categorias de restrição. Cada uma só foi usada onde prot
 
 # # 20 . Implementação SQL
 **Script SQL**
-[DDL](./sql/ddl/ddl.pdf)
-[DML](./sql/ddl/dml.pdf)
+[DDL](./sql/ddl/ddl.sql)
+[DML](./sql/ddl/dml.sql)
 
 **Teste do script**
 [Evidências](./evidencias/testes_negativos.sql)
