@@ -1614,7 +1614,109 @@ APONTAMENTO_DE_HORAS relaciona-se apenas a ALOCACAO; por esse vínculo são iden
 
 Contato, Contrato Salarial, Aditivo, Apontamento de Horas, Fatura e Pagamento possuem dependência de existência de suas entidades de origem. Como possuem identificadores próprios, essa dependência não é tratada aqui como ausência de chave própria. A exclusão deve proteger o histórico: restrição nas referências principais e tratamento das associativas conforme seus vínculos, sem afirmar que as restrições foram executadas. Permanecem identificadas como premissas a periodicidade de faturamento, a pauta trimestral de capacidade e as decisões de anulabilidade ainda não confirmadas pela KXP. 
 
-# # 26 . Conclusão 
+# # 26 . Histórico/evolução do projeto
+### REVISÃO DA PRIMEIRA ENTREGA
+
+Antes de montar o banco, a gente voltou na primeira entrega e perguntou: “nosso DER ainda representa o negócio?”. Para responder, usamos a devolutiva do professor e as duas perguntas que ele pediu: “de onde veio esta informação?” e “onde ela está no modelo?”.
+
+#### O que foi revisado
+
+| Item revisado | Resultado da revisão |
+| :--- | :--- |
+| Requisitos e regras de negócio | Mantidos. As regras que mudaram por causa das respostas da KXP já estavam na versão final da Fase 1 (entre elas RN10, RN11, RN17, RN19, RN40, RN43 e RN44). Nenhum código foi renumerado. |
+| Entidades | 21 entidades mantidas. Nenhuma entidade foi retirada. |
+| Atributos | Corrigidos em Colaborador (faltava nome), Alocação (término previsto e real), Fatura (competência), Contrato (valor mensal, vigência numérica e campos de cancelamento), Aprovação, Evidência, Oportunidade e Cliente. |
+| Relacionamentos | Um relacionamento novo: Oportunidade–Provedor de nuvem. Os relacionamentos diretos Colaborador–Apontamento e Contrato–Apontamento foram tirados do modelo lógico, porque já vêm pela Alocação. |
+| Cardinalidades | Conferidas pelo método “Vá e Volte”. Fatura–Pagamento já tinha sido corrigida na Fase 1 final (fatura pode existir sem pagamento). As demais seguem a Fase 1 final. |
+| Entidades associativas | 12 tabelas associativas (eram 11 no modelo lógico antigo): entrou OPORTUNIDADE_PROVEDOR. |
+| Entidades fracas | Contato, Contrato_Salarial, Aditivo, Apontamento_de_Horas e Fatura continuam como entidades fracas (dependência de existência). Pagamento passou a constar na lista: ele também não existe sem a Fatura. |
+
+#### Resposta aos pontos da devolutiva do professor
+
+**Ponto 1 – Rastreabilidade: onde ficam provedor e perfis técnicos da oportunidade?**
+
+| Informação do processo de negociação | De onde veio | Onde está no modelo |
+| :--- | :--- | :--- |
+| Provedor(es) de nuvem da oportunidade | Processo de negociação (Fase 1) | OPORTUNIDADE_PROVEDOR (tabela nova) |
+| Perfis técnicos necessários | Processo de negociação (Fase 1) | OPORTUNIDADE_PERFIL_TECNICO → PERFIL_TECNICO |
+| Certificações necessárias | Processo de negociação (Fase 1) | OPORTUNIDADE_CERTIFICACAO → CERTIFICACAO |
+| Serviços em negociação, valor e quantidade | Processo de negociação (Fase 1) | OPORTUNIDADE_SERVICO → SERVICO |
+| Valor estimado, data prevista e estágio | Processo de negociação (Fase 1) | Colunas de OPORTUNIDADE |
+
+Antes, o provedor da oportunidade aparecia só como atributo na descrição da Fase 1, sem tabela para guardar. Agora dá para recuperar tudo com JOIN a partir de OPORTUNIDADE.
+
+**Ponto 2 – Fatura e Pagamento (Vá e Volte)**
+
+* **Fatura → Pagamento:** toda fatura precisa ter pagamento ao ser criada? não. Uma fatura nasce “Em aberto”, antes de qualquer pagamento (fluxo: gerar fatura → emitir documento → registrar pagamento). Por isso o lado do Pagamento é (0,N).
+* **Pagamento → Fatura:** o pagamento pode existir sem fatura? não. O pagamento sempre quita (total ou parcialmente) uma fatura; por isso PAGAMENTO.id_fatura é NOT NULL e o lado da Fatura é (1,1).
+
+**Consequência:** fatura parcialmente paga é possível; seu saldo deve considerar apenas pagamentos confirmados, sem permitir que o total confirmado ultrapasse o valor da fatura. O CHECK do MySQL não enxerga outras linhas, então isso virou consulta de auditoria (Etapa 19). A situação “Parcialmente paga” não é gravada em FATURA.status: ela é calculada pela soma dos pagamentos confirmados (decisão da equipe).
+
+**Ponto 3 – Planejamento de capacidade: quem está disponível E tem o perfil certo?**
+
+O modelo agora responde isso com o caminho abaixo (só junções, sem nenhuma tabela nova além da OPORTUNIDADE_PROVEDOR):
+`OPORTUNIDADE → OPORTUNIDADE_PERFIL_TECNICO → PERFIL_TECNICO ← COLABORADOR_PERFIL_TECNICO → COLABORADOR → ALOCACAO (data_termino_prevista / data_termino_real)`
+
+* **Quem está disponível?** vem de ALOCACAO: colaborador sem alocação ativa, ou com término previsto dentro de 30, 60 ou 90 dias.
+* **Quem tem o perfil necessário?** vem do cruzamento entre os perfis exigidos pela oportunidade e os perfis do colaborador; as certificações seguem o mesmo raciocínio (OPORTUNIDADE_CERTIFICACAO × COLABORADOR_CERTIFICACAO, usando data_validade).
+
+*Importante:* o uso da reunião trimestral para planejar capacidade continua registrado como premissa da equipe, porque a KXP não confirmou a pauta. O modelo suporta a consulta, mas o processo ainda é premissa.
+
+**Ponto 4 – Renovação, alteração e cancelamento são coisas diferentes**
+
+| Situação | O que muda em Contrato | Aditivo | Alocação |
+| :--- | :--- | :--- | :--- |
+| **Renovação** | tipo_renovacao define Prazo determinado ou Evergreen (RN09); a vigência pode ser estendida. | Pode ou não existir aditivo. | Não é encerrada automaticamente (RN25): a equipe só sai se a alocação recebe data_termino_real. |
+| **Alteração** | Contrato continua Vigente. | Cria um ADITIVO (descrição, impacto financeiro, nova vigência). | Não precisa terminar; só muda se o aditivo alterar a alocação. |
+| **Cancelamento** | status vai para Aviso prévio; data_aviso_cancelamento e data_efetiva_termino registram o fim (RN10). | Não se aplica. | As alocações afetadas terminam na data efetiva (RN25) e os colaboradores voltam a ficar disponíveis (RN24). |
+
+O modelo guarda cada caso em campos diferentes, então um não é confundido com o outro. Se a KXP disser que numa renovação a equipe sempre permanece, isso vira regra de negócio e entra como regra nova (próximo número livre).
+
+**Ponto 5 – Revisão integrada (Problema → Processo → Requisito → Regra → DER → Dicionário)**
+
+| Problema | Processo | Requisito / Regra | DER e Dicionário |
+| :--- | :--- | :--- | :--- |
+| Não saber quanto tempo cada pessoa dedica a cada contrato | Alocação e apontamento de horas | RF de apontamento; RN17 e RN19 (até 2 contratos, dedicação dividida) | ALOCACAO.percentual_dedicacao, APONTAMENTO_DE_HORAS.quantidade_horas |
+| Custo real do projeto | Apontamento de horas | RN44 (composição do custo/hora) | ALOCACAO.custo_hora (congelado) × horas apontadas |
+| Risco de perda financeira por contrato mal faturado | Faturamento e pagamento | PN05 (faturamento mensal com valor fixo; periodicidade ainda é premissa) | FATURA.competencia, FATURA.valor, PAGAMENTO |
+| Prever equipe para oportunidades futuras | Negociação e reunião trimestral (premissa) | RN24, RN38, RN39, RN40, RN41 | OPORTUNIDADE_PERFIL_TECNICO, COLABORADOR_PERFIL_TECNICO, OPORTUNIDADE_PROVEDOR |
+
+### REGISTRO DAS PRINCIPAIS ALTERAÇÕES
+
+| O que foi alterado? | Como era? | Como ficou? | Por que alteramos? |
+| :--- | :--- | :--- | :--- |
+| Quantidade de tabelas | 32 (21 principais + 11 associativas) na imagem; 33 no resumo da Etapa 12 | 33 (21 + 12) | O resumo falava em 12 associativas mas só existiam 11. A que faltava era a de Oportunidade–Provedor. |
+| Oportunidade–Provedor de nuvem | Sem tabela (só descrito na Fase 1) | OPORTUNIDADE_PROVEDOR (N:N) | Devolutiva: a informação do processo precisava aparecer no modelo (rastreabilidade). |
+| Contrato.valor | valor (total, no dicionário) | valor_mensal, maior ou igual a 0 | PN05: o valor é fixo e cobrado por competência mensal (periodicidade é premissa). O dicionário da Etapa 13 estava desatualizado. |
+| Contrato.vigencia | Texto (“12 meses”) | Número inteiro em meses, padrão 12, maior que 0 | Texto não permite calcular data de término nem comparar. |
+| Contrato.status | Padrão ‘Ativo’ | Padrão ‘Em aprovação’; lista Em aprovação, Vigente, Aviso prévio, Encerrado, Cancelado | Fase 1: todo contrato nasce em aprovação. |
+| Campos do Contrato | Dicionário sem tipo_renovacao, prazo_aviso_previo, moeda, referencia_docusign | Todos no dicionário, mais data_aviso_cancelamento e data_efetiva_termino | Renovação e cancelamento são diferentes (devolutiva, ponto 4). |
+| Apontamento_de_Horas | 3 FKs na imagem (alocação, colaborador, contrato) | Só id_alocacao | A alocação já identifica colaborador e contrato; evita repetição e divergência (3FN). |
+| Aprovação | id_usuario + FKs de contrato e aditivo | Também id_alocacao; CHECK: exatamente uma das 3 FKs preenchida | A aprovação pode ser de contrato, aditivo ou alocação. |
+| Aprovação.observacao | Opcional | Obrigatória quando a decisão for Reprovado | Regra da Fase 1: reprovação exige justificativa. |
+| Evidência | Sem FKs na imagem | FK para contrato e colaborador, mais mês de referência | Toda evidência comprova a entrega de um contrato e foi enviada por alguém. |
+| Oportunidade | Campos cliente e servico dentro da tabela | Campos removidos; serviços em OPORTUNIDADE_SERVICO | 3FN: o nome do cliente depende de id_cliente. |
+| Cliente | Campo contato dentro da tabela | Campo removido; tabela CONTATO | 1FN: um cliente tem vários contatos. |
+| Estágios da oportunidade | Padrão ‘Em aberto’ no dicionário | Prospecção, Negociação, Ganha, Perdida (padrão Prospecção) | ‘Em aberto’ não existia na lista da Fase 1. |
+| Colaborador | Sem nome | Campo nome adicionado | Sem nome, nenhuma consulta de alocação mostraria pessoas. |
+| Alocação | Só data_fim | data_termino_prevista e data_termino_real; função; status | RN18, RN24 e RN25 pedem término previsto e real; base do planejamento de capacidade. |
+| Fatura | Sem competência; tinha data_pagamento | Competência adicionada; data_pagamento removida | Competência vem da Fase 1 (PN05); a data do pagamento já fica em PAGAMENTO. |
+| Fatura.moeda (Fase 1) | Atributo da fatura | Não repetido; usa a moeda do contrato | 3FN: id_fatura → id_contrato → moeda (dependência transitiva). |
+| Usuário.id_colaborador | Fase 1: (1,1) | Pode ser nulo e único (1:0..1) | Segue a Etapa 5: nem todo usuário é colaborador. A validar com o grupo. |
+| Apontamento: custo/hora | Custo/Hora Vigente no apontamento (Fase 1) | Custo vem de ALOCACAO.custo_hora (congelado) | Evita guardar o mesmo valor em dois lugares. |
+| Exclusão de registros | Só descrito para 4 tabelas | ON DELETE RESTRICT nas principais e CASCADE nas associativas | Protege o histórico (contrato com faturas não some) e limpa vínculos sem sentido. |
+| Regras que o CHECK não alcança | Sem tratamento | Consultas de auditoria (Etapa 19) | Dedicação acima de 100%, horas em data futura e pagamentos acima da fatura dependem de outras linhas. |
+| Dicionário (Etapa 13) | 6 tabelas | 33 tabelas, 174 atributos | O manual exige todas as tabelas e que bata com o SQL. |
+| Restrições (Etapa 12) | 4 tabelas detalhadas | 33 tabelas | Mesmo motivo. |
+| Normalização (Etapas 8 a 11) | 6 tabelas | 33 tabelas verificadas, 5 situações documentadas | O manual pede dependências e justificativas, não só “normalizado”. |
+| APROVACAO.etapa e CERTIFICACAO.provedor_nuvem | Sem definição clara | Texto livre / texto | Decisão da equipe; podem virar lista depois. |
+| Fatura.status — “Parcialmente paga” | Valor listado no dicionário revisado, com decisão pendente | Não é armazenado. Status da fatura: Em aberto, Paga, Em atraso ou Cancelada; “Parcialmente paga” sai da soma dos pagamentos Confirmados | O saldo já é calculável a partir de PAGAMENTO; guardar o mesmo dado em dois lugares gera divergência. |
+| Contrato.referencia_docusign | Obrigatória (Etapas 12 e 13) | Aceita nulo até a referência ser gerada | O contrato nasce Em aprovação, antes da assinatura. Premissa a confirmar com a KXP; contratos Vigentes sem referência entram na auditoria. |
+| Aditivo.data_assinatura | Obrigatória (Etapas 12 e 13), embora o aditivo nasça Pendente | Aceita nulo até a assinatura | Um aditivo Pendente ainda não foi assinado. Premissa a confirmar com a KXP; aditivos Aprovados sem data entram na auditoria. |
+| Pagamento como entidade fraca | Fora da lista de entidades fracas | Entidade fraca (dependência de existência de Fatura) | Mesmo critério das demais entidades dependentes (Etapa 7). |
+| FK de provedor nas associativas | id_provedor em CONTRATO_PROVEDOR e OPORTUNIDADE_PROVEDOR | id_provedor_de_nuvem | Mesmo nome da PK de PROVEDOR_DE_NUVEM, para a ligação ficar óbvia e igual em todos os documentos. |
+
+# # 27 . Conclusão 
 O desenvolvimento deste projeto permitiu organizar os principais processos e necessidades da KXP Technology Consulting, desde a prospecção e negociação até a formalização de contratos, alocação de colaboradores, apontamento de horas, evidências, faturamento e pagamentos. A revisão desta entrega priorizou a rastreabilidade entre processos, requisitos, regras de negócio, relacionamentos, cardinalidades e dicionário de dados, buscando que todos representem o mesmo funcionamento do negócio.  
 
 ### Estruturação de Dados e Segurança
