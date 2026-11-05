@@ -1563,16 +1563,25 @@ Foram avaliadas seis categorias de restrição. Cada uma só foi usada onde prot
 | id_provedor_nuvem | Provedor de nuvem envolvido | INT | Sim | Sim | Não | Não | - | Referência a Provedor de Nuvem |
 
 # # 20 . Implementação SQL
-Etapas 14 e 15
+**Script SQL**
+sql/ddl/ddl.sql
+sql/ddl/dml.sql
+
+**Teste do script**
+evidencias/testes_negativos.sql
 
 # # 21 . Massa de dados
+**Massa de dados coerente**
+sql/dados/dados.sql
 Etapas 16, 17
 
 # # 22 . Consultas gerenciais
-Etapa 18
+**Consultas**
+sql/consultas/gerenciais.sql
 
 # # 23 . Consultas de auditoria
-Etapa 19
+**Auditoria**
+sql/auditoria/auditoria.sql
 
 # # 24 . Potencial para BI e IA
 ### Decisões Gerenciais a partir dos Dados da KXP
