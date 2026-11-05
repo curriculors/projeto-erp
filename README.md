@@ -1577,7 +1577,43 @@ Foram avaliadas seis categorias de restrição. Cada uma só foi usada onde prot
 **Massa de dados coerente**
 
 [Dados](./sql/dados/dados.sql)
-Etapas 16, 17
+
+### Ferramentas de IA usadas
+
+| Ferramenta | Para que foi usada | Quem usou |
+|---|---|---|
+| Claude (Anthropic) | **[PREENCHER: confirme o que foi feito com ela, por exemplo, geração da massa de dados e dos scripts SQL das Etapas 14 a 19]** | Diego |
+| **[PREENCHER: outra ferramenta, se houver]** | **[PREENCHER]** | **[PREENCHER]** |
+
+---
+
+### Massa de dados (`02_dados.sql`)
+
+**Como foi gerada:** por um script em Python escrito com ajuda de IA, que produziu os `INSERT` do arquivo. Em seguida o resultado foi conferido contra as restrições do banco.
+
+**Conteúdo gerado:** 10 clientes, 12 contratos, 14 colaboradores, 26 alocações, 93 apontamentos, 31 faturas e 23 pagamentos (mais as tabelas de apoio e as associativas).
+
+
+**Decisões tomadas pelo grupo (não pela IA):**
+
+- Os nomes de serviços Nuvem Gerenciada, SRE e FinOps vêm dos documentos da equipe. Migração para Nuvem, Segurança em Nuvem e Observabilidade foram acrescentados na massa.
+- O valor mensal de cada contrato foi feito igual à soma dos seus serviços. O banco não obriga isso, porque a KXP ainda não confirmou essa regra (a consulta A13 confere).
+- Os apontamentos de horas são uma amostra (4 datas por alocação em setembro e outubro de 2026). Por isso a margem da consulta G02 fica alta.
+- Algumas anomalias foram **plantadas de propósito** para provar que as consultas de auditoria funcionam (por exemplo: colaborador com 120% de dedicação, fatura paga acima do valor, apontamento com data de 2030). A lista está em `docs/consultas.md`.
+
+---
+
+### Scripts SQL
+
+**Arquivos feitos com ajuda de IA:** `dml.sql`, `gerenciais.sql`, `auditoria.sql`, `testes_negativos.sql` e `consultas.md`.
+
+**Correções feitas depois da geração:** **nenhum erro encontrado.**
+
+---
+
+### Declaração do grupo
+
+O grupo revisou o conteúdo gerado com IA, executou os scripts e é responsável pelas decisões técnicas do projeto.
 
 # # 22 . Consultas gerenciais
 **Consultas**
@@ -1588,6 +1624,8 @@ Etapas 16, 17
 **Auditoria**
 
 [Auditoria](./sql/auditoria/auditoria.sql)
+
+[Consultas](./sql/consultas/consultas.md)
 
 # # 24 . Potencial para BI e IA
 ### Decisões Gerenciais a partir dos Dados da KXP
