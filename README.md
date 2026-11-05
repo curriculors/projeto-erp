@@ -799,6 +799,10 @@ Revisamos o modelo procurando registros que não fazem sentido sem outro. As tab
 
 Entidade associativa e entidade fraca não são a mesma coisa: as 12 tabelas associativas existem por causa de relacionamentos N:N, não por dependência de existência. PAGAMENTO também depende da existência de FATURA e entrou na lista de entidades fracas, para o mesmo critério valer para todas as tabelas dependentes.
 
+Aqui a tabela completa:
+<img width="1250" height="2297" alt="image" src="https://github.com/user-attachments/assets/8af7e902-90a0-44d7-8aaf-0551562aa96a" />
+
+
 
 # # 18 . Normalização
 Pergunta: cada campo guarda um único valor? Regra prática: um campo → um valor. Procuramos listas dentro de campos, grupos repetidos (telefone1, telefone2) e atributos que tentavam guardar várias ocorrências.
