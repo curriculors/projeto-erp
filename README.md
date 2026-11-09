@@ -6,7 +6,6 @@
 * **Giovanna Ayumi Sakata Matuo** — RGM: 049583735
 * **Guilherme Brito da Silva** (Gerente) — RGM: 48819123
 * **Marcell Axel Elidio de Castro** — RGM: 48945633
-* **Matheus da Silva Barreto** — RGM: 49944517
 * **Nicolly Agnoletto dos Santos** — RGM: 49375903
 * **Pedro Prates Pereira dos Santos** — RGM: 49594885
 * **Rodrigo Cesar Sanchis Silvestre** — RGM: 49884948
